@@ -1,6 +1,6 @@
 {
   "name": "wycinacz",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Optymalizacja cięcia kształtowników stalowych",
   "main": "server.js",
   "scripts": {
