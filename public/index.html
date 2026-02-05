@@ -80,4 +80,832 @@
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20
+            gap: 20px;
+        }
+
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 15px;
+        }
+
+        .help-text {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .results {
+            display: none;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .summary-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .summary-box h3 {
+            margin-bottom: 10px;
+        }
+
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .stat {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .plan-card {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+
+        .plan-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .plan-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .plan-waste {
+            background: #fff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .cuts-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .cut-item {
+            background: white;
+            padding: 6px 12px;
+            border-radius: 5px;
+            font-weight: 500;
+            color: #667eea;
+        }
+
+        .plan-details {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+        .kerf-badge {
+            background: #ff9800;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+
+        .profile-selector {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .profile-btn {
+            padding: 8px 16px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .profile-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .profile-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .alert-error {
+            background: #ffebee;
+            color: #c62828;
+            border-left: 4px solid #c62828;
+        }
+
+        .save-profile-section {
+            background: #f0f4ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .save-profile-section h4 {
+            margin-bottom: 10px;
+            color: #667eea;
+        }
+
+        .profile-list {
+            margin-top: 15px;
+        }
+
+        .profile-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: white;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .profile-item-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .profile-item-values {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 3px;
+        }
+
+        .profile-item-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-small {
+            padding: 5px 12px;
+            font-size: 0.85rem;
+        }
+
+        .btn-delete {
+            background: #f44336;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #d32f2f;
+        }
+
+        .btn-load {
+            background: #4caf50;
+            color: white;
+        }
+
+        .btn-load:hover {
+            background: #388e3c;
+        }
+
+        .order-section {
+            background: #fff3e0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .order-section h4 {
+            margin-bottom: 10px;
+            color: #ff9800;
+        }
+
+        @media (max-width: 768px) {
+            .form-row, .form-row-3 {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .summary-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>✂️ Wycinacz Pro</h1>
+            <p>Optymalizacja cięcia kształtowników stalowych z uwzględnieniem straty na cięcie</p>
+        </div>
+
+        <div class="card">
+            <form id="cutForm">
+                <!-- Numer zamówienia -->
+                <div class="order-section">
+                    <h4>📋 Numer zamówienia</h4>
+                    <div class="form-row">
+                        <input 
+                            type="text" 
+                            id="orderNumber" 
+                            placeholder="np. WYC-20260205-1234 (opcjonalne)"
+                        />
+                        <button type="button" class="btn btn-secondary" onclick="generateOrderNumber()">
+                            🎲 Generuj numer
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Długości do wycięcia (oddzielone przecinkami)</label>
+                    <textarea 
+                        id="cutsInput" 
+                        rows="3" 
+                        placeholder="np. 4500, 3000x2, 2500, 7000 (format: długość lub długość x ilość)"
+                        required
+                    ></textarea>
+                    <div class="help-text">
+                        Możesz użyć formatu "długość x ilość", np: 500x3, 1000x2, 750
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Profile materiałów (szybki wybór)</label>
+                    <div class="profile-selector" id="profileSelector">
+                        <button type="button" class="profile-btn" data-profile="custom">Customowy</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Dostępne długości sztang (oddzielone przecinkami)</label>
+                    <input 
+                        type="text" 
+                        id="stockLengths" 
+                        value="6000, 12100, 15100"
+                        placeholder="np. 6000, 12100, 15100"
+                        required
+                    />
+                    <div class="help-text">
+                        Długości dostępnych kształtowników w mm
+                    </div>
+                </div>
+
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label>Strata na cięcie - Kerf (mm)</label>
+                        <input 
+                            type="number" 
+                            id="kerf" 
+                            value="0" 
+                            min="0"
+                            max="20"
+                            step="0.5"
+                            placeholder="0"
+                        />
+                        <div class="help-text">
+                            Szerokość cięcia (piła, plasma, laser)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <button type="button" class="btn btn-secondary" style="width: 100%;" onclick="setKerf(3)">
+                            Piła (3mm)
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <button type="button" class="btn btn-secondary" style="width: 100%;" onclick="setKerf(5)">
+                            Plasma (5mm)
+                        </button>
+                    </div>
+                </div>
+
+                <div class="save-profile-section">
+                    <h4>💾 Zarządzanie profilami</h4>
+                    <div class="form-row">
+                        <input 
+                            type="text" 
+                            id="profileName" 
+                            placeholder="Nazwa profilu (np. Moja hala)"
+                        />
+                        <button type="button" class="btn btn-secondary" onclick="saveCurrentProfile()">
+                            Zapisz aktualny profil
+                        </button>
+                    </div>
+                    <div class="profile-list" id="customProfilesList"></div>
+                </div>
+
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary">🔍 Oblicz optymalizację</button>
+                    <button type="button" class="btn btn-secondary" onclick="resetForm()">🔄 Reset</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="error" class="alert alert-error" style="display: none;"></div>
+
+        <div id="results" class="results">
+            <div class="card">
+                <div class="summary-box">
+                    <h3>📊 Podsumowanie</h3>
+                    <div id="orderInfo" style="margin-bottom: 10px; font-size: 0.9rem;"></div>
+                    <div class="summary-stats">
+                        <div class="stat">
+                            <div class="stat-label">Użyto sztang</div>
+                            <div class="stat-value" id="totalStockUsed">-</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Łączna długość</div>
+                            <div class="stat-value" id="totalLength">-</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Całkowita strata</div>
+                            <div class="stat-value" id="totalWaste">-</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Efektywność</div>
+                            <div class="stat-value" id="efficiency">-</div>
+                        </div>
+                    </div>
+                    <div id="kerfInfo" style="margin-top: 15px; font-size: 0.9rem; display: none;">
+                        <strong>Strata na cięciu (kerf):</strong> <span id="totalKerfLoss">0</span> mm
+                    </div>
+                </div>
+
+                <h3 style="margin-bottom: 20px;">📋 Plan cięcia</h3>
+                <div id="plansList"></div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="copyToClipboard()">📋 Kopiuj</button>
+                    <button class="btn btn-secondary" onclick="exportPDF()">📄 PDF</button>
+                    <button class="btn btn-secondary" onclick="exportTXT()">💾 TXT</button>
+                    <button class="btn btn-secondary" onclick="exportExcel()">📊 Excel (z QR)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentResults = null;
+        let profiles = {};
+        let customProfiles = {};
+
+        // Generuj numer zamówienia
+        function generateOrderNumber() {
+            const date = new Date();
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+            const orderNum = `WYC-${year}${month}${day}-${random}`;
+            document.getElementById('orderNumber').value = orderNum;
+        }
+
+        // Załaduj profile z localStorage
+        function loadCustomProfiles() {
+            const saved = localStorage.getItem('customProfiles');
+            if (saved) {
+                customProfiles = JSON.parse(saved);
+                renderCustomProfiles();
+            }
+        }
+
+        // Renderuj zapisane profile
+        function renderCustomProfiles() {
+            const list = document.getElementById('customProfilesList');
+            if (Object.keys(customProfiles).length === 0) {
+                list.innerHTML = '<p style="color: #666; font-size: 0.9rem; margin-top: 10px;">Brak zapisanych profili</p>';
+                return;
+            }
+
+            list.innerHTML = '';
+            for (const [name, lengths] of Object.entries(customProfiles)) {
+                const item = document.createElement('div');
+                item.className = 'profile-item';
+                item.innerHTML = `
+                    <div>
+                        <div class="profile-item-name">${name}</div>
+                        <div class="profile-item-values">${lengths.join(', ')} mm</div>
+                    </div>
+                    <div class="profile-item-actions">
+                        <button class="btn btn-small btn-load" onclick="loadProfile('${name}')">Załaduj</button>
+                        <button class="btn btn-small btn-delete" onclick="deleteProfile('${name}')">Usuń</button>
+                    </div>
+                `;
+                list.appendChild(item);
+            }
+        }
+
+        // Zapisz aktualny profil
+        function saveCurrentProfile() {
+            const name = document.getElementById('profileName').value.trim();
+            if (!name) {
+                alert('Podaj nazwę profilu!');
+                return;
+            }
+
+            const stockLengthsInput = document.getElementById('stockLengths').value;
+            const lengths = stockLengthsInput.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n) && n > 0);
+
+            if (lengths.length === 0) {
+                alert('Podaj prawidłowe długości sztang!');
+                return;
+            }
+
+            customProfiles[name] = lengths;
+            localStorage.setItem('customProfiles', JSON.stringify(customProfiles));
+
+            document.getElementById('profileName').value = '';
+            renderCustomProfiles();
+            alert(`✅ Profil "${name}" zapisany!`);
+        }
+
+        // Załaduj profil
+        function loadProfile(name) {
+            const lengths = customProfiles[name];
+            if (lengths) {
+                document.getElementById('stockLengths').value = lengths.join(', ');
+                alert(`✅ Załadowano profil "${name}"`);
+            }
+        }
+
+        // Usuń profil
+        function deleteProfile(name) {
+            if (confirm(`Czy na pewno usunąć profil "${name}"?`)) {
+                delete customProfiles[name];
+                localStorage.setItem('customProfiles', JSON.stringify(customProfiles));
+                renderCustomProfiles();
+            }
+        }
+
+        // Załaduj domyślne profile z serwera
+        async function loadDefaultProfiles() {
+            try {
+                const response = await fetch('/api/profiles');
+                profiles = await response.json();
+                renderProfileButtons();
+            } catch (error) {
+                console.error('Błąd ładowania profili:', error);
+            }
+        }
+
+        // Renderuj przyciski profili
+        function renderProfileButtons() {
+            const selector = document.getElementById('profileSelector');
+            selector.innerHTML = '';
+
+            for (const [name, lengths] of Object.entries(profiles)) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'profile-btn';
+                btn.textContent = name;
+                btn.onclick = () => selectProfile(name, lengths);
+                selector.appendChild(btn);
+            }
+        }
+
+        // Wybierz profil
+        function selectProfile(name, lengths) {
+            document.querySelectorAll('.profile-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            if (lengths && lengths.length > 0) {
+                document.getElementById('stockLengths').value = lengths.join(', ');
+            }
+        }
+
+        // Ustaw kerf
+        function setKerf(value) {
+            document.getElementById('kerf').value = value;
+        }
+
+        // Formularz submit
+        document.getElementById('cutForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const cutsInput = document.getElementById('cutsInput').value;
+            const stockLengthsInput = document.getElementById('stockLengths').value;
+            const kerf = parseFloat(document.getElementById('kerf').value) || 0;
+            const orderNumber = document.getElementById('orderNumber').value.trim();
+
+            const stockLengths = stockLengthsInput.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n) && n > 0);
+
+            try {
+                const response = await fetch('/api/optimize', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        cutsInput,
+                        stockLengths,
+                        kerf,
+                        orderNumber
+                    })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Błąd obliczania');
+                }
+
+                currentResults = await response.json();
+                displayResults(currentResults);
+
+                document.getElementById('error').style.display = 'none';
+            } catch (error) {
+                showError(error.message);
+            }
+        });
+
+        // Wyświetl wyniki
+        function displayResults(data) {
+            // Informacje o zamówieniu
+            let orderInfoHtml = '';
+            if (data.orderNumber) {
+                orderInfoHtml += `<strong>Zamówienie:</strong> ${data.orderNumber}<br>`;
+            }
+            if (data.timestamp) {
+                const date = new Date(data.timestamp);
+                orderInfoHtml += `<strong>Data:</strong> ${date.toLocaleString('pl-PL')}`;
+            }
+            document.getElementById('orderInfo').innerHTML = orderInfoHtml;
+
+            document.getElementById('totalStockUsed').textContent = data.totalStockUsed;
+            document.getElementById('totalLength').textContent = `${data.totalLength} mm`;
+            document.getElementById('totalWaste').textContent = `${data.totalWaste} mm`;
+            document.getElementById('efficiency').textContent = `${data.efficiency}%`;
+
+            // Pokaż info o kerf jeśli > 0
+            if (data.kerf && data.kerf > 0) {
+                document.getElementById('kerfInfo').style.display = 'block';
+                document.getElementById('totalKerfLoss').textContent = data.totalKerfLoss || 0;
+            } else {
+                document.getElementById('kerfInfo').style.display = 'none';
+            }
+
+            const plansList = document.getElementById('plansList');
+            plansList.innerHTML = '';
+
+            data.plans.forEach((plan, index) => {
+                const usedLength = plan.cuts.reduce((sum, c) => sum + c, 0);
+                const wastePercent = ((plan.waste / plan.stockLength) * 100).toFixed(1);
+                const kerfLoss = plan.kerfLoss || 0;
+
+                const card = document.createElement('div');
+                card.className = 'plan-card';
+
+                let kerfBadge = '';
+                if (kerfLoss > 0) {
+                    kerfBadge = `<span class="kerf-badge">Kerf: ${kerfLoss}mm</span>`;
+                }
+
+                card.innerHTML = `
+                    <div class="plan-header">
+                        <div class="plan-title">
+                            Sztanga #${index + 1} (${plan.stockLength} mm)
+                            ${kerfBadge}
+                        </div>
+                        <div class="plan-waste">
+                            Strata: ${plan.waste} mm (${wastePercent}%)
+                        </div>
+                    </div>
+                    <div class="cuts-list">
+                        ${plan.cuts.map(cut => `<span class="cut-item">${cut} mm</span>`).join('')}
+                    </div>
+                    <div class="plan-details">
+                        Użyte: ${usedLength} mm${kerfLoss > 0 ? ` + kerf ${kerfLoss} mm` : ''} = ${usedLength + kerfLoss} mm | 
+                        Pozostało: ${plan.waste} mm
+                    </div>
+                `;
+
+                plansList.appendChild(card);
+            });
+
+            document.getElementById('results').classList.add('active');
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Pokaż błąd
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = '❌ ' + message;
+            errorDiv.style.display = 'block';
+            errorDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Reset formularza
+        function resetForm() {
+            document.getElementById('cutForm').reset();
+            document.getElementById('results').classList.remove('active');
+            document.getElementById('error').style.display = 'none';
+            currentResults = null;
+        }
+
+        // Kopiuj do schowka
+        function copyToClipboard() {
+            if (!currentResults) return;
+
+            let text = 'Wyniki optymalizacji cięcia\n';
+            text += '============================\n\n';
+
+            if (currentResults.orderNumber) {
+                text += `Zamówienie: ${currentResults.orderNumber}\n`;
+            }
+            if (currentResults.timestamp) {
+                const date = new Date(currentResults.timestamp);
+                text += `Data: ${date.toLocaleString('pl-PL')}\n`;
+            }
+            text += '\n';
+
+            if (currentResults.kerf > 0) {
+                text += `Kerf: ${currentResults.kerf} mm\n\n`;
+            }
+
+            currentResults.plans.forEach((plan, index) => {
+                const usedLength = plan.cuts.reduce((sum, c) => sum + c, 0);
+                const kerfLoss = plan.kerfLoss || 0;
+                text += `Sztanga #${index + 1} (${plan.stockLength} mm): ${plan.cuts.join(', ')} mm\n`;
+                text += `Użyte: ${usedLength} mm`;
+                if (kerfLoss > 0) text += ` + kerf ${kerfLoss} mm`;
+                text += ` | Strata: ${plan.waste} mm\n\n`;
+            });
+
+            text += currentResults.summary;
+
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ Skopiowano do schowka!');
+            });
+        }
+
+        // Eksport PDF
+        async function exportPDF() {
+            if (!currentResults) return;
+
+            try {
+                const response = await fetch('/api/export/pdf', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        plans: currentResults.plans,
+                        summary: currentResults.summary,
+                        stockUsageSummary: currentResults.stockUsageSummary,
+                        kerf: currentResults.kerf,
+                        orderNumber: currentResults.orderNumber,
+                        timestamp: currentResults.timestamp
+                    })
+                });
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `wycinacz_${currentResults.orderNumber || 'raport'}.pdf`;
+                a.click();
+            } catch (error) {
+                alert('❌ Błąd eksportu PDF');
+            }
+        }
+
+        // Eksport TXT
+        async function exportTXT() {
+            if (!currentResults) return;
+
+            try {
+                const response = await fetch('/api/export/txt', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        plans: currentResults.plans,
+                        summary: currentResults.summary,
+                        stockUsageSummary: currentResults.stockUsageSummary,
+                        kerf: currentResults.kerf,
+                        orderNumber: currentResults.orderNumber,
+                        timestamp: currentResults.timestamp
+                    })
+                });
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `wycinacz_${currentResults.orderNumber || 'raport'}.txt`;
+                a.click();
+            } catch (error) {
+                alert('❌ Błąd eksportu TXT');
+            }
+        }
+
+        // Eksport Excel
+        async function exportExcel() {
+            if (!currentResults) return;
+
+            try {
+                const response = await fetch('/api/export/excel', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        plans: currentResults.plans,
+                        summary: currentResults.summary,
+                        stockUsageSummary: currentResults.stockUsageSummary,
+                        kerf: currentResults.kerf,
+                        orderNumber: currentResults.orderNumber,
+                        timestamp: currentResults.timestamp
+                    })
+                });
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `wycinacz_${currentResults.orderNumber || 'raport'}.xlsx`;
+                a.click();
+            } catch (error) {
+                alert('❌ Błąd eksportu Excel');
+            }
+        }
+
+        // Inicjalizacja
+        loadDefaultProfiles();
+        loadCustomProfiles();
+    </script>
+</body>
+</html>
