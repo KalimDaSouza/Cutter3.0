@@ -185,9 +185,7 @@ function calculateSummary(plans, kerf = 0) {
     };
 }
 
-// API Endpoints
-
-// POST /api/optimize - Optymalizacja cięcia
+// POST /api/optimize
 app.post('/api/optimize', (req, res) => {
     try {
         let { requiredCuts, stockLengths, cutsInput, kerf, orderNumber } = req.body;
@@ -210,7 +208,6 @@ app.post('/api/optimize', (req, res) => {
             return res.status(400).json({ error: 'Brak dostepnych dlugosci sztang' });
         }
 
-        // Generuj numer zamówienia jeśli nie podano
         const finalOrderNumber = orderNumber || generateOrderNumber();
         const timestamp = new Date().toISOString();
 
@@ -229,7 +226,7 @@ app.post('/api/optimize', (req, res) => {
     }
 });
 
-// POST /api/export/excel - Eksport do Excel z QR kodami
+// POST /api/export/excel - Excel z QR
 app.post('/api/export/excel', async (req, res) => {
     try {
         const { plans, summary, stockUsageSummary, kerf, orderNumber, timestamp } = req.body;
@@ -240,7 +237,6 @@ app.post('/api/export/excel', async (req, res) => {
 
         const worksheet = workbook.addWorksheet('Plan Cięcia');
 
-        // Nagłówek z danymi zamówienia
         worksheet.mergeCells('A1:F1');
         worksheet.getCell('A1').value = 'RAPORT OPTYMALIZACJI CIĘCIA';
         worksheet.getCell('A1').font = { bold: true, size: 16 };
@@ -261,10 +257,8 @@ app.post('/api/export/excel', async (req, res) => {
             worksheet.getCell('A4').font = { italic: true, color: { argb: 'FFFF6600' } };
         }
 
-        // Pusta linia
         worksheet.addRow([]);
 
-        // Nagłówki tabeli
         const headerRow = worksheet.addRow([
             '# Sztangi',
             'Długość sztangi (mm)',
@@ -282,14 +276,12 @@ app.post('/api/export/excel', async (req, res) => {
         };
         headerRow.alignment = { horizontal: 'center', vertical: 'middle' };
 
-        // Dane dla każdej sztangi
         for (let i = 0; i < plans.length; i++) {
             const plan = plans[i];
             const usedLength = plan.cuts.reduce((sum, c) => sum + c, 0);
             const kerfLoss = plan.kerfLoss || 0;
             const totalUsed = usedLength + kerfLoss;
 
-            // Generuj dane QR kodu
             const qrData = JSON.stringify({
                 order: orderNumber || 'BRAK',
                 bar: i + 1,
@@ -298,7 +290,6 @@ app.post('/api/export/excel', async (req, res) => {
                 waste: plan.waste
             });
 
-            // Generuj QR kod jako base64
             const qrCodeDataUrl = await QRCode.toDataURL(qrData, {
                 width: 150,
                 margin: 1
@@ -310,10 +301,9 @@ app.post('/api/export/excel', async (req, res) => {
                 plan.cuts.join(', '),
                 `${usedLength}${kerfLoss > 0 ? ' + ' + kerfLoss : ''}`,
                 plan.waste,
-                '' // Tutaj będzie QR kod
+                ''
             ]);
 
-            // Dodaj QR kod jako obrazek
             const imageId = workbook.addImage({
                 base64: qrCodeDataUrl,
                 extension: 'png'
@@ -324,12 +314,10 @@ app.post('/api/export/excel', async (req, res) => {
                 ext: { width: 80, height: 80 }
             });
 
-            // Zwiększ wysokość wiersza dla QR kodu
             row.height = 60;
             row.alignment = { vertical: 'middle' };
         }
 
-        // Podsumowanie
         worksheet.addRow([]);
         const summaryRow = worksheet.addRow(['PODSUMOWANIE']);
         summaryRow.font = { bold: true, size: 12 };
@@ -341,7 +329,6 @@ app.post('/api/export/excel', async (req, res) => {
             worksheet.addRow(['Strata na kerf:', `${plans.reduce((sum, p) => sum + (p.kerfLoss || 0), 0)} mm`]);
         }
 
-        // Formatowanie kolumn
         worksheet.columns = [
             { width: 12 },
             { width: 20 },
@@ -351,7 +338,6 @@ app.post('/api/export/excel', async (req, res) => {
             { width: 15 }
         ];
 
-        // Ustaw border dla całej tabeli
         worksheet.eachRow((row, rowNumber) => {
             if (rowNumber > 5) {
                 row.eachCell((cell) => {
@@ -365,7 +351,6 @@ app.post('/api/export/excel', async (req, res) => {
             }
         });
 
-        // Wyślij plik
         res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         res.setHeader('Content-Disposition', `attachment; filename=wycinacz_${orderNumber || 'raport'}.xlsx`);
 
@@ -378,7 +363,7 @@ app.post('/api/export/excel', async (req, res) => {
     }
 });
 
-// POST /api/export/pdf - Eksport do PDF z QR kodami
+// POST /api/export/pdf - PDF z QR
 app.post('/api/export/pdf', async (req, res) => {
     try {
         const { plans, summary, stockUsageSummary, kerf, orderNumber, timestamp } = req.body;
@@ -389,13 +374,11 @@ app.post('/api/export/pdf', async (req, res) => {
 
         doc.pipe(res);
 
-        // Nagłówek
         doc.fontSize(18).text('Wyniki optymalizacji ciecia', { underline: true });
         doc.moveDown(0.5);
 
-        // Informacje o zamówieniu
         if (orderNumber) {
-            doc.fontSize(12).text(`Numer zamowienia: ${orderNumber}`, { bold: true });
+            doc.fontSize(12).text(`Numer zamowienia: ${orderNumber}`);
         }
 
         if (timestamp) {
@@ -410,14 +393,12 @@ app.post('/api/export/pdf', async (req, res) => {
             doc.moveDown(0.5);
         }
 
-        // Plan cięcia z QR kodami
         for (let i = 0; i < plans.length; i++) {
             const plan = plans[i];
             const usedLength = plan.cuts.reduce((sum, c) => sum + c, 0);
             const kerfLoss = plan.kerfLoss || 0;
             const wastePercent = ((plan.waste / plan.stockLength) * 100).toFixed(1);
 
-            // Generuj QR kod
             const qrData = JSON.stringify({
                 order: orderNumber || 'BRAK',
                 bar: i + 1,
@@ -431,7 +412,6 @@ app.post('/api/export/pdf', async (req, res) => {
                 margin: 1
             });
 
-            // Zapisz pozycję Y przed dodaniem tekstu
             const startY = doc.y;
 
             doc.fontSize(12).text(
@@ -446,7 +426,6 @@ app.post('/api/export/pdf', async (req, res) => {
 
             doc.fontSize(10).text(detailText);
 
-            // Dodaj QR kod obok tekstu
             doc.image(qrCodeBuffer, doc.page.width - 120, startY, {
                 width: 80,
                 height: 80
@@ -456,7 +435,7 @@ app.post('/api/export/pdf', async (req, res) => {
         }
 
         doc.moveDown();
-        doc.fontSize(14).text(summary, { bold: true });
+        doc.fontSize(14).text(summary);
 
         if (stockUsageSummary) {
             doc.moveDown(0.5);
@@ -470,7 +449,7 @@ app.post('/api/export/pdf', async (req, res) => {
     }
 });
 
-// POST /api/export/txt - Eksport do TXT
+// POST /api/export/txt
 app.post('/api/export/txt', (req, res) => {
     try {
         const { plans, summary, stockUsageSummary, kerf, orderNumber, timestamp } = req.body;
@@ -522,7 +501,7 @@ app.post('/api/export/txt', (req, res) => {
     }
 });
 
-// GET /api/profiles - Pobierz zapisane profile
+// GET /api/profiles
 app.get('/api/profiles', (req, res) => {
     const defaultProfiles = {
         "Stal konstrukcyjna": [6000, 12100, 15100],
@@ -540,12 +519,11 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Health check endpoint
+// Health check
 app.get('/health', (req, res) => {
     res.json({ status: 'ok' });
 });
 
-// Start serwera
 app.listen(PORT, () => {
     console.log(`🔧 Wycinacz uruchomiony na porcie ${PORT}`);
     console.log(`📍 http://localhost:${PORT}`);
