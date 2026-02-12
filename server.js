@@ -1,8 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const PDFDocument = require('pdfkit');
-const ExcelJS = require('exceljs');
-const QRCode = require('qrcode');
 const path = require('path');
 
 const app = express();
@@ -13,70 +11,68 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
-// Generuj unikalny numer zamówienia
-function generateOrderNumber() {
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
-    return `WYC-${year}${month}${day}-${random}`;
-}
-
 // Parsuj input z formatem "długość x ilość" lub zwykłymi liczbami
 function parseInput(input) {
     const cuts = [];
     const parts = input.split(',');
-
+    
     for (const part of parts) {
         const trimmed = part.trim();
         if (!trimmed) continue;
-
+        
+        // Sprawdź format "długość x ilość"
         if (trimmed.includes('x') || trimmed.includes('X')) {
             const [lengthStr, quantityStr] = trimmed.split(/[xX]/).map(s => s.trim());
             const length = parseInt(lengthStr);
             const quantity = parseInt(quantityStr);
-
+            
             if (!isNaN(length) && !isNaN(quantity) && length > 0 && quantity > 0) {
                 for (let i = 0; i < quantity; i++) {
                     cuts.push(length);
                 }
             }
         } else {
+            // Zwykła liczba
             const length = parseInt(trimmed);
             if (!isNaN(length) && length > 0) {
                 cuts.push(length);
             }
         }
     }
-
+    
     return cuts;
 }
 
-// Algorytm optymalizacji - Best Fit Decreasing z look-ahead + KERF
+// Algorytm optymalizacji - Best Fit Decreasing z look-ahead (ulepszona wersja)
 function optimizeCuts(requiredCuts, stockLengths, kerf = 0) {
+    // Sortuj cięcia malejąco
     const sortedCuts = [...requiredCuts].sort((a, b) => b - a);
     const result = [];
 
+    // Zlicz ile jest identycznych długości (dla look-ahead)
     const cutCounts = {};
     sortedCuts.forEach(cut => {
         cutCounts[cut] = (cutCounts[cut] || 0) + 1;
     });
+
+    // Oblicz zajętą długość z uwzględnieniem kerf (naddatek między cięciami)
+    function usedWithKerf(cuts) {
+        if (cuts.length === 0) return 0;
+        return cuts.reduce((sum, c) => sum + c, 0) + (cuts.length - 1) * kerf;
+    }
 
     for (const cut of sortedCuts) {
         let placed = false;
         let bestPlanIndex = -1;
         let bestWaste = Infinity;
 
+        // Znajdź najlepsze dopasowanie w istniejących sztangach
         for (let i = 0; i < result.length; i++) {
             const plan = result[i];
-            const usedLength = plan.cuts.reduce((sum, c) => sum + c, 0) + (plan.cuts.length * kerf);
-            const remaining = plan.stockLength - usedLength;
+            const remaining = plan.stockLength - usedWithKerf(plan.cuts);
 
-            const neededSpace = cut + (plan.cuts.length > 0 ? kerf : 0);
-
-            if (remaining >= neededSpace) {
-                const wasteAfter = remaining - neededSpace;
+            if (remaining >= cut + kerf) {
+                const wasteAfter = remaining - cut - kerf;
                 if (wasteAfter < bestWaste) {
                     bestWaste = wasteAfter;
                     bestPlanIndex = i;
@@ -90,8 +86,10 @@ function optimizeCuts(requiredCuts, stockLengths, kerf = 0) {
             cutCounts[cut]--;
         }
 
+        // Użyj nowej sztangi - wybierz optymalną długość z look-ahead
         if (!placed) {
             const suitableStocks = stockLengths.filter(s => s >= cut);
+
             if (suitableStocks.length === 0) {
                 throw new Error(`Brak ksztalownika o dlugosci >= ${cut} mm`);
             }
@@ -99,15 +97,21 @@ function optimizeCuts(requiredCuts, stockLengths, kerf = 0) {
             let bestStock = suitableStocks[0];
             let bestScore = -1;
 
+            // Dla każdej możliwej długości sztangi oblicz "score"
             for (const stock of suitableStocks) {
-                const fitsCount = Math.floor(stock / (cut + kerf));
+                // Sprawdź ile takich samych cięć zmieści się na tej sztandze (kerf między cięciami)
+                const fitsCount = Math.floor((stock + kerf) / (cut + kerf));
                 const remainingOfThisCut = cutCounts[cut] || 0;
                 const willUse = Math.min(fitsCount, remainingOfThisCut);
 
-                const totalUsed = willUse * (cut + kerf) - kerf;
-                const waste = stock - totalUsed;
-                const wastePerCut = willUse > 0 ? waste / willUse : stock;
+                if (willUse === 0) continue;
 
+                // Score: im więcej zmieści, tym lepiej
+                const totalUsed = willUse * cut + (willUse - 1) * kerf;
+                const waste = stock - totalUsed;
+                const wastePerCut = waste / willUse;
+
+                // Score: liczba cięć * 10000 - strata na cięcie (preferuj więcej cięć, potem mniejszą stratę)
                 const score = willUse * 10000 - wastePerCut;
 
                 if (score > bestScore) {
@@ -120,34 +124,28 @@ function optimizeCuts(requiredCuts, stockLengths, kerf = 0) {
                 stockLength: bestStock,
                 cuts: [cut]
             });
+
             cutCounts[cut]--;
             placed = true;
         }
     }
 
-    return result.map(plan => {
-        const usedLength = plan.cuts.reduce((sum, c) => sum + c, 0);
-        const kerfLoss = plan.cuts.length > 0 ? (plan.cuts.length - 1) * kerf : 0;
-        const totalUsed = usedLength + kerfLoss;
-
-        return {
-            ...plan,
-            usedLength: totalUsed,
-            kerfLoss: kerfLoss,
-            waste: plan.stockLength - totalUsed
-        };
-    });
+    // Dodaj obliczenia waste (z kerf)
+    return result.map(plan => ({
+        ...plan,
+        waste: plan.stockLength - usedWithKerf(plan.cuts)
+    }));
 }
 
 // Oblicz podsumowanie
-function calculateSummary(plans, kerf = 0) {
+function calculateSummary(plans) {
     const totalStockUsed = plans.length;
     const totalLength = plans.reduce((sum, p) => sum + p.stockLength, 0);
     const totalWaste = plans.reduce((sum, p) => sum + p.waste, 0);
-    const totalKerfLoss = plans.reduce((sum, p) => sum + (p.kerfLoss || 0), 0);
     const totalUsed = totalLength - totalWaste;
     const efficiency = totalLength > 0 ? ((totalUsed / totalLength) * 100).toFixed(2) : 0;
-
+    
+    // Zlicz użycie każdej długości sztangi
     const stockUsage = {};
     plans.forEach(plan => {
         const length = plan.stockLength;
@@ -157,7 +155,8 @@ function calculateSummary(plans, kerf = 0) {
         stockUsage[length].count++;
         stockUsage[length].totalWaste += plan.waste;
     });
-
+    
+    // Sortuj według długości malejąco
     const sortedStockUsage = Object.entries(stockUsage)
         .sort(([a], [b]) => parseInt(b) - parseInt(a))
         .map(([length, data]) => ({
@@ -165,37 +164,34 @@ function calculateSummary(plans, kerf = 0) {
             count: data.count,
             totalWaste: data.totalWaste
         }));
-
+    
+    // Generuj tekst podsumowania użycia sztang
     const stockUsageText = sortedStockUsage
         .map(item => `${item.count}x ${item.length}mm (strata: ${item.totalWaste}mm)`)
         .join(', ');
-
-    const kerfText = kerf > 0 ? ` | Strata na ciecie (kerf): ${totalKerfLoss}mm` : '';
-
+    
     return {
         totalStockUsed,
         totalLength,
         totalWaste,
-        totalKerfLoss,
         totalUsed,
         efficiency,
         stockUsage: sortedStockUsage,
-        summary: `Uzyto sztang: ${totalStockUsed} | Laczna dlugosc: ${totalLength}mm | Calkowita strata: ${totalWaste}mm${kerfText} | Efektywnosc: ${efficiency}%`,
+        summary: `Uzyto sztang: ${totalStockUsed} | Laczna dlugosc: ${totalLength} mm | Calkowita strata: ${totalWaste} mm | Efektywnosc: ${efficiency}%`,
         stockUsageSummary: `Uzycie sztang: ${stockUsageText}`
     };
 }
 
-// POST /api/optimize
+// API Endpoints
+
+// POST /api/optimize - Optymalizacja cięcia
 app.post('/api/optimize', (req, res) => {
     try {
-        let { requiredCuts, stockLengths, cutsInput, kerf, orderNumber } = req.body;
+        let { requiredCuts, stockLengths, cutsInput, kerf, contractNumber, profileType } = req.body;
 
-        const kerfValue = kerf !== undefined ? parseFloat(kerf) : 0;
+        const kerfValue = parseFloat(kerf) || 0;
 
-        if (isNaN(kerfValue) || kerfValue < 0) {
-            return res.status(400).json({ error: 'Nieprawidlowa wartosc kerf' });
-        }
-
+        // Jeśli przyszedł cutsInput (string), sparsuj go
         if (cutsInput && typeof cutsInput === 'string') {
             requiredCuts = parseInput(cutsInput);
         }
@@ -208,310 +204,98 @@ app.post('/api/optimize', (req, res) => {
             return res.status(400).json({ error: 'Brak dostepnych dlugosci sztang' });
         }
 
-        const finalOrderNumber = orderNumber || generateOrderNumber();
-        const timestamp = new Date().toISOString();
-
         const plans = optimizeCuts(requiredCuts, stockLengths, kerfValue);
-        const summary = calculateSummary(plans, kerfValue);
+        const summary = calculateSummary(plans);
 
         res.json({
             plans,
-            kerf: kerfValue,
-            orderNumber: finalOrderNumber,
-            timestamp,
-            ...summary
+            ...summary,
+            contractNumber: contractNumber || '',
+            profileType: profileType || '',
+            kerf: kerfValue
         });
+
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 });
 
-// POST /api/export/excel - Excel z QR
-app.post('/api/export/excel', async (req, res) => {
+// POST /api/export/pdf - Eksport do PDF
+app.post('/api/export/pdf', (req, res) => {
     try {
-        const { plans, summary, stockUsageSummary, kerf, orderNumber, timestamp } = req.body;
+        const { plans, contractNumber, profileType } = req.body;
 
-        const workbook = new ExcelJS.Workbook();
-        workbook.creator = 'Wycinacz Pro';
-        workbook.created = new Date();
-
-        const worksheet = workbook.addWorksheet('Plan Cięcia');
-
-        worksheet.mergeCells('A1:F1');
-        worksheet.getCell('A1').value = 'RAPORT OPTYMALIZACJI CIĘCIA';
-        worksheet.getCell('A1').font = { bold: true, size: 16 };
-        worksheet.getCell('A1').alignment = { horizontal: 'center' };
-
-        worksheet.mergeCells('A2:F2');
-        worksheet.getCell('A2').value = `Numer zamówienia: ${orderNumber || 'BRAK'}`;
-        worksheet.getCell('A2').font = { bold: true, size: 12 };
-
-        worksheet.mergeCells('A3:F3');
-        const date = timestamp ? new Date(timestamp) : new Date();
-        worksheet.getCell('A3').value = `Data: ${date.toLocaleString('pl-PL')}`;
-        worksheet.getCell('A3').font = { size: 11 };
-
-        if (kerf && kerf > 0) {
-            worksheet.mergeCells('A4:F4');
-            worksheet.getCell('A4').value = `Strata na cięciu (kerf): ${kerf} mm`;
-            worksheet.getCell('A4').font = { italic: true, color: { argb: 'FFFF6600' } };
-        }
-
-        worksheet.addRow([]);
-
-        const headerRow = worksheet.addRow([
-            '# Sztangi',
-            'Długość sztangi (mm)',
-            'Cięcia (mm)',
-            'Użyte (mm)',
-            'Strata (mm)',
-            'Kod QR'
-        ]);
-
-        headerRow.font = { bold: true, color: { argb: 'FFFFFFFF' } };
-        headerRow.fill = {
-            type: 'pattern',
-            pattern: 'solid',
-            fgColor: { argb: 'FF667eea' }
-        };
-        headerRow.alignment = { horizontal: 'center', vertical: 'middle' };
-
-        for (let i = 0; i < plans.length; i++) {
-            const plan = plans[i];
-            const usedLength = plan.cuts.reduce((sum, c) => sum + c, 0);
-            const kerfLoss = plan.kerfLoss || 0;
-            const totalUsed = usedLength + kerfLoss;
-
-            const qrData = JSON.stringify({
-                order: orderNumber || 'BRAK',
-                bar: i + 1,
-                length: plan.stockLength,
-                cuts: plan.cuts,
-                waste: plan.waste
-            });
-
-            const qrCodeDataUrl = await QRCode.toDataURL(qrData, {
-                width: 150,
-                margin: 1
-            });
-
-            const row = worksheet.addRow([
-                i + 1,
-                plan.stockLength,
-                plan.cuts.join(', '),
-                `${usedLength}${kerfLoss > 0 ? ' + ' + kerfLoss : ''}`,
-                plan.waste,
-                ''
-            ]);
-
-            const imageId = workbook.addImage({
-                base64: qrCodeDataUrl,
-                extension: 'png'
-            });
-
-            worksheet.addImage(imageId, {
-                tl: { col: 5, row: row.number - 1 },
-                ext: { width: 80, height: 80 }
-            });
-
-            row.height = 60;
-            row.alignment = { vertical: 'middle' };
-        }
-
-        worksheet.addRow([]);
-        const summaryRow = worksheet.addRow(['PODSUMOWANIE']);
-        summaryRow.font = { bold: true, size: 12 };
-        worksheet.mergeCells(`A${summaryRow.number}:F${summaryRow.number}`);
-
-        worksheet.addRow(['Użyto sztang:', plans.length]);
-        worksheet.addRow(['Całkowita strata:', `${plans.reduce((sum, p) => sum + p.waste, 0)} mm`]);
-        if (kerf > 0) {
-            worksheet.addRow(['Strata na kerf:', `${plans.reduce((sum, p) => sum + (p.kerfLoss || 0), 0)} mm`]);
-        }
-
-        worksheet.columns = [
-            { width: 12 },
-            { width: 20 },
-            { width: 35 },
-            { width: 18 },
-            { width: 15 },
-            { width: 15 }
-        ];
-
-        worksheet.eachRow((row, rowNumber) => {
-            if (rowNumber > 5) {
-                row.eachCell((cell) => {
-                    cell.border = {
-                        top: { style: 'thin' },
-                        left: { style: 'thin' },
-                        bottom: { style: 'thin' },
-                        right: { style: 'thin' }
-                    };
-                });
-            }
-        });
-
-        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        res.setHeader('Content-Disposition', `attachment; filename=wycinacz_${orderNumber || 'raport'}.xlsx`);
-
-        await workbook.xlsx.write(res);
-        res.end();
-
-    } catch (error) {
-        console.error('Błąd eksportu Excel:', error);
-        res.status(500).json({ error: 'Blad generowania Excel' });
-    }
-});
-
-// POST /api/export/pdf - PDF z QR
-app.post('/api/export/pdf', async (req, res) => {
-    try {
-        const { plans, summary, stockUsageSummary, kerf, orderNumber, timestamp } = req.body;
         const doc = new PDFDocument();
 
-        res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', `attachment; filename=wycinacz_${orderNumber || 'raport'}.pdf`);
+        // Buduj nazwę pliku z kontraktu i profilu
+        let filename = 'wycinacz';
+        if (contractNumber) filename += `_${contractNumber}`;
+        if (profileType) filename += `_${profileType}`;
+        filename += '.pdf';
+        // Usuń znaki niedozwolone w nazwie pliku
+        filename = filename.replace(/[^a-zA-Z0-9._\-]/g, '_');
 
+        // Ustaw nagłówki
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
+
+        // Pipe PDF do response
         doc.pipe(res);
 
-        doc.fontSize(18).text('Wyniki optymalizacji ciecia', { underline: true });
-        doc.moveDown(0.5);
-
-        if (orderNumber) {
-            doc.fontSize(12).text(`Numer zamowienia: ${orderNumber}`);
-        }
-
-        if (timestamp) {
-            const date = new Date(timestamp);
-            doc.fontSize(10).text(`Data: ${date.toLocaleString('pl-PL')}`);
-        }
-
+        // Tytul
+        let title = 'Wyniki optymalizacji ciecia';
+        if (contractNumber) title += ` | Kontrakt: ${contractNumber}`;
+        if (profileType) title += ` | Profil: ${profileType}`;
+        doc.fontSize(16).text(title, { underline: true });
         doc.moveDown();
 
-        if (kerf && kerf > 0) {
-            doc.fontSize(10).text(`Strata na ciecie (kerf): ${kerf} mm`, { color: 'gray' });
-            doc.moveDown(0.5);
-        }
-
-        for (let i = 0; i < plans.length; i++) {
-            const plan = plans[i];
-            const usedLength = plan.cuts.reduce((sum, c) => sum + c, 0);
-            const kerfLoss = plan.kerfLoss || 0;
-            const wastePercent = ((plan.waste / plan.stockLength) * 100).toFixed(1);
-
-            const qrData = JSON.stringify({
-                order: orderNumber || 'BRAK',
-                bar: i + 1,
-                length: plan.stockLength,
-                cuts: plan.cuts,
-                waste: plan.waste
-            });
-
-            const qrCodeBuffer = await QRCode.toBuffer(qrData, {
-                width: 100,
-                margin: 1
-            });
-
-            const startY = doc.y;
-
+        // Tylko podział - bez statystyk waste/efficiency
+        plans.forEach((plan, index) => {
             doc.fontSize(12).text(
-                `Sztanga #${i + 1} (${plan.stockLength}mm): ${plan.cuts.join(', ')}mm`
+                `${plan.stockLength} mm => ${plan.cuts.join(', ')} mm`
             );
+            doc.moveDown(0.3);
+        });
 
-            let detailText = ` Uzyte: ${usedLength}mm`;
-            if (kerfLoss > 0) {
-                detailText += ` + kerf: ${kerfLoss}mm`;
-            }
-            detailText += ` | Strata: ${plan.waste}mm (${wastePercent}%)`;
-
-            doc.fontSize(10).text(detailText);
-
-            doc.image(qrCodeBuffer, doc.page.width - 120, startY, {
-                width: 80,
-                height: 80
-            });
-
-            doc.moveDown(0.5);
-        }
-
-        doc.moveDown();
-        doc.fontSize(14).text(summary);
-
-        if (stockUsageSummary) {
-            doc.moveDown(0.5);
-            doc.fontSize(12).text(stockUsageSummary);
-        }
-
+        // Zakończ dokument
         doc.end();
+
     } catch (error) {
-        console.error('Błąd eksportu PDF:', error);
         res.status(500).json({ error: 'Blad generowania PDF' });
     }
 });
 
-// POST /api/export/txt
+// POST /api/export/txt - Eksport do TXT
 app.post('/api/export/txt', (req, res) => {
     try {
-        const { plans, summary, stockUsageSummary, kerf, orderNumber, timestamp } = req.body;
+        const { plans, contractNumber, profileType } = req.body;
 
-        let text = 'Wyniki optymalizacji ciecia\n';
-        text += '============================\n\n';
+        // Buduj nazwę pliku z kontraktu i profilu
+        let filename = 'wycinacz';
+        if (contractNumber) filename += `_${contractNumber}`;
+        if (profileType) filename += `_${profileType}`;
+        filename += '.txt';
+        filename = filename.replace(/[^a-zA-Z0-9._\-]/g, '_');
 
-        if (orderNumber) {
-            text += `Numer zamowienia: ${orderNumber}\n`;
-        }
+        let title = 'Wyniki optymalizacji ciecia';
+        if (contractNumber) title += ` | Kontrakt: ${contractNumber}`;
+        if (profileType) title += ` | Profil: ${profileType}`;
 
-        if (timestamp) {
-            const date = new Date(timestamp);
-            text += `Data: ${date.toLocaleString('pl-PL')}\n`;
-        }
+        let text = title + '\n';
+        text += '='.repeat(title.length) + '\n\n';
 
-        text += '\n';
-
-        if (kerf && kerf > 0) {
-            text += `Strata na ciecie (kerf): ${kerf} mm\n\n`;
-        }
-
+        // Tylko podział - bez statystyk waste/efficiency
         plans.forEach((plan, index) => {
-            const usedLength = plan.cuts.reduce((sum, c) => sum + c, 0);
-            const kerfLoss = plan.kerfLoss || 0;
-            const wastePercent = ((plan.waste / plan.stockLength) * 100).toFixed(1);
-
-            text += `Sztanga #${index + 1} (${plan.stockLength}mm): ${plan.cuts.join(', ')}mm\n`;
-
-            let detailText = ` Uzyte: ${usedLength}mm`;
-            if (kerfLoss > 0) {
-                detailText += ` + kerf: ${kerfLoss}mm`;
-            }
-            detailText += ` | Strata: ${plan.waste}mm (${wastePercent}%)\n\n`;
-            text += detailText;
+            text += `${plan.stockLength} mm => ${plan.cuts.join(', ')} mm\n`;
         });
 
-        text += `${summary}\n`;
-
-        if (stockUsageSummary) {
-            text += `${stockUsageSummary}\n`;
-        }
-
         res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-        res.setHeader('Content-Disposition', `attachment; filename=wycinacz_${orderNumber || 'raport'}.txt`);
+        res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
         res.send(text);
+
     } catch (error) {
         res.status(500).json({ error: 'Blad generowania TXT' });
     }
-});
-
-// GET /api/profiles
-app.get('/api/profiles', (req, res) => {
-    const defaultProfiles = {
-        "Stal konstrukcyjna": [6000, 12100, 15100],
-        "Profil aluminiowy": [3000, 6000, 7000],
-        "Rura stalowa": [6000, 12000],
-        "Pret okragly": [3000, 6000, 9000],
-        "Customowy": []
-    };
-
-    res.json(defaultProfiles);
 });
 
 // GET / - Strona główna
@@ -519,11 +303,12 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Health check
+// Health check endpoint
 app.get('/health', (req, res) => {
     res.json({ status: 'ok' });
 });
 
+// Start serwera
 app.listen(PORT, () => {
     console.log(`🔧 Wycinacz uruchomiony na porcie ${PORT}`);
     console.log(`📍 http://localhost:${PORT}`);
