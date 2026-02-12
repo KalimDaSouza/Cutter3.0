@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wycinacz Pro - Optymalizacja Cięcia</title>
+    <title>Wycinacz Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,360 +13,553 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Share Tech Mono', 'Consolas', monospace;
+            background: #d3d3d3;
             min-height: 100vh;
             padding: 20px;
         }
 
+        ::selection {
+            background: #555;
+            color: #fff;
+        }
+
         .container {
-            max-width: 1200px;
+            max-width: 960px;
             margin: 0 auto;
+            background: #333;
+            border: 2px solid #555;
+            overflow: hidden;
         }
 
+        /* === HEADER === */
         .header {
+            background: #3a3a3a;
+            padding: 22px 30px 18px;
             text-align: center;
-            color: white;
-            margin-bottom: 30px;
+            border-bottom: 2px solid #555;
         }
 
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        h1 {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 22px;
+            font-weight: 400;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #e0e0e0;
+            margin-bottom: 16px;
         }
 
-        .header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
+        h1 .accent {
+            color: #c75050;
         }
 
-        .card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .form-row-3 {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 15px;
-        }
-
-        .help-text {
-            font-size: 0.85rem;
-            color: #666;
-            margin-top: 5px;
-        }
-
-        .btn {
-            padding: 12px 30px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: inline-block;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-secondary {
-            background: #f5f5f5;
-            color: #333;
-        }
-
-        .btn-secondary:hover {
-            background: #e0e0e0;
-        }
-
-        .btn-group {
+        .header-inputs {
             display: flex;
-            gap: 10px;
+            justify-content: center;
+            gap: 14px;
             flex-wrap: wrap;
         }
 
-        .results {
-            display: none;
+        .header-field {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
         }
 
-        .results.active {
-            display: block;
+        .header-field label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #c7b84e;
+            margin-bottom: 3px;
         }
 
-        .summary-box {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
+        .header-field input,
+        .header-field select {
+            padding: 6px 12px;
+            border: 2px solid #c75050;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 13px;
+            background: #d3d3d3;
+            color: #333;
+            width: 200px;
+            transition: border-color 0.2s;
+        }
+
+        .header-field input:focus,
+        .header-field select:focus {
+            outline: none;
+            border-color: #6b8db5;
+        }
+
+        .header-field input::placeholder {
+            color: #888;
+        }
+
+        .header-field select option {
+            background: #d3d3d3;
+            color: #333;
+        }
+
+        /* === MAIN CONTENT === */
+        .main-content {
+            padding: 24px 30px;
+        }
+
+        .input-area {
+            display: grid;
+            grid-template-columns: 100px 1fr 220px;
+            gap: 14px;
             margin-bottom: 20px;
         }
 
-        .summary-box h3 {
-            margin-bottom: 10px;
+        .input-column {
+            display: flex;
+            flex-direction: column;
         }
 
-        .summary-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .stat {
-            background: rgba(255,255,255,0.2);
-            padding: 15px;
-            border-radius: 8px;
-        }
-
-        .stat-label {
-            font-size: 0.85rem;
-            opacity: 0.9;
+        .column-label {
+            font-size: 12px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #c7b84e;
             margin-bottom: 5px;
         }
 
-        .stat-value {
-            font-size: 1.5rem;
+        textarea {
+            width: 100%;
+            padding: 8px 10px;
+            border: 2px solid #c75050;
+            font-size: 13px;
+            font-family: 'Share Tech Mono', monospace;
+            resize: vertical;
+            min-height: 220px;
+            line-height: 1.7;
+            background: #d3d3d3;
+            color: #333;
+            transition: border-color 0.2s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #6b8db5;
+        }
+
+        textarea::placeholder {
+            color: #999;
+        }
+
+        /* === PANEL BOCZNY === */
+        .side-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .param-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .param-label {
+            font-size: 12px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #c7b84e;
+            margin-bottom: 5px;
+        }
+
+        .param-group input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 2px solid #c75050;
+            font-size: 13px;
+            font-family: 'Share Tech Mono', monospace;
+            background: #d3d3d3;
+            color: #333;
+            transition: border-color 0.2s;
+        }
+
+        .param-group input:focus {
+            outline: none;
+            border-color: #6b8db5;
+        }
+
+        .param-group input::placeholder {
+            color: #999;
+        }
+
+        .hint {
+            font-size: 9px;
+            color: #555;
+            margin-top: 3px;
+            letter-spacing: 1px;
+        }
+
+        /* === BUTTONS === */
+        .button-group {
+            display: flex;
+            gap: 8px;
+            padding-top: 16px;
+            border-top: 2px solid #4a4a4a;
+        }
+
+        button {
+            padding: 8px 20px;
+            border: 2px solid #555;
+            font-size: 12px;
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .btn-primary {
+            background: #c75050;
+            color: #fff;
+            border-color: #d06060;
+        }
+
+        .btn-primary:hover {
+            background: #d06060;
+        }
+
+        .btn-secondary {
+            background: #3a3a3a;
+            color: #999;
+            border-color: #555;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: #444;
+            color: #ddd;
+            border-color: #6b8db5;
+        }
+
+        .btn-secondary:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* === EXPORT DROPDOWN === */
+        .export-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .export-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 4px;
+            background: #3a3a3a;
+            border: 2px solid #555;
+            z-index: 10;
+            min-width: 160px;
+        }
+
+        .export-menu.open {
+            display: block;
+        }
+
+        .export-menu button {
+            display: block;
+            width: 100%;
+            padding: 8px 16px;
+            border: none;
+            border-bottom: 1px solid #444;
+            background: #3a3a3a;
+            color: #ccc;
+            text-align: left;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .export-menu button:last-child {
+            border-bottom: none;
+        }
+
+        .export-menu button:hover {
+            background: #4a4a4a;
+            color: #fff;
+        }
+
+        /* === ERROR === */
+        .error {
+            background: #3a2020;
+            color: #ff8888;
+            padding: 8px 14px;
+            margin: 14px 0;
+            border: 2px solid #c75050;
+            font-size: 12px;
+        }
+
+        /* === RESULTS === */
+        .results-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #4a4a4a;
+        }
+
+        .result-item {
+            background: #d3d3d3;
+            border: 1px solid #4a4a4a;
+            border-left: 3px solid #6b8db5;
+            padding: 10px 14px;
+            margin-bottom: 6px;
+            font-size: 13px;
+            transition: border-color 0.15s;
+        }
+
+        .result-item:hover {
+            border-color: #6b8db5;
+            border-left-color: #8ab0d4;
+        }
+
+        .result-stock {
+            color: #333;
             font-weight: 700;
         }
 
-        .plan-card {
-            background: #f8f9fa;
-            border-left: 4px solid #667eea;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-radius: 8px;
+        .result-arrow {
+            color: #555;
+            margin: 0 6px;
         }
 
-        .plan-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
+        .result-cuts {
+            color: #111;
         }
 
-        .plan-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .plan-waste {
-            background: #fff;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
+        .result-meta {
+            margin-top: 4px;
+            font-size: 11px;
             color: #666;
-        }
-
-        .cuts-list {
             display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 10px;
+            gap: 14px;
         }
 
-        .cut-item {
-            background: white;
-            padding: 6px 12px;
-            border-radius: 5px;
-            font-weight: 500;
-            color: #667eea;
+        .result-waste {
+            color: #c75050;
         }
 
-        .plan-details {
-            font-size: 0.9rem;
-            color: #666;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid #ddd;
+        .result-efficiency {
+            color: #5aaa5a;
         }
 
-        .kerf-badge {
-            background: #ff9800;
-            color: white;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-left: 5px;
+        /* === STOCK USAGE === */
+        .stock-usage {
+            background: #2e2e2e;
+            border: 2px solid #4a4a4a;
+            padding: 14px;
+            margin: 14px 0;
         }
 
-        .profile-selector {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 10px;
-        }
-
-        .profile-btn {
-            padding: 8px 16px;
-            border: 2px solid #667eea;
-            background: white;
-            color: #667eea;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s;
-        }
-
-        .profile-btn:hover {
-            background: #667eea;
-            color: white;
-        }
-
-        .profile-btn.active {
-            background: #667eea;
-            color: white;
-        }
-
-        .alert {
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        .alert-error {
-            background: #ffebee;
-            color: #c62828;
-            border-left: 4px solid #c62828;
-        }
-
-        .save-profile-section {
-            background: #f0f4ff;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
-        }
-
-        .save-profile-section h4 {
-            margin-bottom: 10px;
-            color: #667eea;
-        }
-
-        .profile-list {
-            margin-top: 15px;
-        }
-
-        .profile-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            background: white;
+        .stock-usage-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #5aaa5a;
             margin-bottom: 8px;
-            border-radius: 6px;
-            border: 1px solid #e0e0e0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        .profile-item-name {
-            font-weight: 600;
-            color: #333;
+        .stock-usage-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
         }
 
-        .profile-item-values {
-            font-size: 0.85rem;
-            color: #666;
-            margin-top: 3px;
+        .stock-usage-item {
+            background: #333;
+            padding: 4px 12px;
+            border: 1px solid #555;
+            color: #c7b84e;
+            font-size: 12px;
         }
 
-        .profile-item-actions {
+        /* === SUMMARY === */
+        .summary {
+            background: #3a3a3a;
+            color: #ddd;
+            padding: 14px 20px;
+            margin-top: 14px;
+            text-align: center;
+            font-size: 13px;
+            line-height: 1.6;
+            border: 2px solid #555;
+            border-left: 4px solid #c75050;
+        }
+
+        /* === LOADING === */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 24px;
+            color: #888;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .spinner {
+            border: 3px solid #3a3a3a;
+            border-top: 3px solid #c75050;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 8px;
+        }
+
+        /* === CART === */
+        .cart-section {
+            margin-top: 20px;
+            border-top: 2px solid #4a4a4a;
+            padding-top: 20px;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .cart-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #c7b84e;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .cart-count {
+            background: #c75050;
+            color: #fff;
+            padding: 2px 8px;
+            font-size: 11px;
+            margin-left: 8px;
+        }
+
+        .cart-item {
+            background: #2e2e2e;
+            border: 1px solid #4a4a4a;
+            padding: 10px 14px;
+            margin-bottom: 6px;
+            font-size: 12px;
+            color: #ccc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-profile {
+            color: #6b8db5;
+            font-weight: 700;
+        }
+
+        .cart-item-grade {
+            color: #c7b84e;
+        }
+
+        .cart-item-stock {
+            color: #ddd;
+        }
+
+        .cart-item-remove {
+            background: none;
+            border: none;
+            color: #c75050;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 2px 6px;
+            font-family: 'Share Tech Mono', monospace;
+            letter-spacing: 0;
+        }
+
+        .cart-item-remove:hover {
+            color: #ff6666;
+        }
+
+        .cart-buttons {
             display: flex;
             gap: 8px;
+            margin-top: 12px;
         }
 
-        .btn-small {
-            padding: 5px 12px;
-            font-size: 0.85rem;
+        .cart-empty {
+            color: #666;
+            font-size: 12px;
+            text-align: center;
+            padding: 14px;
         }
 
-        .btn-delete {
-            background: #f44336;
-            color: white;
+        .btn-cart-add {
+            background: none;
+            border: 1px solid #6b8db5;
+            color: #6b8db5;
+            padding: 3px 10px;
+            font-size: 10px;
+            cursor: pointer;
+            letter-spacing: 1px;
+            margin-left: 10px;
         }
 
-        .btn-delete:hover {
-            background: #d32f2f;
+        .btn-cart-add:hover {
+            background: #6b8db5;
+            color: #fff;
         }
 
-        .btn-load {
-            background: #4caf50;
-            color: white;
+        .btn-cart-add.added {
+            border-color: #5aaa5a;
+            color: #5aaa5a;
+            cursor: default;
         }
 
-        .btn-load:hover {
-            background: #388e3c;
-        }
-
-        .order-section {
-            background: #fff3e0;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        .order-section h4 {
-            margin-bottom: 10px;
-            color: #ff9800;
-        }
-
-        @media (max-width: 768px) {
-            .form-row, .form-row-3 {
+        /* === RESPONSIVE === */
+        @media (max-width: 700px) {
+            .input-area {
                 grid-template-columns: 1fr;
             }
 
-            .header h1 {
-                font-size: 1.8rem;
+            .input-area textarea {
+                min-height: 140px;
             }
 
-            .summary-stats {
-                grid-template-columns: 1fr;
+            .side-panel {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .param-group {
+                flex: 1;
+                min-width: 120px;
+            }
+
+            .header-inputs {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            h1 {
+                font-size: 16px;
+                letter-spacing: 2px;
             }
         }
     </style>
@@ -373,539 +567,532 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>✂️ Wycinacz Pro</h1>
-            <p>Optymalizacja cięcia kształtowników stalowych z uwzględnieniem straty na cięcie</p>
+            <h1>Wycinacz <span class="accent">Pro</span></h1>
+            <div class="header-inputs">
+                <div class="header-field">
+                    <label>Kontrakt</label>
+                    <input type="text" id="contractNumber" placeholder="K-2024-001" />
+                </div>
+                <div class="header-field">
+                    <label>Kształtownik</label>
+                    <input type="text" id="profileType" placeholder="HEB 300" />
+                </div>
+                <div class="header-field">
+                    <label>Gatunek</label>
+                    <select id="steelGrade" onchange="handleGradeChange(this)">
+                        <option value="S235">S235</option>
+                        <option value="S355">S355</option>
+                        <option value="custom">Inny...</option>
+                    </select>
+                    <input type="text" id="steelGradeCustom" placeholder="Wpisz gatunek" style="display:none; margin-top:4px;" />
+                </div>
+            </div>
         </div>
 
-        <div class="card">
-            <form id="cutForm">
-                <!-- Numer zamówienia -->
-                <div class="order-section">
-                    <h4>📋 Numer zamówienia</h4>
-                    <div class="form-row">
-                        <input 
-                            type="text" 
-                            id="orderNumber" 
-                            placeholder="np. WYC-20260205-1234 (opcjonalne)"
-                        />
-                        <button type="button" class="btn btn-secondary" onclick="generateOrderNumber()">
-                            🎲 Generuj numer
-                        </button>
-                    </div>
+        <div class="main-content">
+            <div class="input-area">
+                <div class="input-column">
+                    <label class="column-label">Ilość</label>
+                    <textarea id="quantities" placeholder="3
+5
+2
+10
+1"></textarea>
                 </div>
 
-                <div class="form-group">
-                    <label>Długości do wycięcia (oddzielone przecinkami)</label>
-                    <textarea 
-                        id="cutsInput" 
-                        rows="3" 
-                        placeholder="np. 4500, 3000x2, 2500, 7000 (format: długość lub długość x ilość)"
-                        required
-                    ></textarea>
-                    <div class="help-text">
-                        Możesz użyć formatu "długość x ilość", np: 500x3, 1000x2, 750
-                    </div>
+                <div class="input-column">
+                    <label class="column-label">Długość mm</label>
+                    <textarea id="lengths" placeholder="4500
+3000
+7500
+2500
+6000"></textarea>
                 </div>
 
-                <div class="form-group">
-                    <label>Profile materiałów (szybki wybór)</label>
-                    <div class="profile-selector" id="profileSelector">
-                        <button type="button" class="profile-btn" data-profile="custom">Customowy</button>
+                <div class="side-panel">
+                    <div class="param-group">
+                        <label class="param-label">Sztangi mm</label>
+                        <input type="text" id="stocks" value="12100, 6000, 15100" />
+                        <p class="hint">Oddzielone przecinkami</p>
+                    </div>
+                    <div class="param-group">
+                        <label class="param-label">Kerf mm</label>
+                        <input type="number" id="kerf" value="0" min="0" step="0.5" />
+                        <p class="hint">Naddatek cięcia</p>
                     </div>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label>Dostępne długości sztang (oddzielone przecinkami)</label>
-                    <input 
-                        type="text" 
-                        id="stockLengths" 
-                        value="6000, 12100, 15100"
-                        placeholder="np. 6000, 12100, 15100"
-                        required
-                    />
-                    <div class="help-text">
-                        Długości dostępnych kształtowników w mm
+            <div class="button-group">
+                <button class="btn-primary" onclick="calculateCuts()">Oblicz</button>
+                <div class="export-wrapper">
+                    <button class="btn-primary" id="exportBtn" onclick="toggleExportMenu()" disabled>Eksportuj listę cięć</button>
+                    <div class="export-menu" id="exportMenu">
+                        <button onclick="copyToClipboard()">Kopiuj</button>
+                        <button onclick="exportPDF()">Eksport PDF</button>
+                        <button onclick="exportTXT()">Eksport TXT</button>
                     </div>
                 </div>
+            </div>
 
-                <div class="form-row-3">
-                    <div class="form-group">
-                        <label>Strata na cięcie - Kerf (mm)</label>
-                        <input 
-                            type="number" 
-                            id="kerf" 
-                            value="0" 
-                            min="0"
-                            max="20"
-                            step="0.5"
-                            placeholder="0"
-                        />
-                        <div class="help-text">
-                            Szerokość cięcia (piła, plasma, laser)
-                        </div>
+            <div id="error" style="display: none;" class="error"></div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Obliczam optymalny plan cięcia...</p>
+            </div>
+
+            <div id="results" class="results-section" style="display: none;"></div>
+
+            <div class="cart-section" id="cartSection">
+                <div class="cart-header">
+                    <div>
+                        <span class="cart-title">Koszyk zamówienia</span>
+                        <span class="cart-count" id="cartCount">0</span>
                     </div>
-                    <div class="form-group">
-                        <label>&nbsp;</label>
-                        <button type="button" class="btn btn-secondary" style="width: 100%;" onclick="setKerf(3)">
-                            Piła (3mm)
-                        </button>
-                    </div>
-                    <div class="form-group">
-                        <label>&nbsp;</label>
-                        <button type="button" class="btn btn-secondary" style="width: 100%;" onclick="setKerf(5)">
-                            Plasma (5mm)
-                        </button>
+                    <div class="cart-buttons">
+                        <button class="btn-secondary" onclick="exportCart()">Generuj zapytanie</button>
+                        <button class="btn-secondary" onclick="clearCart()">Wyczyść koszyk</button>
                     </div>
                 </div>
-
-                <div class="save-profile-section">
-                    <h4>💾 Zarządzanie profilami</h4>
-                    <div class="form-row">
-                        <input 
-                            type="text" 
-                            id="profileName" 
-                            placeholder="Nazwa profilu (np. Moja hala)"
-                        />
-                        <button type="button" class="btn btn-secondary" onclick="saveCurrentProfile()">
-                            Zapisz aktualny profil
-                        </button>
-                    </div>
-                    <div class="profile-list" id="customProfilesList"></div>
-                </div>
-
-                <div class="btn-group">
-                    <button type="submit" class="btn btn-primary">🔍 Oblicz optymalizację</button>
-                    <button type="button" class="btn btn-secondary" onclick="resetForm()">🔄 Reset</button>
-                </div>
-            </form>
-        </div>
-
-        <div id="error" class="alert alert-error" style="display: none;"></div>
-
-        <div id="results" class="results">
-            <div class="card">
-                <div class="summary-box">
-                    <h3>📊 Podsumowanie</h3>
-                    <div id="orderInfo" style="margin-bottom: 10px; font-size: 0.9rem;"></div>
-                    <div class="summary-stats">
-                        <div class="stat">
-                            <div class="stat-label">Użyto sztang</div>
-                            <div class="stat-value" id="totalStockUsed">-</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-label">Łączna długość</div>
-                            <div class="stat-value" id="totalLength">-</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-label">Całkowita strata</div>
-                            <div class="stat-value" id="totalWaste">-</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-label">Efektywność</div>
-                            <div class="stat-value" id="efficiency">-</div>
-                        </div>
-                    </div>
-                    <div id="kerfInfo" style="margin-top: 15px; font-size: 0.9rem; display: none;">
-                        <strong>Strata na cięciu (kerf):</strong> <span id="totalKerfLoss">0</span> mm
-                    </div>
-                </div>
-
-                <h3 style="margin-bottom: 20px;">📋 Plan cięcia</h3>
-                <div id="plansList"></div>
-
-                <div class="btn-group">
-                    <button class="btn btn-secondary" onclick="copyToClipboard()">📋 Kopiuj</button>
-                    <button class="btn btn-secondary" onclick="exportPDF()">📄 PDF</button>
-                    <button class="btn btn-secondary" onclick="exportTXT()">💾 TXT</button>
-                    <button class="btn btn-secondary" onclick="exportExcel()">📊 Excel (z QR)</button>
+                <div id="cartItems">
+                    <div class="cart-empty">Koszyk jest pusty. Oblicz cięcie i dodaj sztangi do koszyka.</div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        let currentResults = null;
-        let profiles = {};
-        let customProfiles = {};
+        let currentResult = null;
+        let cart = [];
 
-        // Generuj numer zamówienia
-        function generateOrderNumber() {
-            const date = new Date();
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
-            const orderNum = `WYC-${year}${month}${day}-${random}`;
-            document.getElementById('orderNumber').value = orderNum;
+        function getGrade() {
+            const sel = document.getElementById('steelGrade');
+            if (sel.value === 'custom') {
+                return document.getElementById('steelGradeCustom').value.trim() || '';
+            }
+            return sel.value;
         }
 
-        // Załaduj profile z localStorage
-        function loadCustomProfiles() {
-            const saved = localStorage.getItem('customProfiles');
-            if (saved) {
-                customProfiles = JSON.parse(saved);
-                renderCustomProfiles();
+        function handleGradeChange(sel) {
+            const custom = document.getElementById('steelGradeCustom');
+            if (sel.value === 'custom') {
+                custom.style.display = 'block';
+                custom.focus();
+            } else {
+                custom.style.display = 'none';
+                custom.value = '';
             }
         }
 
-        // Renderuj zapisane profile
-        function renderCustomProfiles() {
-            const list = document.getElementById('customProfilesList');
-            if (Object.keys(customProfiles).length === 0) {
-                list.innerHTML = '<p style="color: #666; font-size: 0.9rem; margin-top: 10px;">Brak zapisanych profili</p>';
-                return;
-            }
+        function getCutsFromColumns() {
+            const quantities = document.getElementById('quantities').value.split('\n');
+            const lengths = document.getElementById('lengths').value.split('\n');
 
-            list.innerHTML = '';
-            for (const [name, lengths] of Object.entries(customProfiles)) {
-                const item = document.createElement('div');
-                item.className = 'profile-item';
-                item.innerHTML = `
-                    <div>
-                        <div class="profile-item-name">${name}</div>
-                        <div class="profile-item-values">${lengths.join(', ')} mm</div>
-                    </div>
-                    <div class="profile-item-actions">
-                        <button class="btn btn-small btn-load" onclick="loadProfile('${name}')">Załaduj</button>
-                        <button class="btn btn-small btn-delete" onclick="deleteProfile('${name}')">Usuń</button>
-                    </div>
-                `;
-                list.appendChild(item);
-            }
-        }
+            const cuts = [];
+            const maxRows = Math.max(quantities.length, lengths.length);
 
-        // Zapisz aktualny profil
-        function saveCurrentProfile() {
-            const name = document.getElementById('profileName').value.trim();
-            if (!name) {
-                alert('Podaj nazwę profilu!');
-                return;
-            }
+            for (let i = 0; i < maxRows; i++) {
+                const qty = parseInt(quantities[i]?.trim()) || 0;
+                const len = parseInt(lengths[i]?.trim()) || 0;
 
-            const stockLengthsInput = document.getElementById('stockLengths').value;
-            const lengths = stockLengthsInput.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n) && n > 0);
-
-            if (lengths.length === 0) {
-                alert('Podaj prawidłowe długości sztang!');
-                return;
-            }
-
-            customProfiles[name] = lengths;
-            localStorage.setItem('customProfiles', JSON.stringify(customProfiles));
-
-            document.getElementById('profileName').value = '';
-            renderCustomProfiles();
-            alert(`✅ Profil "${name}" zapisany!`);
-        }
-
-        // Załaduj profil
-        function loadProfile(name) {
-            const lengths = customProfiles[name];
-            if (lengths) {
-                document.getElementById('stockLengths').value = lengths.join(', ');
-                alert(`✅ Załadowano profil "${name}"`);
-            }
-        }
-
-        // Usuń profil
-        function deleteProfile(name) {
-            if (confirm(`Czy na pewno usunąć profil "${name}"?`)) {
-                delete customProfiles[name];
-                localStorage.setItem('customProfiles', JSON.stringify(customProfiles));
-                renderCustomProfiles();
-            }
-        }
-
-        // Załaduj domyślne profile z serwera
-        async function loadDefaultProfiles() {
-            try {
-                const response = await fetch('/api/profiles');
-                profiles = await response.json();
-                renderProfileButtons();
-            } catch (error) {
-                console.error('Błąd ładowania profili:', error);
-            }
-        }
-
-        // Renderuj przyciski profili
-        function renderProfileButtons() {
-            const selector = document.getElementById('profileSelector');
-            selector.innerHTML = '';
-
-            for (const [name, lengths] of Object.entries(profiles)) {
-                const btn = document.createElement('button');
-                btn.type = 'button';
-                btn.className = 'profile-btn';
-                btn.textContent = name;
-                btn.onclick = () => selectProfile(name, lengths);
-                selector.appendChild(btn);
-            }
-        }
-
-        // Wybierz profil
-        function selectProfile(name, lengths) {
-            document.querySelectorAll('.profile-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-
-            if (lengths && lengths.length > 0) {
-                document.getElementById('stockLengths').value = lengths.join(', ');
-            }
-        }
-
-        // Ustaw kerf
-        function setKerf(value) {
-            document.getElementById('kerf').value = value;
-        }
-
-        // Formularz submit
-        document.getElementById('cutForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const cutsInput = document.getElementById('cutsInput').value;
-            const stockLengthsInput = document.getElementById('stockLengths').value;
-            const kerf = parseFloat(document.getElementById('kerf').value) || 0;
-            const orderNumber = document.getElementById('orderNumber').value.trim();
-
-            const stockLengths = stockLengthsInput.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n) && n > 0);
-
-            try {
-                const response = await fetch('/api/optimize', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        cutsInput,
-                        stockLengths,
-                        kerf,
-                        orderNumber
-                    })
-                });
-
-                if (!response.ok) {
-                    const error = await response.json();
-                    throw new Error(error.error || 'Błąd obliczania');
+                if (qty > 0 && len > 0) {
+                    for (let j = 0; j < qty; j++) {
+                        cuts.push(len);
+                    }
                 }
+            }
 
-                currentResults = await response.json();
-                displayResults(currentResults);
+            return cuts;
+        }
 
-                document.getElementById('error').style.display = 'none';
-            } catch (error) {
-                showError(error.message);
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        function enableButtons(enabled) {
+            document.getElementById('exportBtn').disabled = !enabled;
+        }
+
+        function toggleExportMenu() {
+            const menu = document.getElementById('exportMenu');
+            menu.classList.toggle('open');
+        }
+
+        document.addEventListener('click', function(e) {
+            const wrapper = document.querySelector('.export-wrapper');
+            if (!wrapper.contains(e.target)) {
+                document.getElementById('exportMenu').classList.remove('open');
             }
         });
 
-        // Wyświetl wyniki
-        function displayResults(data) {
-            // Informacje o zamówieniu
-            let orderInfoHtml = '';
-            if (data.orderNumber) {
-                orderInfoHtml += `<strong>Zamówienie:</strong> ${data.orderNumber}<br>`;
-            }
-            if (data.timestamp) {
-                const date = new Date(data.timestamp);
-                orderInfoHtml += `<strong>Data:</strong> ${date.toLocaleString('pl-PL')}`;
-            }
-            document.getElementById('orderInfo').innerHTML = orderInfoHtml;
+        async function calculateCuts() {
+            const requiredCuts = getCutsFromColumns();
+            const stocksInput = document.getElementById('stocks').value;
+            const kerf = parseFloat(document.getElementById('kerf').value) || 0;
+            const contractNumber = document.getElementById('contractNumber').value.trim();
+            const profileType = document.getElementById('profileType').value.trim();
 
-            document.getElementById('totalStockUsed').textContent = data.totalStockUsed;
-            document.getElementById('totalLength').textContent = `${data.totalLength} mm`;
-            document.getElementById('totalWaste').textContent = `${data.totalWaste} mm`;
-            document.getElementById('efficiency').textContent = `${data.efficiency}%`;
-
-            // Pokaż info o kerf jeśli > 0
-            if (data.kerf && data.kerf > 0) {
-                document.getElementById('kerfInfo').style.display = 'block';
-                document.getElementById('totalKerfLoss').textContent = data.totalKerfLoss || 0;
-            } else {
-                document.getElementById('kerfInfo').style.display = 'none';
+            if (requiredCuts.length === 0) {
+                showError('Podaj długości elementów do cięcia');
+                return;
             }
 
-            const plansList = document.getElementById('plansList');
-            plansList.innerHTML = '';
+            try {
+                const stockLengths = stocksInput.split(',').map(s => parseInt(s.trim())).filter(v => v > 0);
 
-            data.plans.forEach((plan, index) => {
-                const usedLength = plan.cuts.reduce((sum, c) => sum + c, 0);
-                const wastePercent = ((plan.waste / plan.stockLength) * 100).toFixed(1);
-                const kerfLoss = plan.kerfLoss || 0;
-
-                const card = document.createElement('div');
-                card.className = 'plan-card';
-
-                let kerfBadge = '';
-                if (kerfLoss > 0) {
-                    kerfBadge = `<span class="kerf-badge">Kerf: ${kerfLoss}mm</span>`;
+                if (stockLengths.length === 0) {
+                    showError('Brak poprawnych długości sztang');
+                    return;
                 }
 
-                card.innerHTML = `
-                    <div class="plan-header">
-                        <div class="plan-title">
-                            Sztanga #${index + 1} (${plan.stockLength} mm)
-                            ${kerfBadge}
-                        </div>
-                        <div class="plan-waste">
-                            Strata: ${plan.waste} mm (${wastePercent}%)
-                        </div>
+                document.getElementById('loading').classList.add('active');
+                document.getElementById('results').style.display = 'none';
+                document.getElementById('results').innerHTML = '';
+                enableButtons(false);
+
+                const response = await fetch('/api/optimize', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        requiredCuts: requiredCuts,
+                        stockLengths: stockLengths,
+                        kerf: kerf,
+                        contractNumber: contractNumber,
+                        profileType: profileType
+                    })
+                });
+
+                document.getElementById('loading').classList.remove('active');
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    showError(errorData.error || 'Błąd optymalizacji');
+                    return;
+                }
+
+                currentResult = await response.json();
+                displayResults(currentResult);
+                enableButtons(true);
+
+            } catch (error) {
+                document.getElementById('loading').classList.remove('active');
+                showError('Błąd podczas przetwarzania danych');
+                console.error(error);
+            }
+        }
+
+        function displayResults(result) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+            resultsDiv.style.display = 'block';
+
+            result.plans.forEach((plan, index) => {
+                const item = document.createElement('div');
+                item.className = 'result-item';
+
+                const usedLength = plan.cuts.reduce((sum, c) => sum + c, 0);
+                const wastePercent = ((plan.waste / plan.stockLength) * 100).toFixed(1);
+                const effPercent = (100 - parseFloat(wastePercent)).toFixed(1);
+
+                item.innerHTML = `
+                    <div>
+                        <span class="result-stock">${plan.stockLength}</span>
+                        <span class="result-arrow">=></span>
+                        <span class="result-cuts">${plan.cuts.join(', ')}</span>
                     </div>
-                    <div class="cuts-list">
-                        ${plan.cuts.map(cut => `<span class="cut-item">${cut} mm</span>`).join('')}
-                    </div>
-                    <div class="plan-details">
-                        Użyte: ${usedLength} mm${kerfLoss > 0 ? ` + kerf ${kerfLoss} mm` : ''} = ${usedLength + kerfLoss} mm | 
-                        Pozostało: ${plan.waste} mm
+                    <div class="result-meta">
+                        <span class="result-waste">Strata: ${plan.waste} mm (${wastePercent}%)</span>
+                        <span class="result-efficiency">Efektywność: ${effPercent}%</span>
+                        <button class="btn-cart-add" data-index="${index}" onclick="addToCart(${index}, this)">+ KOSZYK</button>
                     </div>
                 `;
 
-                plansList.appendChild(card);
+                resultsDiv.appendChild(item);
             });
 
-            document.getElementById('results').classList.add('active');
-            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
-        }
+            // Przycisk dodaj wszystkie
+            const addAllBtn = document.createElement('button');
+            addAllBtn.className = 'btn-primary';
+            addAllBtn.textContent = 'Dodaj do koszyka';
+            addAllBtn.style.marginTop = '8px';
+            addAllBtn.style.marginBottom = '8px';
+            addAllBtn.onclick = function() {
+                addAllToCart();
+                addAllBtn.textContent = 'Dodano!';
+                addAllBtn.disabled = true;
+                setTimeout(() => { addAllBtn.textContent = 'Dodaj do koszyka'; addAllBtn.disabled = false; }, 2000);
+            };
+            resultsDiv.appendChild(addAllBtn);
 
-        // Pokaż błąd
-        function showError(message) {
-            const errorDiv = document.getElementById('error');
-            errorDiv.textContent = '❌ ' + message;
-            errorDiv.style.display = 'block';
-            errorDiv.scrollIntoView({ behavior: 'smooth' });
-        }
+            if (result.stockUsage && result.stockUsage.length > 0) {
+                const stockUsageDiv = document.createElement('div');
+                stockUsageDiv.className = 'stock-usage';
 
-        // Reset formularza
-        function resetForm() {
-            document.getElementById('cutForm').reset();
-            document.getElementById('results').classList.remove('active');
-            document.getElementById('error').style.display = 'none';
-            currentResults = null;
-        }
+                const stockUsageTitle = document.createElement('div');
+                stockUsageTitle.className = 'stock-usage-title';
+                stockUsageTitle.textContent = 'Użycie sztang:';
 
-        // Kopiuj do schowka
-        function copyToClipboard() {
-            if (!currentResults) return;
+                const stockUsageItems = document.createElement('div');
+                stockUsageItems.className = 'stock-usage-items';
 
-            let text = 'Wyniki optymalizacji cięcia\n';
-            text += '============================\n\n';
+                result.stockUsage.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'stock-usage-item';
+                    itemDiv.textContent = `${item.count} x ${item.length} mm`;
+                    stockUsageItems.appendChild(itemDiv);
+                });
 
-            if (currentResults.orderNumber) {
-                text += `Zamówienie: ${currentResults.orderNumber}\n`;
-            }
-            if (currentResults.timestamp) {
-                const date = new Date(currentResults.timestamp);
-                text += `Data: ${date.toLocaleString('pl-PL')}\n`;
-            }
-            text += '\n';
-
-            if (currentResults.kerf > 0) {
-                text += `Kerf: ${currentResults.kerf} mm\n\n`;
+                stockUsageDiv.appendChild(stockUsageTitle);
+                stockUsageDiv.appendChild(stockUsageItems);
+                resultsDiv.appendChild(stockUsageDiv);
             }
 
-            currentResults.plans.forEach((plan, index) => {
-                const usedLength = plan.cuts.reduce((sum, c) => sum + c, 0);
-                const kerfLoss = plan.kerfLoss || 0;
-                text += `Sztanga #${index + 1} (${plan.stockLength} mm): ${plan.cuts.join(', ')} mm\n`;
-                text += `Użyte: ${usedLength} mm`;
-                if (kerfLoss > 0) text += ` + kerf ${kerfLoss} mm`;
-                text += ` | Strata: ${plan.waste} mm\n\n`;
+            const summary = document.createElement('div');
+            summary.className = 'summary';
+            summary.textContent = result.summary;
+            resultsDiv.appendChild(summary);
+        }
+
+        // === KOSZYK ===
+        function addToCart(planIndex, btn) {
+            if (!currentResult || !currentResult.plans[planIndex]) return;
+            const plan = currentResult.plans[planIndex];
+            const profile = document.getElementById('profileType').value.trim() || '---';
+            const grade = getGrade() || '---';
+            const contract = document.getElementById('contractNumber').value.trim() || '';
+
+            cart.push({
+                stockLength: plan.stockLength,
+                profile: profile,
+                grade: grade,
+                contract: contract
             });
 
-            text += currentResults.summary;
+            if (btn) {
+                btn.textContent = 'DODANO';
+                btn.classList.add('added');
+            }
+
+            renderCart();
+        }
+
+        function addAllToCart() {
+            if (!currentResult) return;
+            const profile = document.getElementById('profileType').value.trim() || '---';
+            const grade = getGrade() || '---';
+            const contract = document.getElementById('contractNumber').value.trim() || '';
+
+            currentResult.plans.forEach(plan => {
+                cart.push({
+                    stockLength: plan.stockLength,
+                    profile: profile,
+                    grade: grade,
+                    contract: contract
+                });
+            });
+
+            // Oznacz wszystkie przyciski
+            document.querySelectorAll('.btn-cart-add').forEach(btn => {
+                btn.textContent = 'DODANO';
+                btn.classList.add('added');
+            });
+
+            renderCart();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            renderCart();
+        }
+
+        function clearCart() {
+            cart = [];
+            renderCart();
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cartItems');
+            const countEl = document.getElementById('cartCount');
+            countEl.textContent = cart.length;
+
+            if (cart.length === 0) {
+                container.innerHTML = '<div class="cart-empty">Koszyk jest pusty. Oblicz cięcie i dodaj sztangi do koszyka.</div>';
+                return;
+            }
+
+            // Grupuj wg profil + gatunek + długość
+            const grouped = {};
+            cart.forEach(item => {
+                const key = `${item.profile}|${item.grade}|${item.stockLength}`;
+                if (!grouped[key]) {
+                    grouped[key] = { ...item, count: 0 };
+                }
+                grouped[key].count++;
+            });
+
+            let html = '';
+            Object.values(grouped).forEach(g => {
+                html += `<div class="cart-item">
+                    <div class="cart-item-info">
+                        <span class="cart-item-profile">${g.profile}</span>
+                        <span class="cart-item-grade">${g.grade}</span>
+                        <span class="cart-item-stock">| ${g.stockLength} mm x ${g.count} szt.</span>
+                    </div>
+                </div>`;
+            });
+
+            // Pokaż też pojedyncze pozycje z przyciskiem usuwania
+            html += '<div style="margin-top:8px; border-top:1px solid #444; padding-top:8px;">';
+            cart.forEach((item, i) => {
+                html += `<div class="cart-item">
+                    <div class="cart-item-info">
+                        <span class="cart-item-profile">${item.profile}</span>
+                        <span class="cart-item-grade">${item.grade}</span>
+                        <span class="cart-item-stock">| ${item.stockLength} mm</span>
+                    </div>
+                    <button class="cart-item-remove" onclick="removeFromCart(${i})">X</button>
+                </div>`;
+            });
+            html += '</div>';
+
+            container.innerHTML = html;
+        }
+
+        function exportCart() {
+            if (cart.length === 0) {
+                showError('Koszyk jest pusty!');
+                return;
+            }
+
+            const grouped = {};
+            cart.forEach(item => {
+                const key = `${item.profile}|${item.grade}|${item.stockLength}`;
+                if (!grouped[key]) {
+                    grouped[key] = { ...item, count: 0 };
+                }
+                grouped[key].count++;
+            });
+
+            let text = '';
+            let lp = 1;
+            Object.values(grouped).forEach(g => {
+                text += `${lp}. ${g.profile} - ${g.grade} - ${g.stockLength} - ${g.count} szt.\n`;
+                lp++;
+            });
 
             navigator.clipboard.writeText(text).then(() => {
-                alert('✅ Skopiowano do schowka!');
+                const btn = document.querySelector('.cart-buttons .btn-secondary');
+                const orig = btn.textContent;
+                btn.textContent = 'Skopiowano!';
+                setTimeout(() => { btn.textContent = orig; }, 2000);
             });
         }
 
-        // Eksport PDF
+        function closeExportMenu() {
+            document.getElementById('exportMenu').classList.remove('open');
+        }
+
+        function copyToClipboard() {
+            if (!currentResult) return;
+            closeExportMenu();
+
+            let text = '';
+            if (currentResult.contractNumber) text += `Kontrakt: ${currentResult.contractNumber}\n`;
+            if (currentResult.profileType) text += `Profil: ${currentResult.profileType}\n`;
+            if (text) text += '\n';
+
+            currentResult.plans.forEach((plan) => {
+                text += `${plan.stockLength} => ${plan.cuts.join(', ')}\n`;
+            });
+
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.getElementById('exportBtn');
+                const originalText = btn.textContent;
+                btn.textContent = 'Skopiowano!';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                }, 2000);
+            });
+        }
+
         async function exportPDF() {
-            if (!currentResults) return;
+            if (!currentResult) return;
+            closeExportMenu();
 
             try {
                 const response = await fetch('/api/export/pdf', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        plans: currentResults.plans,
-                        summary: currentResults.summary,
-                        stockUsageSummary: currentResults.stockUsageSummary,
-                        kerf: currentResults.kerf,
-                        orderNumber: currentResults.orderNumber,
-                        timestamp: currentResults.timestamp
-                    })
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(currentResult)
                 });
 
                 const blob = await response.blob();
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `wycinacz_${currentResults.orderNumber || 'raport'}.pdf`;
+
+                let filename = 'wycinacz';
+                if (currentResult.contractNumber) filename += `_${currentResult.contractNumber}`;
+                if (currentResult.profileType) filename += `_${currentResult.profileType}`;
+                filename += '.pdf';
+
+                a.download = filename;
+                document.body.appendChild(a);
                 a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+
             } catch (error) {
-                alert('❌ Błąd eksportu PDF');
+                showError('Błąd podczas eksportu PDF');
+                console.error(error);
             }
         }
 
-        // Eksport TXT
         async function exportTXT() {
-            if (!currentResults) return;
+            if (!currentResult) return;
+            closeExportMenu();
 
             try {
                 const response = await fetch('/api/export/txt', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        plans: currentResults.plans,
-                        summary: currentResults.summary,
-                        stockUsageSummary: currentResults.stockUsageSummary,
-                        kerf: currentResults.kerf,
-                        orderNumber: currentResults.orderNumber,
-                        timestamp: currentResults.timestamp
-                    })
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(currentResult)
                 });
 
-                const blob = await response.blob();
+                const text = await response.text();
+                const blob = new Blob([text], { type: 'text/plain' });
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `wycinacz_${currentResults.orderNumber || 'raport'}.txt`;
+
+                let filename = 'wycinacz';
+                if (currentResult.contractNumber) filename += `_${currentResult.contractNumber}`;
+                if (currentResult.profileType) filename += `_${currentResult.profileType}`;
+                filename += '.txt';
+
+                a.download = filename;
+                document.body.appendChild(a);
                 a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+
             } catch (error) {
-                alert('❌ Błąd eksportu TXT');
+                showError('Błąd podczas eksportu TXT');
+                console.error(error);
             }
         }
-
-        // Eksport Excel
-        async function exportExcel() {
-            if (!currentResults) return;
-
-            try {
-                const response = await fetch('/api/export/excel', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        plans: currentResults.plans,
-                        summary: currentResults.summary,
-                        stockUsageSummary: currentResults.stockUsageSummary,
-                        kerf: currentResults.kerf,
-                        orderNumber: currentResults.orderNumber,
-                        timestamp: currentResults.timestamp
-                    })
-                });
-
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `wycinacz_${currentResults.orderNumber || 'raport'}.xlsx`;
-                a.click();
-            } catch (error) {
-                alert('❌ Błąd eksportu Excel');
-            }
-        }
-
-        // Inicjalizacja
-        loadDefaultProfiles();
-        loadCustomProfiles();
     </script>
 </body>
 </html>
