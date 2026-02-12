@@ -38,6 +38,31 @@
             padding: 22px 30px 18px;
             text-align: center;
             border-bottom: 2px solid #555;
+            position: relative;
+        }
+
+        .header-mail {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            color: #fff;
+            font-size: 12px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .header-mail:hover {
+            opacity: 1;
+        }
+
+        .header-mail svg {
+            width: 14px;
+            height: 14px;
+            fill: #fff;
         }
 
         h1 {
@@ -503,6 +528,50 @@
             margin-top: 12px;
         }
 
+        /* === CART EXPORT DROPDOWN === */
+        .cart-export-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .cart-export-menu {
+            display: none;
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            margin-bottom: 4px;
+            background: #3a3a3a;
+            border: 2px solid #555;
+            z-index: 10;
+            min-width: 180px;
+        }
+
+        .cart-export-menu.open {
+            display: block;
+        }
+
+        .cart-export-menu button {
+            display: block;
+            width: 100%;
+            padding: 8px 16px;
+            border: none;
+            border-bottom: 1px solid #444;
+            background: #3a3a3a;
+            color: #ccc;
+            text-align: left;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .cart-export-menu button:last-child {
+            border-bottom: none;
+        }
+
+        .cart-export-menu button:hover {
+            background: #4a4a4a;
+            color: #fff;
+        }
+
         .cart-empty {
             color: #666;
             font-size: 12px;
@@ -567,6 +636,7 @@
 <body>
     <div class="container">
         <div class="header">
+            <a href="mailto:kamilszuster@gmail.com" class="header-mail"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>kamilszuster@gmail.com</a>
             <h1>Wycinacz <span class="accent">Pro</span></h1>
             <div class="header-inputs">
                 <div class="header-field">
@@ -651,8 +721,14 @@
                         <span class="cart-count" id="cartCount">0</span>
                     </div>
                     <div class="cart-buttons">
-                        <button class="btn-secondary" onclick="exportCart()">Generuj zapytanie</button>
-                        <button class="btn-secondary" onclick="clearCart()">Wyczyść koszyk</button>
+                        <div class="cart-export-wrapper">
+                            <button class="btn-primary" id="cartExportBtn" onclick="toggleCartExportMenu()">Generuj zapytanie</button>
+                            <div class="cart-export-menu" id="cartExportMenu">
+                                <button onclick="exportCartCopy()">Kopiuj</button>
+                                <button onclick="exportCartEmail()">Wyślij e-mail</button>
+                            </div>
+                        </div>
+                        <button class="btn-primary" onclick="clearCart()">Wyczyść koszyk</button>
                     </div>
                 </div>
                 <div id="cartItems">
@@ -728,6 +804,10 @@
             const wrapper = document.querySelector('.export-wrapper');
             if (!wrapper.contains(e.target)) {
                 document.getElementById('exportMenu').classList.remove('open');
+            }
+            const cartWrapper = document.querySelector('.cart-export-wrapper');
+            if (cartWrapper && !cartWrapper.contains(e.target)) {
+                document.getElementById('cartExportMenu').classList.remove('open');
             }
         });
 
@@ -966,12 +1046,7 @@
             container.innerHTML = html;
         }
 
-        function exportCart() {
-            if (cart.length === 0) {
-                showError('Koszyk jest pusty!');
-                return;
-            }
-
+        function generateCartText() {
             const grouped = {};
             cart.forEach(item => {
                 const key = `${item.profile}|${item.grade}|${item.stockLength}`;
@@ -987,13 +1062,49 @@
                 text += `${lp}. ${g.profile} - ${g.grade} - ${g.stockLength} - ${g.count} szt.\n`;
                 lp++;
             });
+            return text;
+        }
 
+        function toggleCartExportMenu() {
+            if (cart.length === 0) {
+                showError('Koszyk jest pusty!');
+                return;
+            }
+            const menu = document.getElementById('cartExportMenu');
+            menu.classList.toggle('open');
+        }
+
+        function closeCartExportMenu() {
+            document.getElementById('cartExportMenu').classList.remove('open');
+        }
+
+        function exportCartCopy() {
+            closeCartExportMenu();
+            if (cart.length === 0) {
+                showError('Koszyk jest pusty!');
+                return;
+            }
+
+            const text = generateCartText();
             navigator.clipboard.writeText(text).then(() => {
-                const btn = document.querySelector('.cart-buttons .btn-secondary');
+                const btn = document.getElementById('cartExportBtn');
                 const orig = btn.textContent;
                 btn.textContent = 'Skopiowano!';
                 setTimeout(() => { btn.textContent = orig; }, 2000);
             });
+        }
+
+        function exportCartEmail() {
+            closeCartExportMenu();
+            if (cart.length === 0) {
+                showError('Koszyk jest pusty!');
+                return;
+            }
+
+            const text = generateCartText();
+
+            const mailtoLink = `mailto:?subject=${encodeURIComponent('Zapytanie ofertowe')}&body=${encodeURIComponent(text)}`;
+            window.location.href = mailtoLink;
         }
 
         function closeExportMenu() {
