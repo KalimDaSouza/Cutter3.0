@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wycinacz Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,31 +13,85 @@
         }
 
         body {
-            font-family: 'Share Tech Mono', 'Consolas', monospace;
-            background: #d3d3d3;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #e8e8ed;
             min-height: 100vh;
             padding: 20px;
         }
 
         ::selection {
-            background: #555;
+            background: #c75050;
             color: #fff;
         }
 
         .container {
             max-width: 960px;
             margin: 0 auto;
-            background: #333;
-            border: 2px solid #555;
+            background: #fff;
+            border: 1px solid #d1d1d6;
             overflow: hidden;
+        }
+
+        /* === TABS === */
+        .tabs {
+            display: flex;
+            background: #f2f2f7;
+            border-bottom: 1px solid #d1d1d6;
+        }
+
+        .tab {
+            padding: 10px 24px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #8e8e93;
+            cursor: pointer;
+            border: none;
+            background: none;
+            border-bottom: 2px solid transparent;
+            transition: all 0.15s;
+        }
+
+        .tab:hover {
+            color: #3c3c43;
+            background: #e8e8ed;
+        }
+
+        .tab.active {
+            color: #c75050;
+            border-bottom-color: #c75050;
+            background: #fff;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .tab-placeholder {
+            padding: 60px 30px;
+            text-align: center;
+            color: #8e8e93;
+            font-size: 14px;
+        }
+
+        .tab-placeholder h2 {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 14px;
+            color: #3c3c43;
+            margin-bottom: 12px;
         }
 
         /* === HEADER === */
         .header {
-            background: #3a3a3a;
+            background: #f2f2f7;
             padding: 22px 30px 18px;
             text-align: center;
-            border-bottom: 2px solid #555;
+            border-bottom: 1px solid #d1d1d6;
             position: relative;
         }
 
@@ -45,24 +99,27 @@
             position: absolute;
             top: 10px;
             right: 14px;
-            color: #fff;
+            color: #8e8e93;
             font-size: 12px;
             text-decoration: none;
             display: flex;
             align-items: center;
             gap: 5px;
-            opacity: 0.7;
-            transition: opacity 0.2s;
+            transition: color 0.2s;
         }
 
         .header-mail:hover {
-            opacity: 1;
+            color: #3c3c43;
         }
 
         .header-mail svg {
             width: 14px;
             height: 14px;
-            fill: #fff;
+            fill: #8e8e93;
+        }
+
+        .header-mail:hover svg {
+            fill: #3c3c43;
         }
 
         h1 {
@@ -71,7 +128,7 @@
             font-weight: 400;
             letter-spacing: 4px;
             text-transform: uppercase;
-            color: #e0e0e0;
+            color: #1c1c1e;
             margin-bottom: 16px;
         }
 
@@ -96,18 +153,18 @@
             font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 2px;
-            color: #c7b84e;
+            color: #8e8e93;
             margin-bottom: 3px;
         }
 
         .header-field input,
         .header-field select {
             padding: 6px 12px;
-            border: 2px solid #c75050;
-            font-family: 'Share Tech Mono', monospace;
+            border: 1px solid #d1d1d6;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             font-size: 13px;
-            background: #d3d3d3;
-            color: #333;
+            background: #fff;
+            color: #1c1c1e;
             width: 200px;
             transition: border-color 0.2s;
         }
@@ -115,16 +172,16 @@
         .header-field input:focus,
         .header-field select:focus {
             outline: none;
-            border-color: #6b8db5;
+            border-color: #c75050;
         }
 
         .header-field input::placeholder {
-            color: #888;
+            color: #c7c7cc;
         }
 
         .header-field select option {
-            background: #d3d3d3;
-            color: #333;
+            background: #fff;
+            color: #1c1c1e;
         }
 
         /* === MAIN CONTENT === */
@@ -149,31 +206,31 @@
             font-weight: 400;
             text-transform: uppercase;
             letter-spacing: 2px;
-            color: #c7b84e;
+            color: #8e8e93;
             margin-bottom: 5px;
         }
 
         textarea {
             width: 100%;
             padding: 8px 10px;
-            border: 2px solid #c75050;
+            border: 1px solid #d1d1d6;
             font-size: 13px;
-            font-family: 'Share Tech Mono', monospace;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             resize: vertical;
             min-height: 220px;
             line-height: 1.7;
-            background: #d3d3d3;
-            color: #333;
+            background: #fff;
+            color: #1c1c1e;
             transition: border-color 0.2s;
         }
 
         textarea:focus {
             outline: none;
-            border-color: #6b8db5;
+            border-color: #c75050;
         }
 
         textarea::placeholder {
-            color: #999;
+            color: #c7c7cc;
         }
 
         /* === PANEL BOCZNY === */
@@ -193,33 +250,33 @@
             font-weight: 400;
             text-transform: uppercase;
             letter-spacing: 2px;
-            color: #c7b84e;
+            color: #8e8e93;
             margin-bottom: 5px;
         }
 
         .param-group input {
             width: 100%;
             padding: 8px 10px;
-            border: 2px solid #c75050;
+            border: 1px solid #d1d1d6;
             font-size: 13px;
-            font-family: 'Share Tech Mono', monospace;
-            background: #d3d3d3;
-            color: #333;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #fff;
+            color: #1c1c1e;
             transition: border-color 0.2s;
         }
 
         .param-group input:focus {
             outline: none;
-            border-color: #6b8db5;
+            border-color: #c75050;
         }
 
         .param-group input::placeholder {
-            color: #999;
+            color: #c7c7cc;
         }
 
         .hint {
             font-size: 9px;
-            color: #555;
+            color: #8e8e93;
             margin-top: 3px;
             letter-spacing: 1px;
         }
@@ -229,14 +286,14 @@
             display: flex;
             gap: 8px;
             padding-top: 16px;
-            border-top: 2px solid #4a4a4a;
+            border-top: 1px solid #d1d1d6;
         }
 
         button {
             padding: 8px 20px;
-            border: 2px solid #555;
+            border: none;
             font-size: 12px;
-            font-family: 'Share Tech Mono', monospace;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             font-weight: 400;
             cursor: pointer;
             transition: all 0.15s;
@@ -247,7 +304,7 @@
         .btn-primary {
             background: #c75050;
             color: #fff;
-            border-color: #d06060;
+            border: none;
         }
 
         .btn-primary:hover {
@@ -255,15 +312,14 @@
         }
 
         .btn-secondary {
-            background: #3a3a3a;
-            color: #999;
-            border-color: #555;
+            background: #f2f2f7;
+            color: #8e8e93;
+            border: 1px solid #d1d1d6;
         }
 
         .btn-secondary:hover:not(:disabled) {
-            background: #444;
-            color: #ddd;
-            border-color: #6b8db5;
+            color: #3c3c43;
+            border-color: #c75050;
         }
 
         .btn-secondary:disabled {
@@ -283,10 +339,11 @@
             top: 100%;
             left: 0;
             margin-top: 4px;
-            background: #3a3a3a;
-            border: 2px solid #555;
+            background: #fff;
+            border: 1px solid #d1d1d6;
             z-index: 10;
             min-width: 160px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
         .export-menu.open {
@@ -298,9 +355,9 @@
             width: 100%;
             padding: 8px 16px;
             border: none;
-            border-bottom: 1px solid #444;
-            background: #3a3a3a;
-            color: #ccc;
+            border-bottom: 1px solid #f2f2f7;
+            background: #fff;
+            color: #3c3c43;
             text-align: left;
             font-size: 12px;
             letter-spacing: 1px;
@@ -311,17 +368,17 @@
         }
 
         .export-menu button:hover {
-            background: #4a4a4a;
-            color: #fff;
+            background: #f2f2f7;
+            color: #c75050;
         }
 
         /* === ERROR === */
         .error {
-            background: #3a2020;
-            color: #ff8888;
+            background: #fff5f5;
+            color: #ff453a;
             padding: 8px 14px;
             margin: 14px 0;
-            border: 2px solid #c75050;
+            border: 1px solid #ff453a;
             font-size: 12px;
         }
 
@@ -329,13 +386,13 @@
         .results-section {
             margin-top: 20px;
             padding-top: 20px;
-            border-top: 2px solid #4a4a4a;
+            border-top: 1px solid #d1d1d6;
         }
 
         .result-item {
-            background: #d3d3d3;
-            border: 1px solid #4a4a4a;
-            border-left: 3px solid #6b8db5;
+            background: #f2f2f7;
+            border: 1px solid #d1d1d6;
+            border-left: 3px solid #c75050;
             padding: 10px 14px;
             margin-bottom: 6px;
             font-size: 13px;
@@ -343,44 +400,44 @@
         }
 
         .result-item:hover {
-            border-color: #6b8db5;
-            border-left-color: #8ab0d4;
+            border-color: #c75050;
+            border-left-color: #d06060;
         }
 
         .result-stock {
-            color: #333;
+            color: #1c1c1e;
             font-weight: 700;
         }
 
         .result-arrow {
-            color: #555;
+            color: #8e8e93;
             margin: 0 6px;
         }
 
         .result-cuts {
-            color: #111;
+            color: #3c3c43;
         }
 
         .result-meta {
             margin-top: 4px;
             font-size: 11px;
-            color: #666;
+            color: #8e8e93;
             display: flex;
             gap: 14px;
         }
 
         .result-waste {
-            color: #c75050;
+            color: #ff453a;
         }
 
         .result-efficiency {
-            color: #5aaa5a;
+            color: #30d158;
         }
 
         /* === STOCK USAGE === */
         .stock-usage {
-            background: #2e2e2e;
-            border: 2px solid #4a4a4a;
+            background: #f2f2f7;
+            border: 1px solid #d1d1d6;
             padding: 14px;
             margin: 14px 0;
         }
@@ -388,7 +445,7 @@
         .stock-usage-title {
             font-size: 13px;
             font-weight: 700;
-            color: #5aaa5a;
+            color: #8e8e93;
             margin-bottom: 8px;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -401,23 +458,23 @@
         }
 
         .stock-usage-item {
-            background: #333;
+            background: #fff;
             padding: 4px 12px;
-            border: 1px solid #555;
-            color: #c7b84e;
+            border: 1px solid #d1d1d6;
+            color: #3c3c43;
             font-size: 12px;
         }
 
         /* === SUMMARY === */
         .summary {
-            background: #3a3a3a;
-            color: #ddd;
+            background: #f2f2f7;
+            color: #3c3c43;
             padding: 14px 20px;
             margin-top: 14px;
             text-align: center;
             font-size: 13px;
             line-height: 1.6;
-            border: 2px solid #555;
+            border: 1px solid #d1d1d6;
             border-left: 4px solid #c75050;
         }
 
@@ -426,7 +483,7 @@
             display: none;
             text-align: center;
             padding: 24px;
-            color: #888;
+            color: #8e8e93;
         }
 
         .loading.active {
@@ -439,7 +496,7 @@
         }
 
         .spinner {
-            border: 3px solid #3a3a3a;
+            border: 3px solid #d1d1d6;
             border-top: 3px solid #c75050;
             border-radius: 50%;
             width: 32px;
@@ -451,7 +508,7 @@
         /* === CART === */
         .cart-section {
             margin-top: 20px;
-            border-top: 2px solid #4a4a4a;
+            border-top: 1px solid #d1d1d6;
             padding-top: 20px;
         }
 
@@ -465,7 +522,7 @@
         .cart-title {
             font-size: 14px;
             font-weight: 700;
-            color: #c7b84e;
+            color: #1c1c1e;
             text-transform: uppercase;
             letter-spacing: 2px;
         }
@@ -479,12 +536,12 @@
         }
 
         .cart-item {
-            background: #2e2e2e;
-            border: 1px solid #4a4a4a;
+            background: #f2f2f7;
+            border: 1px solid #d1d1d6;
             padding: 10px 14px;
             margin-bottom: 6px;
             font-size: 12px;
-            color: #ccc;
+            color: #3c3c43;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -495,31 +552,31 @@
         }
 
         .cart-item-profile {
-            color: #6b8db5;
+            color: #c75050;
             font-weight: 700;
         }
 
         .cart-item-grade {
-            color: #c7b84e;
+            color: #8e8e93;
         }
 
         .cart-item-stock {
-            color: #ddd;
+            color: #3c3c43;
         }
 
         .cart-item-remove {
             background: none;
             border: none;
-            color: #c75050;
+            color: #ff453a;
             cursor: pointer;
             font-size: 14px;
             padding: 2px 6px;
-            font-family: 'Share Tech Mono', monospace;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             letter-spacing: 0;
         }
 
         .cart-item-remove:hover {
-            color: #ff6666;
+            color: #ff6961;
         }
 
         .cart-buttons {
@@ -540,10 +597,11 @@
             bottom: 100%;
             left: 0;
             margin-bottom: 4px;
-            background: #3a3a3a;
-            border: 2px solid #555;
+            background: #fff;
+            border: 1px solid #d1d1d6;
             z-index: 10;
             min-width: 180px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
         .cart-export-menu.open {
@@ -555,9 +613,9 @@
             width: 100%;
             padding: 8px 16px;
             border: none;
-            border-bottom: 1px solid #444;
-            background: #3a3a3a;
-            color: #ccc;
+            border-bottom: 1px solid #f2f2f7;
+            background: #fff;
+            color: #3c3c43;
             text-align: left;
             font-size: 12px;
             letter-spacing: 1px;
@@ -568,12 +626,12 @@
         }
 
         .cart-export-menu button:hover {
-            background: #4a4a4a;
-            color: #fff;
+            background: #f2f2f7;
+            color: #c75050;
         }
 
         .cart-empty {
-            color: #666;
+            color: #8e8e93;
             font-size: 12px;
             text-align: center;
             padding: 14px;
@@ -581,8 +639,8 @@
 
         .btn-cart-add {
             background: none;
-            border: 1px solid #6b8db5;
-            color: #6b8db5;
+            border: 1px solid #c75050;
+            color: #c75050;
             padding: 3px 10px;
             font-size: 10px;
             cursor: pointer;
@@ -591,14 +649,123 @@
         }
 
         .btn-cart-add:hover {
-            background: #6b8db5;
+            background: #c75050;
             color: #fff;
         }
 
         .btn-cart-add.added {
-            border-color: #5aaa5a;
-            color: #5aaa5a;
+            border-color: #30d158;
+            color: #30d158;
             cursor: default;
+        }
+
+        /* === CALC TABS === */
+        .calc-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .calc-tab {
+            padding: 6px 16px;
+            font-size: 11px;
+            background: #f2f2f7;
+            color: #8e8e93;
+            border: 1px solid #d1d1d6;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.15s;
+        }
+
+        .calc-tab:hover {
+            color: #3c3c43;
+            border-color: #c75050;
+        }
+
+        .calc-tab.active {
+            background: #c75050;
+            color: #fff;
+            border-color: #c75050;
+        }
+
+        .calc-content {
+            display: none;
+        }
+
+        .calc-content.active {
+            display: block;
+        }
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .calc-grid.cols-1 {
+            grid-template-columns: 1fr;
+            max-width: 200px;
+        }
+
+        .calc-grid.cols-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .calc-grid.cols-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .calc-grid.cols-6 {
+            grid-template-columns: repeat(6, 1fr);
+        }
+
+        .calc-field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .calc-field input,
+        .calc-field select {
+            padding: 8px 10px;
+            border: 1px solid #d1d1d6;
+            font-size: 13px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #fff;
+            color: #1c1c1e;
+            transition: border-color 0.2s;
+        }
+
+        .calc-field input:focus,
+        .calc-field select:focus {
+            outline: none;
+            border-color: #c75050;
+        }
+
+        .calc-actions {
+            margin-bottom: 16px;
+        }
+
+        .calc-result {
+            background: #f2f2f7;
+            border: 1px solid #d1d1d6;
+            border-left: 3px solid #c75050;
+            padding: 14px 18px;
+            font-size: 13px;
+            color: #3c3c43;
+            line-height: 1.8;
+        }
+
+        .calc-result strong {
+            color: #1c1c1e;
+        }
+
+        .calc-result .calc-value {
+            color: #c75050;
+            font-weight: 700;
+            font-size: 15px;
         }
 
         /* === RESPONSIVE === */
@@ -630,11 +797,40 @@
                 font-size: 16px;
                 letter-spacing: 2px;
             }
+
+            .tabs {
+                overflow-x: auto;
+            }
+
+            .tab {
+                padding: 8px 14px;
+                font-size: 10px;
+                white-space: nowrap;
+            }
+
+            .calc-grid,
+            .calc-grid.cols-2,
+            .calc-grid.cols-3,
+            .calc-grid.cols-6 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .calc-grid.cols-1 {
+                grid-template-columns: 1fr;
+                max-width: 100%;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('wycinacz', this)">Wycinacz Pro</button>
+            <button class="tab" onclick="switchTab('ksztaltowniki', this)">Kształtowniki</button>
+            <button class="tab" onclick="switchTab('kalkulator', this)">Kalkulator Mas</button>
+        </div>
+
+        <div id="tab-wycinacz" class="tab-content active">
         <div class="header">
             <a href="mailto:kamilszuster@gmail.com" class="header-mail"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>kamilszuster@gmail.com</a>
             <h1>Wycinacz <span class="accent">Pro</span></h1>
@@ -736,9 +932,180 @@
                 </div>
             </div>
         </div>
+        </div>
+
+        <div id="tab-ksztaltowniki" class="tab-content">
+            <div class="tab-placeholder">
+                <h2>Kształtowniki</h2>
+                <p>Baza kształtowników — w przygotowaniu</p>
+            </div>
+        </div>
+
+        <div id="tab-kalkulator" class="tab-content">
+            <div class="main-content">
+                <div class="calc-tabs">
+                    <button class="calc-tab active" onclick="switchCalcTab('blachy', this)">Blachy i płaskowniki</button>
+                    <button class="calc-tab" onclick="switchCalcTab('rury', this)">Rury</button>
+                    <button class="calc-tab" onclick="switchCalcTab('ruryprost', this)">Rury prostokątne</button>
+                    <button class="calc-tab" onclick="switchCalcTab('prety', this)">Pręty</button>
+                </div>
+
+                <!-- BLACHY I PŁASKOWNIKI -->
+                <div id="calc-blachy" class="calc-content active">
+                    <div class="calc-grid">
+                        <div class="calc-field">
+                            <label class="column-label">Materiał</label>
+                            <select id="blacha-mat" onchange="calcMatChange('blacha')">
+                                <option value="7.85">Stal</option>
+                                <option value="2.7">Aluminium</option>
+                            </select>
+                        </div>
+                        <div class="calc-field">
+                            <label class="column-label">Grubość (mm)</label>
+                            <input type="number" id="blacha-grub" value="10" min="0" step="5">
+                        </div>
+                        <div class="calc-field">
+                            <label class="column-label">Szerokość (mm)</label>
+                            <input type="number" id="blacha-szer" value="100" min="0" step="500">
+                        </div>
+                        <div class="calc-field">
+                            <label class="column-label">Długość (mm)</label>
+                            <input type="number" id="blacha-dlug" value="1000" min="0" step="500">
+                        </div>
+                        <div class="calc-field">
+                            <label class="column-label">Gęstość (kg/dm³)</label>
+                            <input type="number" id="blacha-gest" value="7.85" min="0" step="0.01">
+                        </div>
+                    </div>
+                    <div class="calc-actions">
+                        <button class="btn-primary" onclick="calcBlacha()">Oblicz</button>
+                    </div>
+                    <div id="blacha-wynik" class="calc-result" style="display:none;"></div>
+                </div>
+
+                <!-- RURY -->
+                <div id="calc-rury" class="calc-content">
+                    <div class="calc-grid cols-2">
+                        <div class="calc-field">
+                            <label class="column-label">Średnica zewn. (mm)</label>
+                            <input type="number" id="rura-srednica" value="50" min="0" step="10">
+                        </div>
+                        <div class="calc-field">
+                            <label class="column-label">Grubość ścianki (mm)</label>
+                            <input type="number" id="rura-grub" value="5" min="0" step="5">
+                        </div>
+                    </div>
+                    <div class="calc-grid cols-3">
+                        <div class="calc-field">
+                            <label class="column-label">Materiał</label>
+                            <select id="rura-mat" onchange="calcMatChange('rura')">
+                                <option value="7.85">Stal</option>
+                                <option value="2.7">Aluminium</option>
+                            </select>
+                        </div>
+                        <div class="calc-field">
+                            <label class="column-label">Długość (mm)</label>
+                            <input type="number" id="rura-dlug" value="6000" min="0" step="1000">
+                        </div>
+                        <div class="calc-field">
+                            <label class="column-label">Gęstość (kg/dm³)</label>
+                            <input type="number" id="rura-gest" value="7.85" min="0" step="0.01">
+                        </div>
+                    </div>
+                    <div class="calc-actions">
+                        <button class="btn-primary" onclick="calcRura()">Oblicz</button>
+                    </div>
+                    <div id="rura-wynik" class="calc-result" style="display:none;"></div>
+                </div>
+
+                <!-- RURY PROSTOKĄTNE -->
+                <div id="calc-ruryprost" class="calc-content">
+                    <div class="calc-grid cols-1">
+                        <div class="calc-field">
+                            <label class="column-label">Grubość ścianki (mm)</label>
+                            <input type="number" id="rprost-grub" value="4" min="0" step="1">
+                        </div>
+                    </div>
+                    <div class="calc-grid">
+                        <div class="calc-field">
+                            <label class="column-label">Materiał</label>
+                            <select id="rprost-mat" onchange="calcMatChange('rprost')">
+                                <option value="7.85">Stal</option>
+                                <option value="2.7">Aluminium</option>
+                            </select>
+                        </div>
+                        <div class="calc-field">
+                            <label class="column-label">Szerokość (mm)</label>
+                            <input type="number" id="rprost-szer" value="60" min="0" step="5">
+                        </div>
+                        <div class="calc-field">
+                            <label class="column-label">Wysokość (mm)</label>
+                            <input type="number" id="rprost-wys" value="40" min="0" step="5">
+                        </div>
+                        <div class="calc-field">
+                            <label class="column-label">Długość (mm)</label>
+                            <input type="number" id="rprost-dlug" value="6000" min="0" step="1000">
+                        </div>
+                        <div class="calc-field">
+                            <label class="column-label">Gęstość (kg/dm³)</label>
+                            <input type="number" id="rprost-gest" value="7.85" min="0" step="0.01">
+                        </div>
+                    </div>
+                    <div class="calc-actions">
+                        <button class="btn-primary" onclick="calcRuraProst()">Oblicz</button>
+                    </div>
+                    <div id="rprost-wynik" class="calc-result" style="display:none;"></div>
+                </div>
+
+                <!-- PRĘTY -->
+                <div id="calc-prety" class="calc-content">
+                    <div class="calc-grid">
+                        <div class="calc-field">
+                            <label class="column-label">Materiał</label>
+                            <select id="pret-mat" onchange="calcMatChange('pret')">
+                                <option value="7.85">Stal</option>
+                                <option value="2.7">Aluminium</option>
+                            </select>
+                        </div>
+                        <div class="calc-field">
+                            <label class="column-label">Wymiar (mm)</label>
+                            <input type="number" id="pret-wymiar" value="20" min="0" step="1">
+                            <p class="hint">Średnica / bok</p>
+                        </div>
+                        <div class="calc-field">
+                            <label class="column-label">Przekrój</label>
+                            <select id="pret-ksztalt">
+                                <option value="kolo">Okrągły</option>
+                                <option value="kwadrat">Kwadratowy</option>
+                                <option value="szesciokat">Sześciokątny</option>
+                            </select>
+                        </div>
+                        <div class="calc-field">
+                            <label class="column-label">Długość (mm)</label>
+                            <input type="number" id="pret-dlug" value="6000" min="0" step="1000">
+                        </div>
+                        <div class="calc-field">
+                            <label class="column-label">Gęstość (kg/dm³)</label>
+                            <input type="number" id="pret-gest" value="7.85" min="0" step="0.01">
+                        </div>
+                    </div>
+                    <div class="calc-actions">
+                        <button class="btn-primary" onclick="calcPret()">Oblicz</button>
+                    </div>
+                    <div id="pret-wynik" class="calc-result" style="display:none;"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            btn.classList.add('active');
+        }
+
         let currentResult = null;
         let cart = [];
 
@@ -1203,6 +1570,118 @@
                 showError('Błąd podczas eksportu TXT');
                 console.error(error);
             }
+        }
+        // === KALKULATOR MAS ===
+        function switchCalcTab(id, btn) {
+            document.querySelectorAll('.calc-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.calc-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('calc-' + id).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        function calcMatChange(prefix) {
+            const mat = document.getElementById(prefix + '-mat');
+            const gest = document.getElementById(prefix + '-gest');
+            gest.value = mat.value;
+        }
+
+        function calcBlacha() {
+            const szer = parseFloat(document.getElementById('blacha-szer').value) || 0;
+            const grub = parseFloat(document.getElementById('blacha-grub').value) || 0;
+            const dlug = parseFloat(document.getElementById('blacha-dlug').value) || 0;
+            const gest = parseFloat(document.getElementById('blacha-gest').value) || 7.85;
+
+            const masa1m = (szer * grub * gest) / 1000;
+            const dlug1kg = masa1m > 0 ? 1 / masa1m : 0;
+            const masaCalk = masa1m * (dlug / 1000);
+
+            const wynik = document.getElementById('blacha-wynik');
+            wynik.style.display = 'block';
+            wynik.innerHTML = `
+                <div>Masa 1 metra: <span class="calc-value">${masa1m.toFixed(3)} kg/m</span></div>
+                <div>Długość 1 kg: <span class="calc-value">${dlug1kg.toFixed(4)} m/kg</span></div>
+                <div>Masa dla ${dlug} mm: <span class="calc-value">${masaCalk.toFixed(3)} kg</span></div>
+            `;
+        }
+
+        function calcRura() {
+            const d = parseFloat(document.getElementById('rura-srednica').value) || 0;
+            const t = parseFloat(document.getElementById('rura-grub').value) || 0;
+            const dlug = parseFloat(document.getElementById('rura-dlug').value) || 0;
+            const gest = parseFloat(document.getElementById('rura-gest').value) || 7.85;
+
+            const masa1m = (Math.PI / 4) * (4 * d * t - 4 * t * t) * gest / 1000;
+            const dlug1kg = masa1m > 0 ? 1 / masa1m : 0;
+            const masaCalk = masa1m * (dlug / 1000);
+
+            const wynik = document.getElementById('rura-wynik');
+            wynik.style.display = 'block';
+            wynik.innerHTML = `
+                <div>Masa 1 metra: <span class="calc-value">${masa1m.toFixed(3)} kg/m</span></div>
+                <div>Długość 1 kg: <span class="calc-value">${dlug1kg.toFixed(4)} m/kg</span></div>
+                <div>Masa dla ${dlug} mm: <span class="calc-value">${masaCalk.toFixed(3)} kg</span></div>
+            `;
+        }
+
+        function calcRuraProst() {
+            const szer = parseFloat(document.getElementById('rprost-szer').value) || 0;
+            const wys = parseFloat(document.getElementById('rprost-wys').value) || 0;
+            const t = parseFloat(document.getElementById('rprost-grub').value) || 0;
+            const dlug = parseFloat(document.getElementById('rprost-dlug').value) || 0;
+            const gest = parseFloat(document.getElementById('rprost-gest').value) || 7.85;
+
+            const outside = szer * wys;
+            const inside = (szer - 2 * t) * (wys - 2 * t);
+            const area = outside - inside;
+            const masa1m = area * gest / 1000;
+            const dlug1kg = masa1m > 0 ? 1 / masa1m : 0;
+            const masaCalk = masa1m * (dlug / 1000);
+
+            const wynik = document.getElementById('rprost-wynik');
+            wynik.style.display = 'block';
+            wynik.innerHTML = `
+                <div>Masa 1 metra: <span class="calc-value">${masa1m.toFixed(3)} kg/m</span></div>
+                <div>Długość 1 kg: <span class="calc-value">${dlug1kg.toFixed(4)} m/kg</span></div>
+                <div>Masa dla ${dlug} mm: <span class="calc-value">${masaCalk.toFixed(3)} kg</span></div>
+            `;
+        }
+
+        function calcPret() {
+            const w = parseFloat(document.getElementById('pret-wymiar').value) || 0;
+            const ksztalt = document.getElementById('pret-ksztalt').value;
+            const dlug = parseFloat(document.getElementById('pret-dlug').value) || 0;
+            const gest = parseFloat(document.getElementById('pret-gest').value) || 7.85;
+
+            let area = 0;
+            let ksztaltNazwa = '';
+
+            switch (ksztalt) {
+                case 'kolo':
+                    area = (Math.PI * w * w) / 4;
+                    ksztaltNazwa = 'okrągły';
+                    break;
+                case 'kwadrat':
+                    area = w * w;
+                    ksztaltNazwa = 'kwadratowy';
+                    break;
+                case 'szesciokat':
+                    area = (w * w / 2) * Math.sqrt(3);
+                    ksztaltNazwa = 'sześciokątny';
+                    break;
+            }
+
+            const masa1m = area * gest / 1000;
+            const dlug1kg = masa1m > 0 ? 1 / masa1m : 0;
+            const masaCalk = masa1m * (dlug / 1000);
+
+            const wynik = document.getElementById('pret-wynik');
+            wynik.style.display = 'block';
+            wynik.innerHTML = `
+                <div>Przekrój: <strong>${ksztaltNazwa}</strong></div>
+                <div>Masa 1 metra: <span class="calc-value">${masa1m.toFixed(3)} kg/m</span></div>
+                <div>Długość 1 kg: <span class="calc-value">${dlug1kg.toFixed(4)} m/kg</span></div>
+                <div>Masa dla ${dlug} mm: <span class="calc-value">${masaCalk.toFixed(3)} kg</span></div>
+            `;
         }
     </script>
 </body>
