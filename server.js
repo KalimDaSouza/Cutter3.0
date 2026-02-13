@@ -243,7 +243,7 @@ app.post('/api/export/pdf', (req, res) => {
         doc.pipe(res);
 
         // Tytul
-        let title = 'Wyniki optymalizacji ciecia';
+        let title = 'Lista Ciec';
         if (contractNumber) title += ` | Kontrakt: ${contractNumber}`;
         if (profileType) title += ` | Profil: ${profileType}`;
         doc.fontSize(16).text(title, { underline: true });
@@ -277,7 +277,7 @@ app.post('/api/export/txt', (req, res) => {
         filename += '.txt';
         filename = filename.replace(/[^a-zA-Z0-9._\-]/g, '_');
 
-        let title = 'Wyniki optymalizacji ciecia';
+        let title = 'Lista Ciec';
         if (contractNumber) title += ` | Kontrakt: ${contractNumber}`;
         if (profileType) title += ` | Profil: ${profileType}`;
 
