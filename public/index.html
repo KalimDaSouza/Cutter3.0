@@ -153,31 +153,153 @@
             position: relative;
         }
 
-        .header-mail {
+        .header-feedback {
             position: absolute;
             top: 10px;
             right: 14px;
             color: var(--text-tertiary);
-            font-size: 12px;
-            text-decoration: none;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: none;
+            border: 1px solid var(--border);
+            padding: 3px 10px;
+            cursor: pointer;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
             gap: 5px;
-            transition: color 0.2s;
         }
 
-        .header-mail:hover {
-            color: var(--text-secondary);
+        .header-feedback:hover {
+            color: var(--accent);
+            border-color: var(--accent);
         }
 
-        .header-mail svg {
-            width: 14px;
-            height: 14px;
-            fill: var(--text-tertiary);
+        .header-feedback svg {
+            width: 13px;
+            height: 13px;
+            fill: currentColor;
         }
 
-        .header-mail:hover svg {
-            fill: var(--text-secondary);
+        /* === FEEDBACK MODAL === */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            width: 420px;
+            max-width: 90vw;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-tertiary);
+            font-size: 18px;
+            cursor: pointer;
+            padding: 0 4px;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: var(--accent);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-field {
+            margin-bottom: 14px;
+        }
+
+        .modal-field label {
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-tertiary);
+            margin-bottom: 4px;
+        }
+
+        .modal-field input,
+        .modal-field textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-size: 13px;
+            transition: border-color 0.2s;
+        }
+
+        .modal-field input:focus,
+        .modal-field textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .modal-field textarea {
+            min-height: 120px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        .modal-field input::placeholder,
+        .modal-field textarea::placeholder {
+            color: var(--text-placeholder);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        /* === FOOTER === */
+        .app-footer {
+            text-align: center;
+            padding: 10px 20px;
+            border-top: 1px solid var(--border);
+            background: var(--bg-secondary);
+            font-size: 10px;
+            color: var(--text-tertiary);
+            letter-spacing: 1px;
         }
 
         h1 {
@@ -1191,7 +1313,7 @@
         <div id="tab-wycinacz" class="tab-content active">
         <div class="header">
             <button class="theme-toggle" onclick="toggleTheme()" title="Przełącz tryb ciemny/jasny" id="themeToggle">&#9790;</button>
-            <a href="mailto:kamilszuster@gmail.com" class="header-mail"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>kamilszuster@gmail.com</a>
+            <button class="header-feedback" onclick="openFeedback()"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2zm0 15.2L18.8 16H4V4h16v13.2z"/></svg>Feedback</button>
             <h1>Wycinacz <span class="accent">Pro</span></h1>
             <div class="header-inputs">
                 <div class="header-field">
@@ -1999,6 +2121,31 @@
                 </div>
             </div>
         </div>
+        <div class="app-footer">&copy; 2025 Wycinacz Pro &mdash; Wszelkie prawa zastrzeżone</div>
+    </div>
+
+    <!-- FEEDBACK MODAL -->
+    <div class="modal-overlay" id="feedbackModal" onclick="closeFeedbackOverlay(event)">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title">Feedback</span>
+                <button class="modal-close" onclick="closeFeedback()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-field">
+                    <label>Temat</label>
+                    <input type="text" id="feedbackSubject" placeholder="Np. Sugestia, Błąd, Pytanie..." />
+                </div>
+                <div class="modal-field">
+                    <label>Treść wiadomości</label>
+                    <textarea id="feedbackBody" placeholder="Opisz swoje uwagi, pomysły lub zgłoś problem..."></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-secondary" onclick="closeFeedback()">Anuluj</button>
+                    <button class="btn-primary" onclick="sendFeedback()">Wyślij</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -2055,6 +2202,35 @@
             if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
             updateThemeIcon(theme);
         })();
+
+        // === FEEDBACK ===
+        function openFeedback() {
+            document.getElementById('feedbackModal').classList.add('open');
+            document.getElementById('feedbackSubject').focus();
+        }
+
+        function closeFeedback() {
+            document.getElementById('feedbackModal').classList.remove('open');
+            document.getElementById('feedbackSubject').value = '';
+            document.getElementById('feedbackBody').value = '';
+        }
+
+        function closeFeedbackOverlay(e) {
+            if (e.target === document.getElementById('feedbackModal')) closeFeedback();
+        }
+
+        function sendFeedback() {
+            const subject = document.getElementById('feedbackSubject').value.trim();
+            const body = document.getElementById('feedbackBody').value.trim();
+            if (!subject && !body) return;
+            const _r = [107,97,109,105,108,115,122,117,115,116,101,114,64,103,109,97,105,108,46,99,111,109];
+            const _a = _r.map(c => String.fromCharCode(c)).join('');
+            const mailto = 'mailto:' + _a +
+                '?subject=' + encodeURIComponent(subject || 'Feedback Wycinacz Pro') +
+                '&body=' + encodeURIComponent(body);
+            window.location.href = mailto;
+            setTimeout(closeFeedback, 500);
+        }
 
         function switchTab(tabId, btn) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
