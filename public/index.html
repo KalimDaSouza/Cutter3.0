@@ -5,7 +5,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wycinacz Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
+        :root {
+            --bg-page: #e8e8ed;
+            --bg-primary: #fff;
+            --bg-secondary: #f2f2f7;
+            --bg-tertiary: #e8e8ed;
+            --border: #d1d1d6;
+            --border-dark: #3c3c43;
+            --text-primary: #1c1c1e;
+            --text-secondary: #3c3c43;
+            --text-tertiary: #8e8e93;
+            --text-placeholder: #c7c7cc;
+            --accent: #c75050;
+            --accent-hover: #d06060;
+            --accent-selection: #c75050;
+            --success: #30d158;
+            --danger: #ff453a;
+            --danger-light: #ff6961;
+            --danger-bg: #fff5f5;
+            --th-bg: #1c1c1e;
+            --th-color: #fff;
+            --th-border: #3c3c43;
+            --shadow: rgba(0,0,0,0.08);
+            --cart-border-inline: #444;
+            --svg-fill-shape: #d1d1d6;
+            --svg-stroke-shape: #3c3c43;
+            --svg-text: #1c1c1e;
+        }
+
+        [data-theme="dark"] {
+            color-scheme: dark;
+            --bg-page: #1c1c1e;
+            --bg-primary: #2c2c2e;
+            --bg-secondary: #3a3a3c;
+            --bg-tertiary: #48484a;
+            --border: #48484a;
+            --border-dark: #636366;
+            --text-primary: #f5f5f7;
+            --text-secondary: #d1d1d6;
+            --text-tertiary: #8e8e93;
+            --text-placeholder: #636366;
+            --accent: #e06060;
+            --accent-hover: #ea7070;
+            --accent-selection: #e06060;
+            --success: #30d158;
+            --danger: #ff6961;
+            --danger-light: #ff8a80;
+            --danger-bg: #3a2020;
+            --th-bg: #1c1c1e;
+            --th-color: #f5f5f7;
+            --th-border: #48484a;
+            --shadow: rgba(0,0,0,0.3);
+            --cart-border-inline: #636366;
+            --svg-fill-shape: #48484a;
+            --svg-stroke-shape: #8e8e93;
+            --svg-text: #f5f5f7;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -14,29 +72,29 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: #e8e8ed;
+            background: var(--bg-page);
             min-height: 100vh;
             padding: 20px;
         }
 
         ::selection {
-            background: #c75050;
+            background: var(--accent-selection);
             color: #fff;
         }
 
         .container {
             max-width: 960px;
             margin: 0 auto;
-            background: #fff;
-            border: 1px solid #d1d1d6;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
             overflow: hidden;
         }
 
         /* === TABS === */
         .tabs {
             display: flex;
-            background: #f2f2f7;
-            border-bottom: 1px solid #d1d1d6;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
         }
 
         .tab {
@@ -45,7 +103,7 @@
             font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 2px;
-            color: #8e8e93;
+            color: var(--text-tertiary);
             cursor: pointer;
             border: none;
             background: none;
@@ -54,14 +112,14 @@
         }
 
         .tab:hover {
-            color: #3c3c43;
-            background: #e8e8ed;
+            color: var(--text-secondary);
+            background: var(--bg-tertiary);
         }
 
         .tab.active {
-            color: #c75050;
-            border-bottom-color: #c75050;
-            background: #fff;
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+            background: var(--bg-primary);
         }
 
         .tab-content {
@@ -75,23 +133,23 @@
         .tab-placeholder {
             padding: 60px 30px;
             text-align: center;
-            color: #8e8e93;
+            color: var(--text-tertiary);
             font-size: 14px;
         }
 
         .tab-placeholder h2 {
             font-family: 'Press Start 2P', monospace;
             font-size: 14px;
-            color: #3c3c43;
+            color: var(--text-secondary);
             margin-bottom: 12px;
         }
 
         /* === HEADER === */
         .header {
-            background: #f2f2f7;
+            background: var(--bg-secondary);
             padding: 22px 30px 18px;
             text-align: center;
-            border-bottom: 1px solid #d1d1d6;
+            border-bottom: 1px solid var(--border);
             position: relative;
         }
 
@@ -99,7 +157,7 @@
             position: absolute;
             top: 10px;
             right: 14px;
-            color: #8e8e93;
+            color: var(--text-tertiary);
             font-size: 12px;
             text-decoration: none;
             display: flex;
@@ -109,17 +167,17 @@
         }
 
         .header-mail:hover {
-            color: #3c3c43;
+            color: var(--text-secondary);
         }
 
         .header-mail svg {
             width: 14px;
             height: 14px;
-            fill: #8e8e93;
+            fill: var(--text-tertiary);
         }
 
         .header-mail:hover svg {
-            fill: #3c3c43;
+            fill: var(--text-secondary);
         }
 
         h1 {
@@ -128,12 +186,12 @@
             font-weight: 400;
             letter-spacing: 4px;
             text-transform: uppercase;
-            color: #1c1c1e;
+            color: var(--text-primary);
             margin-bottom: 16px;
         }
 
         h1 .accent {
-            color: #c75050;
+            color: var(--accent);
         }
 
         .header-inputs {
@@ -153,18 +211,18 @@
             font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 2px;
-            color: #8e8e93;
+            color: var(--text-tertiary);
             margin-bottom: 3px;
         }
 
         .header-field input,
         .header-field select {
             padding: 6px 12px;
-            border: 1px solid #d1d1d6;
+            border: 1px solid var(--border);
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             font-size: 13px;
-            background: #fff;
-            color: #1c1c1e;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             width: 200px;
             transition: border-color 0.2s;
         }
@@ -172,16 +230,16 @@
         .header-field input:focus,
         .header-field select:focus {
             outline: none;
-            border-color: #c75050;
+            border-color: var(--accent);
         }
 
         .header-field input::placeholder {
-            color: #c7c7cc;
+            color: var(--text-placeholder);
         }
 
         .header-field select option {
-            background: #fff;
-            color: #1c1c1e;
+            background: var(--bg-primary);
+            color: var(--text-primary);
         }
 
         /* === MAIN CONTENT === */
@@ -206,31 +264,31 @@
             font-weight: 400;
             text-transform: uppercase;
             letter-spacing: 2px;
-            color: #8e8e93;
+            color: var(--text-tertiary);
             margin-bottom: 5px;
         }
 
         textarea {
             width: 100%;
             padding: 8px 10px;
-            border: 1px solid #d1d1d6;
+            border: 1px solid var(--border);
             font-size: 13px;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             resize: vertical;
             min-height: 220px;
             line-height: 1.7;
-            background: #fff;
-            color: #1c1c1e;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             transition: border-color 0.2s;
         }
 
         textarea:focus {
             outline: none;
-            border-color: #c75050;
+            border-color: var(--accent);
         }
 
         textarea::placeholder {
-            color: #c7c7cc;
+            color: var(--text-placeholder);
         }
 
         /* === PANEL BOCZNY === */
@@ -250,33 +308,33 @@
             font-weight: 400;
             text-transform: uppercase;
             letter-spacing: 2px;
-            color: #8e8e93;
+            color: var(--text-tertiary);
             margin-bottom: 5px;
         }
 
         .param-group input {
             width: 100%;
             padding: 8px 10px;
-            border: 1px solid #d1d1d6;
+            border: 1px solid var(--border);
             font-size: 13px;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: #fff;
-            color: #1c1c1e;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             transition: border-color 0.2s;
         }
 
         .param-group input:focus {
             outline: none;
-            border-color: #c75050;
+            border-color: var(--accent);
         }
 
         .param-group input::placeholder {
-            color: #c7c7cc;
+            color: var(--text-placeholder);
         }
 
         .hint {
             font-size: 9px;
-            color: #8e8e93;
+            color: var(--text-tertiary);
             margin-top: 3px;
             letter-spacing: 1px;
         }
@@ -286,7 +344,7 @@
             display: flex;
             gap: 8px;
             padding-top: 16px;
-            border-top: 1px solid #d1d1d6;
+            border-top: 1px solid var(--border);
         }
 
         button {
@@ -302,24 +360,24 @@
         }
 
         .btn-primary {
-            background: #c75050;
+            background: var(--accent);
             color: #fff;
             border: none;
         }
 
         .btn-primary:hover {
-            background: #d06060;
+            background: var(--accent-hover);
         }
 
         .btn-secondary {
-            background: #f2f2f7;
-            color: #8e8e93;
-            border: 1px solid #d1d1d6;
+            background: var(--bg-secondary);
+            color: var(--text-tertiary);
+            border: 1px solid var(--border);
         }
 
         .btn-secondary:hover:not(:disabled) {
-            color: #3c3c43;
-            border-color: #c75050;
+            color: var(--text-secondary);
+            border-color: var(--accent);
         }
 
         .btn-secondary:disabled {
@@ -339,11 +397,11 @@
             top: 100%;
             left: 0;
             margin-top: 4px;
-            background: #fff;
-            border: 1px solid #d1d1d6;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
             z-index: 10;
             min-width: 160px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 12px var(--shadow);
         }
 
         .export-menu.open {
@@ -355,9 +413,9 @@
             width: 100%;
             padding: 8px 16px;
             border: none;
-            border-bottom: 1px solid #f2f2f7;
-            background: #fff;
-            color: #3c3c43;
+            border-bottom: 1px solid var(--bg-secondary);
+            background: var(--bg-primary);
+            color: var(--text-secondary);
             text-align: left;
             font-size: 12px;
             letter-spacing: 1px;
@@ -368,17 +426,17 @@
         }
 
         .export-menu button:hover {
-            background: #f2f2f7;
-            color: #c75050;
+            background: var(--bg-secondary);
+            color: var(--accent);
         }
 
         /* === ERROR === */
         .error {
-            background: #fff5f5;
-            color: #ff453a;
+            background: var(--danger-bg);
+            color: var(--danger);
             padding: 8px 14px;
             margin: 14px 0;
-            border: 1px solid #ff453a;
+            border: 1px solid var(--danger);
             font-size: 12px;
         }
 
@@ -386,13 +444,13 @@
         .results-section {
             margin-top: 20px;
             padding-top: 20px;
-            border-top: 1px solid #d1d1d6;
+            border-top: 1px solid var(--border);
         }
 
         .result-item {
-            background: #f2f2f7;
-            border: 1px solid #d1d1d6;
-            border-left: 3px solid #c75050;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent);
             padding: 10px 14px;
             margin-bottom: 6px;
             font-size: 13px;
@@ -400,44 +458,44 @@
         }
 
         .result-item:hover {
-            border-color: #c75050;
-            border-left-color: #d06060;
+            border-color: var(--accent);
+            border-left-color: var(--accent-hover);
         }
 
         .result-stock {
-            color: #1c1c1e;
+            color: var(--text-primary);
             font-weight: 700;
         }
 
         .result-arrow {
-            color: #8e8e93;
+            color: var(--text-tertiary);
             margin: 0 6px;
         }
 
         .result-cuts {
-            color: #3c3c43;
+            color: var(--text-secondary);
         }
 
         .result-meta {
             margin-top: 4px;
             font-size: 11px;
-            color: #8e8e93;
+            color: var(--text-tertiary);
             display: flex;
             gap: 14px;
         }
 
         .result-waste {
-            color: #ff453a;
+            color: var(--danger);
         }
 
         .result-efficiency {
-            color: #30d158;
+            color: var(--success);
         }
 
         /* === STOCK USAGE === */
         .stock-usage {
-            background: #f2f2f7;
-            border: 1px solid #d1d1d6;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
             padding: 14px;
             margin: 14px 0;
         }
@@ -445,7 +503,7 @@
         .stock-usage-title {
             font-size: 13px;
             font-weight: 700;
-            color: #8e8e93;
+            color: var(--text-tertiary);
             margin-bottom: 8px;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -458,24 +516,24 @@
         }
 
         .stock-usage-item {
-            background: #fff;
+            background: var(--bg-primary);
             padding: 4px 12px;
-            border: 1px solid #d1d1d6;
-            color: #3c3c43;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
             font-size: 12px;
         }
 
         /* === SUMMARY === */
         .summary {
-            background: #f2f2f7;
-            color: #3c3c43;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
             padding: 14px 20px;
             margin-top: 14px;
             text-align: center;
             font-size: 13px;
             line-height: 1.6;
-            border: 1px solid #d1d1d6;
-            border-left: 4px solid #c75050;
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
         }
 
         /* === LOADING === */
@@ -483,7 +541,7 @@
             display: none;
             text-align: center;
             padding: 24px;
-            color: #8e8e93;
+            color: var(--text-tertiary);
         }
 
         .loading.active {
@@ -496,8 +554,8 @@
         }
 
         .spinner {
-            border: 3px solid #d1d1d6;
-            border-top: 3px solid #c75050;
+            border: 3px solid var(--border);
+            border-top: 3px solid var(--accent);
             border-radius: 50%;
             width: 32px;
             height: 32px;
@@ -508,7 +566,7 @@
         /* === CART === */
         .cart-section {
             margin-top: 20px;
-            border-top: 1px solid #d1d1d6;
+            border-top: 1px solid var(--border);
             padding-top: 20px;
         }
 
@@ -522,13 +580,13 @@
         .cart-title {
             font-size: 14px;
             font-weight: 700;
-            color: #1c1c1e;
+            color: var(--text-primary);
             text-transform: uppercase;
             letter-spacing: 2px;
         }
 
         .cart-count {
-            background: #c75050;
+            background: var(--accent);
             color: #fff;
             padding: 2px 8px;
             font-size: 11px;
@@ -536,12 +594,12 @@
         }
 
         .cart-item {
-            background: #f2f2f7;
-            border: 1px solid #d1d1d6;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
             padding: 10px 14px;
             margin-bottom: 6px;
             font-size: 12px;
-            color: #3c3c43;
+            color: var(--text-secondary);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -552,22 +610,22 @@
         }
 
         .cart-item-profile {
-            color: #c75050;
+            color: var(--accent);
             font-weight: 700;
         }
 
         .cart-item-grade {
-            color: #8e8e93;
+            color: var(--text-tertiary);
         }
 
         .cart-item-stock {
-            color: #3c3c43;
+            color: var(--text-secondary);
         }
 
         .cart-item-remove {
             background: none;
             border: none;
-            color: #ff453a;
+            color: var(--danger);
             cursor: pointer;
             font-size: 14px;
             padding: 2px 6px;
@@ -576,7 +634,7 @@
         }
 
         .cart-item-remove:hover {
-            color: #ff6961;
+            color: var(--danger-light);
         }
 
         .cart-buttons {
@@ -597,11 +655,11 @@
             bottom: 100%;
             left: 0;
             margin-bottom: 4px;
-            background: #fff;
-            border: 1px solid #d1d1d6;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
             z-index: 10;
             min-width: 180px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 12px var(--shadow);
         }
 
         .cart-export-menu.open {
@@ -613,9 +671,9 @@
             width: 100%;
             padding: 8px 16px;
             border: none;
-            border-bottom: 1px solid #f2f2f7;
-            background: #fff;
-            color: #3c3c43;
+            border-bottom: 1px solid var(--bg-secondary);
+            background: var(--bg-primary);
+            color: var(--text-secondary);
             text-align: left;
             font-size: 12px;
             letter-spacing: 1px;
@@ -626,12 +684,12 @@
         }
 
         .cart-export-menu button:hover {
-            background: #f2f2f7;
-            color: #c75050;
+            background: var(--bg-secondary);
+            color: var(--accent);
         }
 
         .cart-empty {
-            color: #8e8e93;
+            color: var(--text-tertiary);
             font-size: 12px;
             text-align: center;
             padding: 14px;
@@ -639,8 +697,8 @@
 
         .btn-cart-add {
             background: none;
-            border: 1px solid #c75050;
-            color: #c75050;
+            border: 1px solid var(--accent);
+            color: var(--accent);
             padding: 3px 10px;
             font-size: 10px;
             cursor: pointer;
@@ -649,13 +707,13 @@
         }
 
         .btn-cart-add:hover {
-            background: #c75050;
+            background: var(--accent);
             color: #fff;
         }
 
         .btn-cart-add.added {
-            border-color: #30d158;
-            color: #30d158;
+            border-color: var(--success);
+            color: var(--success);
             cursor: default;
         }
 
@@ -670,9 +728,9 @@
         .calc-tab {
             padding: 6px 16px;
             font-size: 11px;
-            background: #f2f2f7;
-            color: #8e8e93;
-            border: 1px solid #d1d1d6;
+            background: var(--bg-secondary);
+            color: var(--text-tertiary);
+            border: 1px solid var(--border);
             cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -680,14 +738,14 @@
         }
 
         .calc-tab:hover {
-            color: #3c3c43;
-            border-color: #c75050;
+            color: var(--text-secondary);
+            border-color: var(--accent);
         }
 
         .calc-tab.active {
-            background: #c75050;
+            background: var(--accent);
             color: #fff;
-            border-color: #c75050;
+            border-color: var(--accent);
         }
 
         .calc-content {
@@ -730,18 +788,18 @@
         .calc-field input,
         .calc-field select {
             padding: 8px 10px;
-            border: 1px solid #d1d1d6;
+            border: 1px solid var(--border);
             font-size: 13px;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: #fff;
-            color: #1c1c1e;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             transition: border-color 0.2s;
         }
 
         .calc-field input:focus,
         .calc-field select:focus {
             outline: none;
-            border-color: #c75050;
+            border-color: var(--accent);
         }
 
         .calc-actions {
@@ -749,17 +807,17 @@
         }
 
         .calc-result {
-            background: #f2f2f7;
-            border: 1px solid #d1d1d6;
-            border-left: 3px solid #c75050;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent);
             padding: 14px 18px;
             font-size: 13px;
-            color: #3c3c43;
+            color: var(--text-secondary);
             line-height: 1.8;
         }
 
         .calc-result strong {
-            color: #1c1c1e;
+            color: var(--text-primary);
         }
 
         /* === KSZTAŁTOWNIKI TABLES === */
@@ -773,9 +831,9 @@
         .ksz-tab {
             padding: 6px 16px;
             font-size: 11px;
-            background: #f2f2f7;
-            color: #8e8e93;
-            border: 1px solid #d1d1d6;
+            background: var(--bg-secondary);
+            color: var(--text-tertiary);
+            border: 1px solid var(--border);
             cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -783,14 +841,14 @@
         }
 
         .ksz-tab:hover {
-            color: #3c3c43;
-            border-color: #c75050;
+            color: var(--text-secondary);
+            border-color: var(--accent);
         }
 
         .ksz-tab.active {
-            background: #c75050;
+            background: var(--accent);
             color: #fff;
-            border-color: #c75050;
+            border-color: var(--accent);
         }
 
         .ksz-content {
@@ -811,23 +869,23 @@
         .ksz-subtab {
             padding: 4px 12px;
             font-size: 10px;
-            background: #fff;
-            color: #8e8e93;
-            border: 1px solid #d1d1d6;
+            background: var(--bg-primary);
+            color: var(--text-tertiary);
+            border: 1px solid var(--border);
             cursor: pointer;
             letter-spacing: 1px;
             transition: all 0.15s;
         }
 
         .ksz-subtab:hover {
-            color: #3c3c43;
-            border-color: #c75050;
+            color: var(--text-secondary);
+            border-color: var(--accent);
         }
 
         .ksz-subtab.active {
-            background: #1c1c1e;
-            color: #fff;
-            border-color: #1c1c1e;
+            background: var(--th-bg);
+            color: var(--th-color);
+            border-color: var(--th-bg);
         }
 
         .ksz-subcontent {
@@ -859,43 +917,61 @@
         }
 
         .ksz-table th {
-            background: #1c1c1e;
-            color: #fff;
+            background: var(--th-bg);
+            color: var(--th-color);
             padding: 6px 10px;
             text-align: left;
             font-weight: 600;
             font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            border: 1px solid #3c3c43;
+            border: 1px solid var(--th-border);
         }
 
         .ksz-table td {
             padding: 5px 10px;
-            border: 1px solid #d1d1d6;
-            color: #3c3c43;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
         }
 
         .ksz-table tbody tr:nth-child(even) {
-            background: #f2f2f7;
+            background: var(--bg-secondary);
         }
 
         .ksz-table tbody tr:hover {
-            background: #e8e8ed;
+            background: var(--bg-tertiary);
         }
 
         .ksz-table td:first-child {
             font-weight: 700;
-            color: #c75050;
+            color: var(--accent);
+            position: sticky;
+            left: 0;
+            z-index: 1;
+            background: var(--bg-primary);
+        }
+
+        .ksz-table tbody tr:nth-child(even) td:first-child {
+            background: var(--bg-secondary);
+        }
+
+        .ksz-table tbody tr:hover td:first-child {
+            background: var(--bg-tertiary);
+        }
+
+        .ksz-table th:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 3;
         }
 
         .ksz-search {
             padding: 6px 12px;
-            border: 1px solid #d1d1d6;
+            border: 1px solid var(--border);
             font-size: 12px;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: #fff;
-            color: #1c1c1e;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             width: 240px;
             margin-bottom: 12px;
             transition: border-color 0.2s;
@@ -903,7 +979,7 @@
 
         .ksz-search:focus {
             outline: none;
-            border-color: #c75050;
+            border-color: var(--accent);
         }
 
         .ksz-header {
@@ -933,9 +1009,121 @@
         }
 
         .calc-result .calc-value {
-            color: #c75050;
+            color: var(--accent);
             font-weight: 700;
             font-size: 15px;
+        }
+
+        /* === SUGGESTION BOX === */
+        .suggestion-box {
+            background: #e8f5e9;
+            border: 1px solid var(--success);
+            border-left: 4px solid var(--success);
+            padding: 12px 16px;
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        [data-theme="dark"] .suggestion-box {
+            background: #1b3a1b;
+        }
+
+        .suggestion-box strong {
+            color: var(--success);
+        }
+
+        .suggestion-box .suggestion-title {
+            font-weight: 700;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--success);
+            margin-bottom: 4px;
+        }
+
+        /* === THEME TOGGLE === */
+        .theme-toggle {
+            position: absolute;
+            top: 10px;
+            left: 14px;
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-tertiary);
+            cursor: pointer;
+            padding: 4px 8px;
+            font-size: 16px;
+            line-height: 1;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            color: var(--text-secondary);
+            border-color: var(--accent);
+        }
+
+        /* === AUTOCOMPLETE === */
+        .autocomplete-wrap {
+            position: relative;
+        }
+
+        .autocomplete-list {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            max-height: 220px;
+            overflow-y: auto;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-top: none;
+            z-index: 20;
+            box-shadow: 0 6px 16px var(--shadow);
+        }
+
+        .autocomplete-list.open {
+            display: block;
+        }
+
+        .autocomplete-item {
+            padding: 6px 12px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--bg-secondary);
+        }
+
+        .autocomplete-item:last-child {
+            border-bottom: none;
+        }
+
+        .autocomplete-item:hover,
+        .autocomplete-item.active {
+            background: var(--bg-secondary);
+            color: var(--accent);
+        }
+
+        .autocomplete-item .ac-profile {
+            font-weight: 600;
+        }
+
+        .autocomplete-item .ac-meta {
+            font-size: 10px;
+            color: var(--text-tertiary);
+            margin-left: 12px;
+        }
+
+        .autocomplete-item:hover .ac-meta,
+        .autocomplete-item.active .ac-meta {
+            color: var(--text-secondary);
         }
 
         /* === RESPONSIVE === */
@@ -1002,6 +1190,7 @@
 
         <div id="tab-wycinacz" class="tab-content active">
         <div class="header">
+            <button class="theme-toggle" onclick="toggleTheme()" title="Przełącz tryb ciemny/jasny" id="themeToggle">&#9790;</button>
             <a href="mailto:kamilszuster@gmail.com" class="header-mail"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>kamilszuster@gmail.com</a>
             <h1>Wycinacz <span class="accent">Pro</span></h1>
             <div class="header-inputs">
@@ -1011,7 +1200,10 @@
                 </div>
                 <div class="header-field">
                     <label>Kształtownik</label>
-                    <input type="text" id="profileType" placeholder="HEB 300" />
+                    <div class="autocomplete-wrap">
+                        <input type="text" id="profileType" placeholder="HEB 300" autocomplete="off" oninput="onProfileInput()" onkeydown="onProfileKeydown(event)" onfocus="onProfileInput()" />
+                        <div class="autocomplete-list" id="profileAutocomplete"></div>
+                    </div>
                 </div>
                 <div class="header-field">
                     <label>Gatunek</label>
@@ -1067,6 +1259,7 @@
                         <button onclick="copyToClipboard()">Kopiuj</button>
                         <button onclick="exportPDF()">Eksport PDF</button>
                         <button onclick="exportTXT()">Eksport TXT</button>
+                        <button onclick="exportXLSX()">Eksport XLSX</button>
                     </div>
                 </div>
             </div>
@@ -1092,6 +1285,7 @@
                             <div class="cart-export-menu" id="cartExportMenu">
                                 <button onclick="exportCartCopy()">Kopiuj</button>
                                 <button onclick="exportCartEmail()">Wyślij e-mail</button>
+                                <button onclick="exportCartXLSX()">Eksport XLSX</button>
                             </div>
                         </div>
                         <button class="btn-primary" onclick="clearCart()">Wyczyść koszyk</button>
@@ -1110,6 +1304,9 @@
                     <button class="ksz-tab active" onclick="switchKszTab('dwut', this)">Dwuteowniki</button>
                     <button class="ksz-tab" onclick="switchKszTab('katow', this)">Kątowniki</button>
                     <button class="ksz-tab" onclick="switchKszTab('ceow', this)">Ceowniki</button>
+                    <button class="ksz-tab" onclick="switchKszTab('teow', this)">Teowniki</button>
+                    <button class="ksz-tab" onclick="switchKszTab('rury', this)">Rury</button>
+                    <button class="ksz-tab" onclick="switchKszTab('pzam', this)">Profile zamknięte</button>
                 </div>
 
                 <!-- DWUTEOWNIKI -->
@@ -1464,6 +1661,186 @@
                         </tbody></table></div>
                     </div>
                 </div>
+
+                <!-- TEOWNIKI -->
+                <div id="ksz-teow" class="ksz-content">
+                    <div class="ksz-header">
+                        <div class="ksz-header-left">
+                            <div class="ksz-subtabs">
+                                <button class="ksz-subtab active" onclick="switchKszSub('teow','t',this)">Teowniki T</button>
+                            </div>
+                            <input type="text" class="ksz-search" placeholder="Szukaj profilu..." oninput="filterKszTable(this, 'teow')">
+                        </div>
+                        <div class="ksz-drawing ksz-tbeam" id="teow-drawing"></div>
+                    </div>
+                    <div id="ksz-teow-t" class="ksz-subcontent active">
+                        <div class="ksz-table-wrap"><table class="ksz-table"><thead><tr><th>Profil</th><th>h mm</th><th>b mm</th><th>s mm</th><th>t mm</th><th>r</th><th>kg/m</th></tr></thead><tbody>
+<tr><td>T 20</td><td>20</td><td>20</td><td>3</td><td>3</td><td>3.5</td><td>0.83</td></tr>
+<tr><td>T 25</td><td>25</td><td>25</td><td>3.5</td><td>3.5</td><td>3.5</td><td>1.18</td></tr>
+<tr><td>T 30</td><td>30</td><td>30</td><td>4</td><td>4</td><td>4</td><td>1.6</td></tr>
+<tr><td>T 35</td><td>35</td><td>35</td><td>4.5</td><td>4.5</td><td>4.5</td><td>2.09</td></tr>
+<tr><td>T 40</td><td>40</td><td>40</td><td>5</td><td>5</td><td>5</td><td>2.66</td></tr>
+<tr><td>T 50</td><td>50</td><td>50</td><td>6</td><td>6</td><td>6</td><td>3.77</td></tr>
+<tr><td>T 60</td><td>60</td><td>60</td><td>7</td><td>7</td><td>7</td><td>5.07</td></tr>
+<tr><td>T 70</td><td>70</td><td>70</td><td>8</td><td>8</td><td>8</td><td>6.54</td></tr>
+<tr><td>T 80</td><td>80</td><td>80</td><td>9</td><td>9</td><td>9</td><td>8.14</td></tr>
+<tr><td>T 100</td><td>100</td><td>100</td><td>11</td><td>11</td><td>11</td><td>12.2</td></tr>
+<tr><td>T 120</td><td>120</td><td>120</td><td>13</td><td>13</td><td>13</td><td>16.9</td></tr>
+                        </tbody></table></div>
+                    </div>
+                </div>
+
+                <!-- RURY -->
+                <div id="ksz-rury" class="ksz-content">
+                    <div class="ksz-header">
+                        <div class="ksz-header-left">
+                            <div class="ksz-subtabs">
+                                <button class="ksz-subtab active" onclick="switchKszSub('rury','okragle',this)">Okrągłe</button>
+                                <button class="ksz-subtab" onclick="switchKszSub('rury','kwadrat',this)">Kwadratowe</button>
+                            </div>
+                            <input type="text" class="ksz-search" placeholder="Szukaj profilu..." oninput="filterKszTable(this, 'rury')">
+                        </div>
+                        <div class="ksz-drawing ksz-pipe-round" id="rury-drawing"></div>
+                    </div>
+                    <div id="ksz-rury-okragle" class="ksz-subcontent active">
+                        <div class="ksz-table-wrap"><table class="ksz-table"><thead><tr><th>Profil</th><th>D mm</th><th>t mm</th><th>kg/m</th></tr></thead><tbody>
+<tr><td>21.3x2</td><td>21.3</td><td>2</td><td>0.95</td></tr>
+<tr><td>21.3x2.6</td><td>21.3</td><td>2.6</td><td>1.2</td></tr>
+<tr><td>26.9x2.3</td><td>26.9</td><td>2.3</td><td>1.39</td></tr>
+<tr><td>33.7x2.6</td><td>33.7</td><td>2.6</td><td>1.99</td></tr>
+<tr><td>33.7x3.2</td><td>33.7</td><td>3.2</td><td>2.41</td></tr>
+<tr><td>42.4x2.6</td><td>42.4</td><td>2.6</td><td>2.55</td></tr>
+<tr><td>42.4x3.2</td><td>42.4</td><td>3.2</td><td>3.09</td></tr>
+<tr><td>48.3x2.6</td><td>48.3</td><td>2.6</td><td>2.93</td></tr>
+<tr><td>48.3x3.2</td><td>48.3</td><td>3.2</td><td>3.56</td></tr>
+<tr><td>60.3x2.9</td><td>60.3</td><td>2.9</td><td>4.11</td></tr>
+<tr><td>60.3x3.6</td><td>60.3</td><td>3.6</td><td>5.03</td></tr>
+<tr><td>76.1x2.9</td><td>76.1</td><td>2.9</td><td>5.24</td></tr>
+<tr><td>76.1x3.6</td><td>76.1</td><td>3.6</td><td>6.44</td></tr>
+<tr><td>88.9x3.2</td><td>88.9</td><td>3.2</td><td>6.76</td></tr>
+<tr><td>88.9x4</td><td>88.9</td><td>4</td><td>8.38</td></tr>
+<tr><td>101.6x3.6</td><td>101.6</td><td>3.6</td><td>8.7</td></tr>
+<tr><td>114.3x3.6</td><td>114.3</td><td>3.6</td><td>9.83</td></tr>
+<tr><td>114.3x4</td><td>114.3</td><td>4</td><td>10.9</td></tr>
+<tr><td>139.7x4</td><td>139.7</td><td>4</td><td>13.4</td></tr>
+<tr><td>139.7x5</td><td>139.7</td><td>5</td><td>16.6</td></tr>
+<tr><td>168.3x4.5</td><td>168.3</td><td>4.5</td><td>18.2</td></tr>
+<tr><td>168.3x5</td><td>168.3</td><td>5</td><td>20.1</td></tr>
+<tr><td>219.1x5</td><td>219.1</td><td>5</td><td>26.4</td></tr>
+<tr><td>219.1x6.3</td><td>219.1</td><td>6.3</td><td>33.1</td></tr>
+<tr><td>273x5</td><td>273</td><td>5</td><td>33</td></tr>
+<tr><td>273x6.3</td><td>273</td><td>6.3</td><td>41.4</td></tr>
+<tr><td>323.9x5.6</td><td>323.9</td><td>5.6</td><td>43.9</td></tr>
+<tr><td>323.9x7.1</td><td>323.9</td><td>7.1</td><td>55.5</td></tr>
+<tr><td>355.6x6.3</td><td>355.6</td><td>6.3</td><td>54.3</td></tr>
+<tr><td>406.4x6.3</td><td>406.4</td><td>6.3</td><td>62.2</td></tr>
+                        </tbody></table></div>
+                    </div>
+                    <div id="ksz-rury-kwadrat" class="ksz-subcontent">
+                        <div class="ksz-table-wrap"><table class="ksz-table"><thead><tr><th>Profil</th><th>a mm</th><th>t mm</th><th>kg/m</th></tr></thead><tbody>
+<tr><td>20x20x2</td><td>20</td><td>2</td><td>1.12</td></tr>
+<tr><td>25x25x2</td><td>25</td><td>2</td><td>1.43</td></tr>
+<tr><td>25x25x3</td><td>25</td><td>3</td><td>2.03</td></tr>
+<tr><td>30x30x2</td><td>30</td><td>2</td><td>1.74</td></tr>
+<tr><td>30x30x3</td><td>30</td><td>3</td><td>2.51</td></tr>
+<tr><td>40x40x2</td><td>40</td><td>2</td><td>2.36</td></tr>
+<tr><td>40x40x3</td><td>40</td><td>3</td><td>3.45</td></tr>
+<tr><td>40x40x4</td><td>40</td><td>4</td><td>4.39</td></tr>
+<tr><td>50x50x2</td><td>50</td><td>2</td><td>2.99</td></tr>
+<tr><td>50x50x3</td><td>50</td><td>3</td><td>4.39</td></tr>
+<tr><td>50x50x4</td><td>50</td><td>4</td><td>5.64</td></tr>
+<tr><td>50x50x5</td><td>50</td><td>5</td><td>6.73</td></tr>
+<tr><td>60x60x3</td><td>60</td><td>3</td><td>5.34</td></tr>
+<tr><td>60x60x4</td><td>60</td><td>4</td><td>6.9</td></tr>
+<tr><td>60x60x5</td><td>60</td><td>5</td><td>8.31</td></tr>
+<tr><td>70x70x3</td><td>70</td><td>3</td><td>6.28</td></tr>
+<tr><td>70x70x4</td><td>70</td><td>4</td><td>8.15</td></tr>
+<tr><td>70x70x5</td><td>70</td><td>5</td><td>9.89</td></tr>
+<tr><td>80x80x3</td><td>80</td><td>3</td><td>7.22</td></tr>
+<tr><td>80x80x4</td><td>80</td><td>4</td><td>9.41</td></tr>
+<tr><td>80x80x5</td><td>80</td><td>5</td><td>11.5</td></tr>
+<tr><td>90x90x4</td><td>90</td><td>4</td><td>10.7</td></tr>
+<tr><td>90x90x5</td><td>90</td><td>5</td><td>13</td></tr>
+<tr><td>100x100x4</td><td>100</td><td>4</td><td>11.9</td></tr>
+<tr><td>100x100x5</td><td>100</td><td>5</td><td>14.6</td></tr>
+<tr><td>100x100x6</td><td>100</td><td>6</td><td>17.1</td></tr>
+<tr><td>120x120x5</td><td>120</td><td>5</td><td>17.8</td></tr>
+<tr><td>120x120x6</td><td>120</td><td>6</td><td>21</td></tr>
+<tr><td>150x150x5</td><td>150</td><td>5</td><td>22.6</td></tr>
+<tr><td>150x150x6</td><td>150</td><td>6</td><td>26.8</td></tr>
+<tr><td>150x150x8</td><td>150</td><td>8</td><td>34.8</td></tr>
+<tr><td>200x200x6</td><td>200</td><td>6</td><td>36.2</td></tr>
+<tr><td>200x200x8</td><td>200</td><td>8</td><td>47.3</td></tr>
+<tr><td>200x200x10</td><td>200</td><td>10</td><td>57.8</td></tr>
+<tr><td>250x250x8</td><td>250</td><td>8</td><td>59.9</td></tr>
+<tr><td>250x250x10</td><td>250</td><td>10</td><td>73.6</td></tr>
+<tr><td>300x300x10</td><td>300</td><td>10</td><td>89.3</td></tr>
+                        </tbody></table></div>
+                    </div>
+                </div>
+
+                <!-- PROFILE ZAMKNIĘTE -->
+                <div id="ksz-pzam" class="ksz-content">
+                    <div class="ksz-header">
+                        <div class="ksz-header-left">
+                            <div class="ksz-subtabs">
+                                <button class="ksz-subtab active" onclick="switchKszSub('pzam','prostokatne',this)">Prostokątne</button>
+                            </div>
+                            <input type="text" class="ksz-search" placeholder="Szukaj profilu..." oninput="filterKszTable(this, 'pzam')">
+                        </div>
+                        <div class="ksz-drawing ksz-rect-tube" id="pzam-drawing"></div>
+                    </div>
+                    <div id="ksz-pzam-prostokatne" class="ksz-subcontent active">
+                        <div class="ksz-table-wrap"><table class="ksz-table"><thead><tr><th>Profil</th><th>a mm</th><th>b mm</th><th>t mm</th><th>kg/m</th></tr></thead><tbody>
+<tr><td>40x20x2</td><td>40</td><td>20</td><td>2</td><td>1.74</td></tr>
+<tr><td>40x20x3</td><td>40</td><td>20</td><td>3</td><td>2.51</td></tr>
+<tr><td>50x25x2</td><td>50</td><td>25</td><td>2</td><td>2.21</td></tr>
+<tr><td>50x25x3</td><td>50</td><td>25</td><td>3</td><td>3.22</td></tr>
+<tr><td>50x30x2</td><td>50</td><td>30</td><td>2</td><td>2.36</td></tr>
+<tr><td>50x30x3</td><td>50</td><td>30</td><td>3</td><td>3.45</td></tr>
+<tr><td>60x30x2</td><td>60</td><td>30</td><td>2</td><td>2.68</td></tr>
+<tr><td>60x30x3</td><td>60</td><td>30</td><td>3</td><td>3.92</td></tr>
+<tr><td>60x40x2</td><td>60</td><td>40</td><td>2</td><td>2.99</td></tr>
+<tr><td>60x40x3</td><td>60</td><td>40</td><td>3</td><td>4.39</td></tr>
+<tr><td>60x40x4</td><td>60</td><td>40</td><td>4</td><td>5.64</td></tr>
+<tr><td>70x50x3</td><td>70</td><td>50</td><td>3</td><td>5.34</td></tr>
+<tr><td>70x50x4</td><td>70</td><td>50</td><td>4</td><td>6.9</td></tr>
+<tr><td>80x40x2</td><td>80</td><td>40</td><td>2</td><td>3.61</td></tr>
+<tr><td>80x40x3</td><td>80</td><td>40</td><td>3</td><td>5.34</td></tr>
+<tr><td>80x40x4</td><td>80</td><td>40</td><td>4</td><td>6.9</td></tr>
+<tr><td>80x60x3</td><td>80</td><td>60</td><td>3</td><td>6.28</td></tr>
+<tr><td>80x60x4</td><td>80</td><td>60</td><td>4</td><td>8.15</td></tr>
+<tr><td>100x50x3</td><td>100</td><td>50</td><td>3</td><td>6.75</td></tr>
+<tr><td>100x50x4</td><td>100</td><td>50</td><td>4</td><td>8.78</td></tr>
+<tr><td>100x50x5</td><td>100</td><td>50</td><td>5</td><td>10.7</td></tr>
+<tr><td>100x60x3</td><td>100</td><td>60</td><td>3</td><td>7.22</td></tr>
+<tr><td>100x60x4</td><td>100</td><td>60</td><td>4</td><td>9.41</td></tr>
+<tr><td>100x60x5</td><td>100</td><td>60</td><td>5</td><td>11.5</td></tr>
+<tr><td>120x60x3</td><td>120</td><td>60</td><td>3</td><td>8.16</td></tr>
+<tr><td>120x60x4</td><td>120</td><td>60</td><td>4</td><td>10.7</td></tr>
+<tr><td>120x60x5</td><td>120</td><td>60</td><td>5</td><td>13</td></tr>
+<tr><td>120x80x4</td><td>120</td><td>80</td><td>4</td><td>11.9</td></tr>
+<tr><td>120x80x5</td><td>120</td><td>80</td><td>5</td><td>14.6</td></tr>
+<tr><td>140x80x4</td><td>140</td><td>80</td><td>4</td><td>13.2</td></tr>
+<tr><td>140x80x5</td><td>140</td><td>80</td><td>5</td><td>16.2</td></tr>
+<tr><td>150x100x4</td><td>150</td><td>100</td><td>4</td><td>15.1</td></tr>
+<tr><td>150x100x5</td><td>150</td><td>100</td><td>5</td><td>18.7</td></tr>
+<tr><td>150x100x6</td><td>150</td><td>100</td><td>6</td><td>22</td></tr>
+<tr><td>160x80x4</td><td>160</td><td>80</td><td>4</td><td>14.5</td></tr>
+<tr><td>160x80x5</td><td>160</td><td>80</td><td>5</td><td>17.8</td></tr>
+<tr><td>200x100x5</td><td>200</td><td>100</td><td>5</td><td>22.6</td></tr>
+<tr><td>200x100x6</td><td>200</td><td>100</td><td>6</td><td>26.8</td></tr>
+<tr><td>200x100x8</td><td>200</td><td>100</td><td>8</td><td>34.8</td></tr>
+<tr><td>200x120x6</td><td>200</td><td>120</td><td>6</td><td>29.3</td></tr>
+<tr><td>200x120x8</td><td>200</td><td>120</td><td>8</td><td>38.1</td></tr>
+<tr><td>250x150x6</td><td>250</td><td>150</td><td>6</td><td>36.2</td></tr>
+<tr><td>250x150x8</td><td>250</td><td>150</td><td>8</td><td>47.3</td></tr>
+<tr><td>300x200x6</td><td>300</td><td>200</td><td>6</td><td>45.6</td></tr>
+<tr><td>300x200x8</td><td>300</td><td>200</td><td>8</td><td>59.9</td></tr>
+<tr><td>300x200x10</td><td>300</td><td>200</td><td>10</td><td>73.6</td></tr>
+                        </tbody></table></div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1625,6 +2002,60 @@
     </div>
 
     <script>
+        // === THEME ===
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('wycinacz-theme', next);
+            updateThemeIcon(next);
+            updateSvgColors();
+        }
+
+        function updateThemeIcon(theme) {
+            const btn = document.getElementById('themeToggle');
+            if (btn) btn.innerHTML = theme === 'dark' ? '&#9788;' : '&#9790;';
+        }
+
+        function updateSvgColors() {
+            const style = getComputedStyle(document.documentElement);
+            const accent = style.getPropertyValue('--accent').trim();
+            const fillShape = style.getPropertyValue('--svg-fill-shape').trim();
+            const strokeShape = style.getPropertyValue('--svg-stroke-shape').trim();
+            const textColor = style.getPropertyValue('--svg-text').trim();
+
+            document.querySelectorAll('.ksz-drawing svg').forEach(svg => {
+                svg.querySelectorAll('polygon').forEach(p => p.setAttribute('fill', accent));
+                svg.querySelectorAll('rect, path:not([fill="none"])').forEach(el => {
+                    if (el.tagName === 'rect' || (el.tagName === 'path' && el.getAttribute('fill') !== 'none')) {
+                        const f = el.getAttribute('fill');
+                        if (f && f !== 'none' && f !== accent && !f.startsWith('url')) {
+                            el.setAttribute('fill', fillShape);
+                        }
+                    }
+                });
+                svg.querySelectorAll('rect, path').forEach(el => {
+                    const s = el.getAttribute('stroke');
+                    if (s && s !== accent && s !== 'none') el.setAttribute('stroke', strokeShape);
+                });
+                svg.querySelectorAll('line').forEach(l => {
+                    l.setAttribute('stroke', accent);
+                });
+                svg.querySelectorAll('text').forEach(t => {
+                    t.setAttribute('fill', textColor);
+                });
+            });
+        }
+
+        (function initTheme() {
+            const saved = localStorage.getItem('wycinacz-theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const theme = saved || (prefersDark ? 'dark' : 'light');
+            if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+            updateThemeIcon(theme);
+        })();
+
         function switchTab(tabId, btn) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -1755,10 +2186,62 @@
                 displayResults(currentResult);
                 enableButtons(true);
 
+                // Sprawdź alternatywne długości sztang
+                checkAlternativeStocks(requiredCuts, stockLengths, kerf, currentResult.efficiency, contractNumber, profileType);
+
             } catch (error) {
                 document.getElementById('loading').classList.remove('active');
                 showError('Błąd podczas przetwarzania danych');
                 console.error(error);
+            }
+        }
+
+        async function checkAlternativeStocks(cuts, currentStocks, kerf, currentEff, contract, profile) {
+            const alternatives = [6000, 12000, 12100, 13500, 15100];
+            const currentSet = new Set(currentStocks);
+            const toTest = alternatives.filter(l => !currentSet.has(l));
+            if (toTest.length === 0) return;
+
+            const results = [];
+            for (const alt of toTest) {
+                try {
+                    const testStocks = [...currentStocks, alt].sort((a, b) => b - a);
+                    const resp = await fetch('/api/optimize', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            requiredCuts: cuts,
+                            stockLengths: testStocks,
+                            kerf: kerf,
+                            contractNumber: contract,
+                            profileType: profile
+                        })
+                    });
+                    if (resp.ok) {
+                        const data = await resp.json();
+                        const improvement = data.efficiency - currentEff;
+                        if (improvement > 2) {
+                            results.push({ length: alt, efficiency: data.efficiency, improvement: improvement, totalStock: data.totalStockUsed });
+                        }
+                    }
+                } catch (e) { /* skip */ }
+            }
+
+            if (results.length > 0) {
+                results.sort((a, b) => b.improvement - a.improvement);
+                const best = results[0];
+                const existing = document.getElementById('suggestion-box');
+                if (existing) existing.remove();
+
+                const box = document.createElement('div');
+                box.className = 'suggestion-box';
+                box.id = 'suggestion-box';
+                box.innerHTML = `
+                    <div class="suggestion-title">&#128161; Sugestia optymalizacji</div>
+                    <div>Dodanie sztangi <strong>${best.length} mm</strong> do dostępnych długości podniesie efektywność z <strong>${currentEff.toFixed(1)}%</strong> do <strong>${best.efficiency.toFixed(1)}%</strong> (+${best.improvement.toFixed(1)}pp)</div>
+                `;
+                const resultsDiv = document.getElementById('results');
+                if (resultsDiv) resultsDiv.appendChild(box);
             }
         }
 
@@ -1834,6 +2317,144 @@
             resultsDiv.appendChild(summary);
         }
 
+        // === AUTOCOMPLETE PROFILU ===
+        let _allProfiles = null;
+        let _acIndex = -1;
+
+        const _kszCategoryMap = {
+            'ksz-dwut': 'Dwuteownik',
+            'ksz-katow': 'Kątownik',
+            'ksz-ceow': 'Ceownik',
+            'ksz-teow': 'Teownik',
+            'ksz-rury': 'Rura',
+            'ksz-pzam': 'Profil zamknięty'
+        };
+
+        function getAllProfiles() {
+            _allProfiles = [];
+            const contents = document.querySelectorAll('.ksz-content');
+            contents.forEach(content => {
+                const category = _kszCategoryMap[content.id] || '';
+                const tables = content.querySelectorAll('.ksz-table tbody');
+                tables.forEach(tbody => {
+                    const kgCol = tbody.closest('table').querySelectorAll('thead th').length - 1;
+                    for (const row of tbody.rows) {
+                        const name = row.cells[0]?.textContent.trim();
+                        const kgm = parseFloat(row.cells[kgCol]?.textContent) || 0;
+                        if (name) _allProfiles.push({ name, kgm, cat: category });
+                    }
+                });
+            });
+            return _allProfiles;
+        }
+
+        function onProfileInput() {
+            const input = document.getElementById('profileType');
+            const list = document.getElementById('profileAutocomplete');
+            const val = input.value.trim().toUpperCase();
+
+            if (val.length < 1) {
+                list.classList.remove('open');
+                list.innerHTML = '';
+                _acIndex = -1;
+                return;
+            }
+
+            const profiles = getAllProfiles();
+            const matches = profiles.filter(p => p.name.toUpperCase().includes(val)).slice(0, 30);
+
+            if (matches.length === 0) {
+                list.classList.remove('open');
+                list.innerHTML = '';
+                _acIndex = -1;
+                return;
+            }
+
+            _acIndex = -1;
+            list.innerHTML = matches.map((m, i) =>
+                `<div class="autocomplete-item" data-index="${i}" onmousedown="selectProfile('${m.name.replace(/'/g, "\\'")}')">` +
+                    `<span class="ac-profile">${highlightMatch(m.name, val)}</span>` +
+                    `<span class="ac-meta">${m.cat} &middot; ${m.kgm} kg/m</span>` +
+                `</div>`
+            ).join('');
+            list.classList.add('open');
+        }
+
+        function highlightMatch(text, query) {
+            const idx = text.toUpperCase().indexOf(query);
+            if (idx === -1) return text;
+            return text.substring(0, idx) +
+                '<strong style="color:var(--accent)">' + text.substring(idx, idx + query.length) + '</strong>' +
+                text.substring(idx + query.length);
+        }
+
+        function selectProfile(name) {
+            const input = document.getElementById('profileType');
+            const list = document.getElementById('profileAutocomplete');
+            input.value = name;
+            list.classList.remove('open');
+            list.innerHTML = '';
+            _acIndex = -1;
+        }
+
+        function onProfileKeydown(e) {
+            const list = document.getElementById('profileAutocomplete');
+            const items = list.querySelectorAll('.autocomplete-item');
+            if (!list.classList.contains('open') || items.length === 0) return;
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                _acIndex = Math.min(_acIndex + 1, items.length - 1);
+                updateAcHighlight(items);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                _acIndex = Math.max(_acIndex - 1, 0);
+                updateAcHighlight(items);
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (_acIndex >= 0 && _acIndex < items.length) {
+                    items[_acIndex].dispatchEvent(new Event('mousedown'));
+                } else if (items.length > 0) {
+                    items[0].dispatchEvent(new Event('mousedown'));
+                }
+            } else if (e.key === 'Escape') {
+                list.classList.remove('open');
+                _acIndex = -1;
+            }
+        }
+
+        function updateAcHighlight(items) {
+            items.forEach((el, i) => {
+                el.classList.toggle('active', i === _acIndex);
+                if (i === _acIndex) el.scrollIntoView({ block: 'nearest' });
+            });
+        }
+
+        document.addEventListener('click', function(e) {
+            const wrap = document.querySelector('.autocomplete-wrap');
+            if (wrap && !wrap.contains(e.target)) {
+                document.getElementById('profileAutocomplete').classList.remove('open');
+                _acIndex = -1;
+            }
+        });
+
+        // === MASA PROFILU ===
+        function getKgPerMeter(profileName) {
+            if (!profileName || profileName === '---') return 0;
+            const name = profileName.trim().toUpperCase();
+            const tables = document.querySelectorAll('.ksz-table tbody');
+            for (const tbody of tables) {
+                for (const row of tbody.rows) {
+                    const cell = row.cells[0];
+                    if (cell && cell.textContent.trim().toUpperCase() === name) {
+                        const lastCell = row.cells[row.cells.length - 1];
+                        return parseFloat(lastCell.textContent) || 0;
+                    }
+                }
+            }
+            return 0;
+        }
+
         // === KOSZYK ===
         function addToCart(planIndex, btn) {
             if (!currentResult || !currentResult.plans[planIndex]) return;
@@ -1841,12 +2462,16 @@
             const profile = document.getElementById('profileType').value.trim() || '---';
             const grade = getGrade() || '---';
             const contract = document.getElementById('contractNumber').value.trim() || '';
+            const kgm = getKgPerMeter(profile);
+            const massKg = kgm > 0 ? kgm * (plan.stockLength / 1000) : 0;
 
             cart.push({
                 stockLength: plan.stockLength,
                 profile: profile,
                 grade: grade,
-                contract: contract
+                contract: contract,
+                kgPerMeter: kgm,
+                massKg: massKg
             });
 
             if (btn) {
@@ -1862,13 +2487,17 @@
             const profile = document.getElementById('profileType').value.trim() || '---';
             const grade = getGrade() || '---';
             const contract = document.getElementById('contractNumber').value.trim() || '';
+            const kgm = getKgPerMeter(profile);
 
             currentResult.plans.forEach(plan => {
+                const massKg = kgm > 0 ? kgm * (plan.stockLength / 1000) : 0;
                 cart.push({
                     stockLength: plan.stockLength,
                     profile: profile,
                     grade: grade,
-                    contract: contract
+                    contract: contract,
+                    kgPerMeter: kgm,
+                    massKg: massKg
                 });
             });
 
@@ -1906,30 +2535,33 @@
             cart.forEach(item => {
                 const key = `${item.profile}|${item.grade}|${item.stockLength}`;
                 if (!grouped[key]) {
-                    grouped[key] = { ...item, count: 0 };
+                    grouped[key] = { ...item, count: 0, totalMass: 0 };
                 }
                 grouped[key].count++;
+                grouped[key].totalMass += item.massKg || 0;
             });
 
             let html = '';
             Object.values(grouped).forEach(g => {
+                const massStr = g.totalMass > 0 ? ` | ${g.totalMass.toFixed(1)} kg` : '';
                 html += `<div class="cart-item">
                     <div class="cart-item-info">
                         <span class="cart-item-profile">${g.profile}</span>
                         <span class="cart-item-grade">${g.grade}</span>
-                        <span class="cart-item-stock">| ${g.stockLength} mm x ${g.count} szt.</span>
+                        <span class="cart-item-stock">| ${g.stockLength} mm x ${g.count} szt.${massStr}</span>
                     </div>
                 </div>`;
             });
 
             // Pokaż też pojedyncze pozycje z przyciskiem usuwania
-            html += '<div style="margin-top:8px; border-top:1px solid #444; padding-top:8px;">';
+            html += '<div style="margin-top:8px; border-top:1px solid var(--border); padding-top:8px;">';
             cart.forEach((item, i) => {
+                const massStr = item.massKg > 0 ? ` | ${item.massKg.toFixed(1)} kg` : '';
                 html += `<div class="cart-item">
                     <div class="cart-item-info">
                         <span class="cart-item-profile">${item.profile}</span>
                         <span class="cart-item-grade">${item.grade}</span>
-                        <span class="cart-item-stock">| ${item.stockLength} mm</span>
+                        <span class="cart-item-stock">| ${item.stockLength} mm${massStr}</span>
                     </div>
                     <button class="cart-item-remove" onclick="removeFromCart(${i})">X</button>
                 </div>`;
@@ -1944,17 +2576,34 @@
             cart.forEach(item => {
                 const key = `${item.profile}|${item.grade}|${item.stockLength}`;
                 if (!grouped[key]) {
-                    grouped[key] = { ...item, count: 0 };
+                    grouped[key] = { ...item, count: 0, totalMass: 0 };
                 }
                 grouped[key].count++;
+                grouped[key].totalMass += item.massKg || 0;
             });
 
+            const rows = Object.values(grouped);
+            const hasMass = rows.some(g => g.totalMass > 0);
+
             let text = '';
-            let lp = 1;
-            Object.values(grouped).forEach(g => {
-                text += `${lp}. ${g.profile} - ${g.grade} - ${g.stockLength} - ${g.count} szt.\n`;
-                lp++;
-            });
+            if (hasMass) {
+                text += 'LP | Typ | Gatunek | Dlugosc | Ilosc | Suma kg\n';
+                text += '---|-----|---------|---------|-------|--------\n';
+                let lp = 1;
+                let grandTotal = 0;
+                rows.forEach(g => {
+                    text += `${lp}  | ${g.profile} | ${g.grade} | ${g.stockLength} | ${g.count} szt. | ${g.totalMass.toFixed(1)} kg\n`;
+                    grandTotal += g.totalMass;
+                    lp++;
+                });
+                text += `\nRazem: ${grandTotal.toFixed(1)} kg\n`;
+            } else {
+                let lp = 1;
+                rows.forEach(g => {
+                    text += `${lp}. ${g.profile} - ${g.grade} - ${g.stockLength} - ${g.count} szt.\n`;
+                    lp++;
+                });
+            }
             return text;
         }
 
@@ -2097,6 +2746,108 @@
                 console.error(error);
             }
         }
+
+        function exportXLSX() {
+            if (!currentResult) return;
+            closeExportMenu();
+            if (typeof XLSX === 'undefined') {
+                showError('Biblioteka XLSX nie załadowana. Sprawdź połączenie z internetem.');
+                return;
+            }
+            try {
+                const wb = XLSX.utils.book_new();
+                const eff = parseFloat(currentResult.efficiency) || 0;
+
+                // Arkusz: Lista cięć
+                const planData = [
+                    ['Lista ciec'],
+                    [],
+                    ['Kontrakt:', currentResult.contractNumber || '-', '', 'Profil:', currentResult.profileType || '-'],
+                    ['Kerf:', (currentResult.kerf || 0) + ' mm', '', 'Efektywnosc:', eff.toFixed(1) + '%'],
+                    [],
+                    ['Sztanga mm', 'Ciecia', 'Strata mm', 'Efektywnosc %']
+                ];
+                currentResult.plans.forEach(plan => {
+                    const w = plan.waste || 0;
+                    const wastePct = plan.stockLength > 0 ? ((w / plan.stockLength) * 100) : 0;
+                    planData.push([plan.stockLength, plan.cuts.join(', '), w, parseFloat(wastePct.toFixed(1))]);
+                });
+
+                planData.push([]);
+                planData.push(['Razem sztang:', currentResult.totalStockUsed || currentResult.plans.length, '', 'Odpad:', (currentResult.totalWaste || 0) + ' mm']);
+
+                const ws1 = XLSX.utils.aoa_to_sheet(planData);
+                ws1['!cols'] = [{ wch: 14 }, { wch: 40 }, { wch: 12 }, { wch: 14 }, { wch: 16 }];
+                XLSX.utils.book_append_sheet(wb, ws1, 'Lista ciec');
+
+                let filename = 'wycinacz';
+                if (currentResult.contractNumber) filename += '_' + currentResult.contractNumber;
+                if (currentResult.profileType) filename += '_' + currentResult.profileType;
+                filename += '.xlsx';
+
+                XLSX.writeFile(wb, filename);
+            } catch (error) {
+                showError('Błąd podczas eksportu XLSX: ' + error.message);
+                console.error(error);
+            }
+        }
+
+        function exportCartXLSX() {
+            closeCartExportMenu();
+            if (cart.length === 0) {
+                showError('Koszyk jest pusty!');
+                return;
+            }
+            try {
+                const wb = XLSX.utils.book_new();
+                const grouped = {};
+                cart.forEach(item => {
+                    const key = `${item.profile}|${item.grade}|${item.stockLength}`;
+                    if (!grouped[key]) {
+                        grouped[key] = { ...item, count: 0, totalMass: 0 };
+                    }
+                    grouped[key].count++;
+                    grouped[key].totalMass += item.massKg || 0;
+                });
+
+                const rows = Object.values(grouped);
+                const hasMass = rows.some(g => g.totalMass > 0);
+
+                const header = hasMass
+                    ? ['LP', 'Typ', 'Gatunek', 'Długość mm', 'Ilość', 'kg/m', 'Suma kg']
+                    : ['LP', 'Typ', 'Gatunek', 'Długość mm', 'Ilość'];
+
+                const data = [header];
+                let lp = 1;
+                let grandTotal = 0;
+                rows.forEach(g => {
+                    if (hasMass) {
+                        data.push([lp, g.profile, g.grade, g.stockLength, g.count, g.kgPerMeter || 0, parseFloat(g.totalMass.toFixed(1))]);
+                        grandTotal += g.totalMass;
+                    } else {
+                        data.push([lp, g.profile, g.grade, g.stockLength, g.count]);
+                    }
+                    lp++;
+                });
+
+                if (hasMass) {
+                    data.push([]);
+                    data.push(['', '', '', '', 'RAZEM', '', parseFloat(grandTotal.toFixed(1))]);
+                }
+
+                const ws = XLSX.utils.aoa_to_sheet(data);
+                ws['!cols'] = hasMass
+                    ? [{ wch: 4 }, { wch: 16 }, { wch: 10 }, { wch: 12 }, { wch: 8 }, { wch: 8 }, { wch: 10 }]
+                    : [{ wch: 4 }, { wch: 16 }, { wch: 10 }, { wch: 12 }, { wch: 8 }];
+                XLSX.utils.book_append_sheet(wb, ws, 'Zamowienie');
+
+                XLSX.writeFile(wb, 'zamowienie.xlsx');
+            } catch (error) {
+                showError('Błąd podczas eksportu XLSX');
+                console.error(error);
+            }
+        }
+
         // === KSZTAŁTOWNIKI ===
         function switchKszTab(id, btn) {
             document.querySelectorAll('#tab-ksztaltowniki .ksz-content').forEach(c => c.classList.remove('active'));
@@ -2124,6 +2875,12 @@
                 d.className = 'ksz-drawing ' + (subId === 'upe' ? 'ksz-channel-upe' : 'ksz-channel');
                 d.innerHTML = subId === 'upe' ? _kszSvg.channelUpe : _kszSvg.channel;
             }
+            if (parentId === 'rury') {
+                const d = document.getElementById('rury-drawing');
+                d.className = 'ksz-drawing ' + (subId === 'kwadrat' ? 'ksz-pipe-square' : 'ksz-pipe-round');
+                d.innerHTML = subId === 'kwadrat' ? _kszSvg.pipeSquare : _kszSvg.pipeRound;
+            }
+            setTimeout(updateSvgColors, 10);
         }
 
         function filterKszTable(input, parentId) {
@@ -2209,9 +2966,52 @@
                 `<text x="76" y="33" fill="#1c1c1e" font-size="8" font-weight="700" font-family="${F}">r</text>` +
                 '</svg>';
 
+            // ─── TEOWNIK (T-beam): h, b, s, t ───
+            _kszSvg.tbeam = mk('t',180,145) +
+                '<rect x="50" y="8" width="80" height="13" rx="1" fill="#d1d1d6" stroke="#3c3c43" stroke-width="1"/>' +
+                '<rect x="75" y="21" width="30" height="95" rx="1" fill="#d1d1d6" stroke="#3c3c43" stroke-width="1"/>' +
+                dim('t',22,8,22,116,'h',14,65,'end') +
+                dim('t',50,128,130,128,'b',90,127,'middle') +
+                dim('t',75,68,105,68,'s',90,62,'middle') +
+                dim('t',140,8,140,21,'t',150,18,'start') +
+                '</svg>';
+
+            // ─── RURA OKRĄGŁA: D, t ───
+            _kszSvg.pipeRound = mk('pr',170,150) +
+                '<circle cx="85" cy="75" r="50" fill="none" stroke="#3c3c43" stroke-width="1"/>' +
+                '<circle cx="85" cy="75" r="50" fill="#d1d1d6" opacity="0.4"/>' +
+                '<circle cx="85" cy="75" r="40" fill="#fff" stroke="#3c3c43" stroke-width="1"/>' +
+                dim('pr',85,25,85,125,'D',75,20,'end') +
+                `<line x1="115" y1="28" x2="125" y2="38" stroke="#c75050" stroke-width="0.8"/>` +
+                `<text x="128" y="35" fill="#1c1c1e" font-size="9" font-weight="700" font-family="${F}">t</text>` +
+                '</svg>';
+
+            // ─── RURA KWADRATOWA: a, t ───
+            _kszSvg.pipeSquare = mk('ps',170,150) +
+                '<rect x="30" y="20" width="110" height="110" rx="6" fill="#d1d1d6" stroke="#3c3c43" stroke-width="1"/>' +
+                '<rect x="40" y="30" width="90" height="90" rx="3" fill="#fff" stroke="#3c3c43" stroke-width="1"/>' +
+                dim('ps',30,140,140,140,'a',85,139,'middle') +
+                `<line x1="32" y1="22" x2="38" y2="28" stroke="#c75050" stroke-width="0.8"/>` +
+                `<text x="22" y="18" fill="#1c1c1e" font-size="9" font-weight="700" font-family="${F}">t</text>` +
+                '</svg>';
+
+            // ─── PROFIL PROSTOKĄTNY ZAMKNIĘTY: a, b, t ───
+            _kszSvg.rectTube = mk('rt',185,150) +
+                '<rect x="30" y="25" width="120" height="100" rx="5" fill="#d1d1d6" stroke="#3c3c43" stroke-width="1"/>' +
+                '<rect x="40" y="35" width="100" height="80" rx="2" fill="#fff" stroke="#3c3c43" stroke-width="1"/>' +
+                dim('rt',30,135,150,135,'a',90,134,'middle') +
+                dim('rt',160,25,160,125,'b',170,78,'start') +
+                `<line x1="32" y1="27" x2="38" y2="33" stroke="#c75050" stroke-width="0.8"/>` +
+                `<text x="22" y="23" fill="#1c1c1e" font-size="9" font-weight="700" font-family="${F}">t</text>` +
+                '</svg>';
+
             document.querySelectorAll('.ksz-ibeam').forEach(el => el.innerHTML = _kszSvg.ibeam);
             document.querySelectorAll('.ksz-angle-eq').forEach(el => el.innerHTML = _kszSvg.angleEq);
             document.querySelectorAll('.ksz-channel').forEach(el => el.innerHTML = _kszSvg.channel);
+            document.querySelectorAll('.ksz-tbeam').forEach(el => el.innerHTML = _kszSvg.tbeam);
+            document.querySelectorAll('.ksz-pipe-round').forEach(el => el.innerHTML = _kszSvg.pipeRound);
+            document.querySelectorAll('.ksz-rect-tube').forEach(el => el.innerHTML = _kszSvg.rectTube);
+            setTimeout(updateSvgColors, 50);
         }
 
         document.addEventListener('DOMContentLoaded', initKszDrawings);
