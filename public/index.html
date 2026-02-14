@@ -762,6 +762,176 @@
             color: #1c1c1e;
         }
 
+        /* === KSZTAŁTOWNIKI TABLES === */
+        .ksz-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .ksz-tab {
+            padding: 6px 16px;
+            font-size: 11px;
+            background: #f2f2f7;
+            color: #8e8e93;
+            border: 1px solid #d1d1d6;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.15s;
+        }
+
+        .ksz-tab:hover {
+            color: #3c3c43;
+            border-color: #c75050;
+        }
+
+        .ksz-tab.active {
+            background: #c75050;
+            color: #fff;
+            border-color: #c75050;
+        }
+
+        .ksz-content {
+            display: none;
+        }
+
+        .ksz-content.active {
+            display: block;
+        }
+
+        .ksz-subtabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+
+        .ksz-subtab {
+            padding: 4px 12px;
+            font-size: 10px;
+            background: #fff;
+            color: #8e8e93;
+            border: 1px solid #d1d1d6;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: all 0.15s;
+        }
+
+        .ksz-subtab:hover {
+            color: #3c3c43;
+            border-color: #c75050;
+        }
+
+        .ksz-subtab.active {
+            background: #1c1c1e;
+            color: #fff;
+            border-color: #1c1c1e;
+        }
+
+        .ksz-subcontent {
+            display: none;
+        }
+
+        .ksz-subcontent.active {
+            display: block;
+        }
+
+        .ksz-table-wrap {
+            overflow-x: auto;
+            margin-bottom: 16px;
+            max-height: 520px;
+            overflow-y: auto;
+        }
+
+        .ksz-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .ksz-table thead {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+        .ksz-table th {
+            background: #1c1c1e;
+            color: #fff;
+            padding: 6px 10px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid #3c3c43;
+        }
+
+        .ksz-table td {
+            padding: 5px 10px;
+            border: 1px solid #d1d1d6;
+            color: #3c3c43;
+        }
+
+        .ksz-table tbody tr:nth-child(even) {
+            background: #f2f2f7;
+        }
+
+        .ksz-table tbody tr:hover {
+            background: #e8e8ed;
+        }
+
+        .ksz-table td:first-child {
+            font-weight: 700;
+            color: #c75050;
+        }
+
+        .ksz-search {
+            padding: 6px 12px;
+            border: 1px solid #d1d1d6;
+            font-size: 12px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #fff;
+            color: #1c1c1e;
+            width: 240px;
+            margin-bottom: 12px;
+            transition: border-color 0.2s;
+        }
+
+        .ksz-search:focus {
+            outline: none;
+            border-color: #c75050;
+        }
+
+        .ksz-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 14px;
+        }
+
+        .ksz-header-left {
+            flex: 1;
+        }
+
+        .ksz-drawing {
+            flex-shrink: 0;
+            width: 160px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ksz-drawing svg {
+            width: 100%;
+            height: 100%;
+        }
+
         .calc-result .calc-value {
             color: #c75050;
             font-weight: 700;
@@ -935,9 +1105,365 @@
         </div>
 
         <div id="tab-ksztaltowniki" class="tab-content">
-            <div class="tab-placeholder">
-                <h2>Kształtowniki</h2>
-                <p>Baza kształtowników — w przygotowaniu</p>
+            <div class="main-content">
+                <div class="ksz-tabs">
+                    <button class="ksz-tab active" onclick="switchKszTab('dwut', this)">Dwuteowniki</button>
+                    <button class="ksz-tab" onclick="switchKszTab('katow', this)">Kątowniki</button>
+                    <button class="ksz-tab" onclick="switchKszTab('ceow', this)">Ceowniki</button>
+                </div>
+
+                <!-- DWUTEOWNIKI -->
+                <div id="ksz-dwut" class="ksz-content active">
+                    <div class="ksz-header">
+                        <div class="ksz-header-left">
+                            <div class="ksz-subtabs">
+                                <button class="ksz-subtab active" onclick="switchKszSub('dwut','hea',this)">HEA</button>
+                                <button class="ksz-subtab" onclick="switchKszSub('dwut','heb',this)">HEB</button>
+                                <button class="ksz-subtab" onclick="switchKszSub('dwut','hec',this)">HEC</button>
+                                <button class="ksz-subtab" onclick="switchKszSub('dwut','hem',this)">HEM</button>
+                                <button class="ksz-subtab" onclick="switchKszSub('dwut','ipe',this)">IPE</button>
+                                <button class="ksz-subtab" onclick="switchKszSub('dwut','ipeaa',this)">IPE AA</button>
+                            </div>
+                            <input type="text" class="ksz-search" placeholder="Szukaj profilu..." oninput="filterKszTable(this, 'dwut')">
+                        </div>
+                        <div class="ksz-drawing ksz-ibeam"></div>
+                    </div>
+
+                    <!-- HEA -->
+                    <div id="ksz-dwut-hea" class="ksz-subcontent active">
+                        <div class="ksz-table-wrap"><table class="ksz-table"><thead><tr><th>Profil</th><th>h mm</th><th>b mm</th><th>s mm</th><th>t mm</th><th>r</th><th>kg/m</th></tr></thead><tbody>
+<tr><td>HEA 100</td><td>96</td><td>100</td><td>5</td><td>8</td><td>12</td><td>16.7</td></tr>
+<tr><td>HEA 120</td><td>114</td><td>120</td><td>5</td><td>8</td><td>12</td><td>19.9</td></tr>
+<tr><td>HEA 140</td><td>133</td><td>140</td><td>5.5</td><td>8.5</td><td>12</td><td>24.7</td></tr>
+<tr><td>HEA 160</td><td>152</td><td>160</td><td>6</td><td>9</td><td>15</td><td>30.4</td></tr>
+<tr><td>HEA 180</td><td>171</td><td>180</td><td>6</td><td>9.5</td><td>15</td><td>35.5</td></tr>
+<tr><td>HEA 200</td><td>190</td><td>200</td><td>6.5</td><td>10</td><td>18</td><td>42.3</td></tr>
+<tr><td>HEA 220</td><td>210</td><td>220</td><td>7</td><td>11</td><td>18</td><td>50.5</td></tr>
+<tr><td>HEA 240</td><td>230</td><td>240</td><td>7.5</td><td>12</td><td>21</td><td>60.3</td></tr>
+<tr><td>HEA 260</td><td>250</td><td>260</td><td>7.5</td><td>12.5</td><td>24</td><td>68.2</td></tr>
+<tr><td>HEA 280</td><td>270</td><td>280</td><td>8</td><td>13</td><td>24</td><td>76.4</td></tr>
+<tr><td>HEA 300</td><td>290</td><td>300</td><td>8.5</td><td>14</td><td>27</td><td>88.3</td></tr>
+<tr><td>HEA 320</td><td>310</td><td>300</td><td>9</td><td>15.5</td><td>27</td><td>97.6</td></tr>
+<tr><td>HEA 340</td><td>330</td><td>300</td><td>9.5</td><td>16.5</td><td>27</td><td>105</td></tr>
+<tr><td>HEA 360</td><td>350</td><td>300</td><td>10</td><td>17.5</td><td>27</td><td>112</td></tr>
+<tr><td>HEA 400</td><td>390</td><td>300</td><td>11</td><td>19</td><td>27</td><td>125</td></tr>
+<tr><td>HEA 450</td><td>440</td><td>300</td><td>11.5</td><td>21</td><td>27</td><td>140</td></tr>
+<tr><td>HEA 500</td><td>490</td><td>300</td><td>12</td><td>23</td><td>27</td><td>155</td></tr>
+<tr><td>HEA 550</td><td>540</td><td>300</td><td>12.5</td><td>24</td><td>27</td><td>166</td></tr>
+<tr><td>HEA 600</td><td>590</td><td>300</td><td>13</td><td>25</td><td>27</td><td>178</td></tr>
+                        </tbody></table></div>
+                    </div>
+
+                    <!-- HEB -->
+                    <div id="ksz-dwut-heb" class="ksz-subcontent">
+                        <div class="ksz-table-wrap"><table class="ksz-table"><thead><tr><th>Profil</th><th>h mm</th><th>b mm</th><th>s mm</th><th>t mm</th><th>r</th><th>kg/m</th></tr></thead><tbody>
+<tr><td>HEB 100</td><td>100</td><td>100</td><td>6</td><td>10</td><td>12</td><td>20.4</td></tr>
+<tr><td>HEB 120</td><td>120</td><td>120</td><td>6.5</td><td>11</td><td>12</td><td>26.7</td></tr>
+<tr><td>HEB 140</td><td>140</td><td>140</td><td>7</td><td>12</td><td>12</td><td>33.7</td></tr>
+<tr><td>HEB 160</td><td>160</td><td>160</td><td>8</td><td>13</td><td>15</td><td>42.6</td></tr>
+<tr><td>HEB 180</td><td>180</td><td>180</td><td>8.5</td><td>14</td><td>15</td><td>51.2</td></tr>
+<tr><td>HEB 200</td><td>200</td><td>200</td><td>9</td><td>15</td><td>18</td><td>61.3</td></tr>
+<tr><td>HEB 220</td><td>220</td><td>220</td><td>9.5</td><td>16</td><td>18</td><td>71.5</td></tr>
+<tr><td>HEB 240</td><td>240</td><td>240</td><td>10</td><td>17</td><td>21</td><td>83.2</td></tr>
+<tr><td>HEB 260</td><td>260</td><td>260</td><td>10</td><td>17.5</td><td>24</td><td>93</td></tr>
+<tr><td>HEB 280</td><td>280</td><td>280</td><td>10.5</td><td>18</td><td>24</td><td>103</td></tr>
+<tr><td>HEB 300</td><td>300</td><td>300</td><td>11</td><td>19</td><td>27</td><td>117</td></tr>
+<tr><td>HEB 320</td><td>320</td><td>300</td><td>11.5</td><td>20.5</td><td>27</td><td>127</td></tr>
+<tr><td>HEB 340</td><td>340</td><td>300</td><td>12</td><td>21.5</td><td>27</td><td>134</td></tr>
+<tr><td>HEB 360</td><td>360</td><td>300</td><td>12.5</td><td>22.5</td><td>27</td><td>142</td></tr>
+<tr><td>HEB 400</td><td>400</td><td>300</td><td>13.5</td><td>24</td><td>27</td><td>155</td></tr>
+<tr><td>HEB 450</td><td>450</td><td>300</td><td>14</td><td>26</td><td>27</td><td>171</td></tr>
+<tr><td>HEB 500</td><td>500</td><td>300</td><td>14.5</td><td>28</td><td>27</td><td>187</td></tr>
+<tr><td>HEB 550</td><td>550</td><td>300</td><td>15</td><td>29</td><td>27</td><td>199</td></tr>
+<tr><td>HEB 600</td><td>600</td><td>300</td><td>15.5</td><td>30</td><td>27</td><td>212</td></tr>
+                        </tbody></table></div>
+                    </div>
+
+                    <!-- HEC -->
+                    <div id="ksz-dwut-hec" class="ksz-subcontent">
+                        <div class="ksz-table-wrap"><table class="ksz-table"><thead><tr><th>Profil</th><th>h mm</th><th>b mm</th><th>s mm</th><th>t mm</th><th>r</th><th>kg/m</th></tr></thead><tbody>
+<tr><td>HEC 100</td><td>110</td><td>103</td><td>9</td><td>15</td><td>12</td><td>30.9</td></tr>
+<tr><td>HEC 120</td><td>130</td><td>123</td><td>9.5</td><td>18</td><td>12</td><td>39.2</td></tr>
+<tr><td>HEC 140</td><td>150</td><td>143</td><td>10</td><td>17</td><td>12</td><td>48.2</td></tr>
+<tr><td>HEC 160</td><td>170</td><td>163</td><td>11</td><td>18</td><td>15</td><td>59.2</td></tr>
+<tr><td>HEC 180</td><td>190</td><td>183</td><td>11.5</td><td>19</td><td>15</td><td>69.8</td></tr>
+<tr><td>HEC 200</td><td>210</td><td>203</td><td>12</td><td>20</td><td>18</td><td>81.9</td></tr>
+<tr><td>HEC 220</td><td>230</td><td>223</td><td>12.5</td><td>21</td><td>18</td><td>94.1</td></tr>
+<tr><td>HEC 240</td><td>255</td><td>244</td><td>14</td><td>24.5</td><td>21</td><td>119.5</td></tr>
+<tr><td>HEC 260</td><td>275</td><td>264</td><td>14</td><td>25</td><td>24</td><td>132.2</td></tr>
+<tr><td>HEC 280</td><td>295</td><td>284</td><td>14.5</td><td>25.5</td><td>24</td><td>145.3</td></tr>
+<tr><td>HEC 300</td><td>320</td><td>305</td><td>16</td><td>29</td><td>27</td><td>177</td></tr>
+<tr><td>HEC 320</td><td>340</td><td>305</td><td>16</td><td>30.5</td><td>27</td><td>186</td></tr>
+                        </tbody></table></div>
+                    </div>
+
+                    <!-- HEM -->
+                    <div id="ksz-dwut-hem" class="ksz-subcontent">
+                        <div class="ksz-table-wrap"><table class="ksz-table"><thead><tr><th>Profil</th><th>h mm</th><th>b mm</th><th>s mm</th><th>t mm</th><th>r</th><th>kg/m</th></tr></thead><tbody>
+<tr><td>HEM 100</td><td>120</td><td>106</td><td>12</td><td>20</td><td>12</td><td>41.8</td></tr>
+<tr><td>HEM 120</td><td>140</td><td>126</td><td>12.5</td><td>21</td><td>12</td><td>52.1</td></tr>
+<tr><td>HEM 140</td><td>160</td><td>146</td><td>13</td><td>22</td><td>12</td><td>63.2</td></tr>
+<tr><td>HEM 160</td><td>180</td><td>166</td><td>14</td><td>23</td><td>15</td><td>76.2</td></tr>
+<tr><td>HEM 180</td><td>200</td><td>186</td><td>14.5</td><td>24</td><td>15</td><td>88.9</td></tr>
+<tr><td>HEM 200</td><td>220</td><td>206</td><td>15</td><td>25</td><td>18</td><td>103</td></tr>
+<tr><td>HEM 220</td><td>240</td><td>226</td><td>15.5</td><td>26</td><td>18</td><td>117</td></tr>
+<tr><td>HEM 240</td><td>270</td><td>248</td><td>18</td><td>32</td><td>21</td><td>157</td></tr>
+<tr><td>HEM 260</td><td>290</td><td>268</td><td>18</td><td>32.5</td><td>24</td><td>172</td></tr>
+<tr><td>HEM 280</td><td>310</td><td>288</td><td>18.5</td><td>33</td><td>24</td><td>189</td></tr>
+<tr><td>HEM 300</td><td>340</td><td>310</td><td>21</td><td>39</td><td>27</td><td>238</td></tr>
+<tr><td>HEM 320</td><td>359</td><td>309</td><td>21</td><td>40</td><td>27</td><td>245</td></tr>
+                        </tbody></table></div>
+                    </div>
+
+                    <!-- IPE -->
+                    <div id="ksz-dwut-ipe" class="ksz-subcontent">
+                        <div class="ksz-table-wrap"><table class="ksz-table"><thead><tr><th>Profil</th><th>h mm</th><th>b mm</th><th>s mm</th><th>t mm</th><th>r</th><th>kg/m</th></tr></thead><tbody>
+<tr><td>IPE 80</td><td>80</td><td>46</td><td>3.8</td><td>5.2</td><td>5</td><td>6</td></tr>
+<tr><td>IPE 100</td><td>100</td><td>55</td><td>4.1</td><td>5.7</td><td>7</td><td>8.1</td></tr>
+<tr><td>IPE 120</td><td>120</td><td>64</td><td>4.4</td><td>6.3</td><td>7</td><td>10.4</td></tr>
+<tr><td>IPE 140</td><td>140</td><td>73</td><td>4.7</td><td>6.9</td><td>7</td><td>12.9</td></tr>
+<tr><td>IPE 160</td><td>160</td><td>82</td><td>5</td><td>7.4</td><td>9</td><td>15.8</td></tr>
+<tr><td>IPE 180</td><td>180</td><td>91</td><td>5.3</td><td>8</td><td>9</td><td>18.8</td></tr>
+<tr><td>IPE 200</td><td>200</td><td>100</td><td>5.6</td><td>8.5</td><td>12</td><td>22.4</td></tr>
+<tr><td>IPE 220</td><td>220</td><td>110</td><td>5.9</td><td>9.2</td><td>12</td><td>26.2</td></tr>
+<tr><td>IPE 240</td><td>240</td><td>120</td><td>6.2</td><td>9.8</td><td>15</td><td>30.7</td></tr>
+<tr><td>IPE 270</td><td>270</td><td>135</td><td>6.6</td><td>10.2</td><td>15</td><td>36.1</td></tr>
+<tr><td>IPE 300</td><td>300</td><td>150</td><td>7.1</td><td>10.7</td><td>15</td><td>42.2</td></tr>
+<tr><td>IPE 330</td><td>330</td><td>160</td><td>7.5</td><td>11.5</td><td>18</td><td>49.1</td></tr>
+<tr><td>IPE 360</td><td>360</td><td>170</td><td>8</td><td>12.7</td><td>18</td><td>57.1</td></tr>
+<tr><td>IPE 400</td><td>400</td><td>180</td><td>8.6</td><td>13.5</td><td>21</td><td>66.3</td></tr>
+<tr><td>IPE 450</td><td>450</td><td>190</td><td>9.4</td><td>14.6</td><td>21</td><td>77.6</td></tr>
+<tr><td>IPE 500</td><td>500</td><td>200</td><td>10.2</td><td>16</td><td>21</td><td>90.7</td></tr>
+<tr><td>IPE 550</td><td>550</td><td>210</td><td>11.1</td><td>17.2</td><td>24</td><td>106</td></tr>
+<tr><td>IPE 600</td><td>600</td><td>220</td><td>12</td><td>19</td><td>24</td><td>122</td></tr>
+                        </tbody></table></div>
+                    </div>
+
+                    <!-- IPE AA -->
+                    <div id="ksz-dwut-ipeaa" class="ksz-subcontent">
+                        <div class="ksz-table-wrap"><table class="ksz-table"><thead><tr><th>Profil</th><th>h mm</th><th>b mm</th><th>s mm</th><th>t mm</th><th>r</th><th>kg/m</th></tr></thead><tbody>
+<tr><td>IPE AA 80</td><td>78</td><td>46</td><td>3.2</td><td>4.2</td><td>5</td><td>4.95</td></tr>
+<tr><td>IPE AA 100</td><td>97.6</td><td>55</td><td>3.6</td><td>4.5</td><td>7</td><td>6.72</td></tr>
+<tr><td>IPE AA 120</td><td>117</td><td>64</td><td>3.8</td><td>4.8</td><td>7</td><td>8.36</td></tr>
+<tr><td>IPE AA 140</td><td>136.6</td><td>73</td><td>3.8</td><td>5.2</td><td>7</td><td>10.05</td></tr>
+<tr><td>IPE AA 160</td><td>156.4</td><td>82</td><td>4</td><td>5.6</td><td>9</td><td>12.31</td></tr>
+<tr><td>IPE AA 180</td><td>176.4</td><td>91</td><td>4.3</td><td>6.2</td><td>9</td><td>14.94</td></tr>
+<tr><td>IPE AA 200</td><td>196.4</td><td>100</td><td>4.5</td><td>6.7</td><td>12</td><td>17.95</td></tr>
+<tr><td>IPE AA 220</td><td>216.4</td><td>110</td><td>4.7</td><td>7.4</td><td>12</td><td>21.19</td></tr>
+<tr><td>IPE AA 240</td><td>236.4</td><td>120</td><td>4.8</td><td>8</td><td>15</td><td>24.89</td></tr>
+<tr><td>IPE AA 270</td><td>267</td><td>135</td><td>5.5</td><td>8.7</td><td>15</td><td>30.73</td></tr>
+<tr><td>IPE AA 300</td><td>297</td><td>150</td><td>6.1</td><td>9.2</td><td>15</td><td>36.52</td></tr>
+<tr><td>IPE AA 330</td><td>327</td><td>160</td><td>6.5</td><td>10</td><td>18</td><td>42.96</td></tr>
+<tr><td>IPE AA 360</td><td>357.6</td><td>170</td><td>6.6</td><td>11.5</td><td>18</td><td>50.21</td></tr>
+<tr><td>IPE AA 400</td><td>397</td><td>180</td><td>7</td><td>12</td><td>21</td><td>57.38</td></tr>
+<tr><td>IPE AA 450</td><td>447</td><td>190</td><td>7.6</td><td>13.1</td><td>21</td><td>67.15</td></tr>
+<tr><td>IPE AA 500</td><td>497</td><td>200</td><td>8.4</td><td>14.5</td><td>21</td><td>79.36</td></tr>
+<tr><td>IPE AA 550</td><td>547</td><td>210</td><td>9</td><td>15.7</td><td>24</td><td>92.07</td></tr>
+                        </tbody></table></div>
+                    </div>
+                </div>
+
+                <!-- KĄTOWNIKI -->
+                <div id="ksz-katow" class="ksz-content">
+                    <div class="ksz-header">
+                        <div class="ksz-header-left">
+                            <div class="ksz-subtabs">
+                                <button class="ksz-subtab active" onclick="switchKszSub('katow','rowno',this)">Równoramienne</button>
+                                <button class="ksz-subtab" onclick="switchKszSub('katow','nierowno',this)">Nierównoramienne</button>
+                            </div>
+                            <input type="text" class="ksz-search" placeholder="Szukaj profilu..." oninput="filterKszTable(this, 'katow')">
+                        </div>
+                        <div class="ksz-drawing ksz-angle-eq" id="katow-drawing"></div>
+                    </div>
+
+                    <!-- Równoramienne -->
+                    <div id="ksz-katow-rowno" class="ksz-subcontent active">
+                        <div class="ksz-table-wrap"><table class="ksz-table"><thead><tr><th>Profil</th><th>a mm</th><th>t mm</th><th>R</th><th>cm²</th><th>kg/m</th></tr></thead><tbody>
+<tr><td>20x20x3</td><td>20</td><td>3</td><td>3.5</td><td>1.12</td><td>0.88</td></tr>
+<tr><td>25x25x3</td><td>25</td><td>3</td><td>3.5</td><td>1.42</td><td>1.12</td></tr>
+<tr><td>25x25x4</td><td>25</td><td>4</td><td>3.5</td><td>1.85</td><td>1.45</td></tr>
+<tr><td>30x30x3</td><td>30</td><td>3</td><td>5</td><td>1.74</td><td>1.36</td></tr>
+<tr><td>30x30x4</td><td>30</td><td>4</td><td>5</td><td>2.27</td><td>1.78</td></tr>
+<tr><td>30x30x5</td><td>30</td><td>5</td><td>5</td><td>2.78</td><td>2.18</td></tr>
+<tr><td>35x35x3</td><td>35</td><td>3</td><td>5</td><td>2.04</td><td>1.6</td></tr>
+<tr><td>35x35x4</td><td>35</td><td>4</td><td>5</td><td>2.67</td><td>2.1</td></tr>
+<tr><td>40x40x3</td><td>40</td><td>3</td><td>6</td><td>2.35</td><td>1.84</td></tr>
+<tr><td>40x40x4</td><td>40</td><td>4</td><td>6</td><td>3.08</td><td>2.42</td></tr>
+<tr><td>40x40x5</td><td>40</td><td>5</td><td>6</td><td>3.79</td><td>2.97</td></tr>
+<tr><td>40x40x6</td><td>40</td><td>6</td><td>6</td><td>4.48</td><td>3.52</td></tr>
+<tr><td>45x45x3</td><td>45</td><td>3</td><td>7</td><td>2.66</td><td>2.09</td></tr>
+<tr><td>45x45x4.5</td><td>45</td><td>4.5</td><td>7</td><td>3.9</td><td>3.06</td></tr>
+<tr><td>45x45x6</td><td>45</td><td>6</td><td>7</td><td>5.09</td><td>4</td></tr>
+<tr><td>50x50x3</td><td>50</td><td>3</td><td>7</td><td>2.96</td><td>2.32</td></tr>
+<tr><td>50x50x4</td><td>50</td><td>4</td><td>7</td><td>3.89</td><td>3.06</td></tr>
+<tr><td>50x50x5</td><td>50</td><td>5</td><td>7</td><td>4.8</td><td>3.77</td></tr>
+<tr><td>50x50x6</td><td>50</td><td>6</td><td>7</td><td>5.69</td><td>4.47</td></tr>
+<tr><td>60x60x5</td><td>60</td><td>5</td><td>8</td><td>5.82</td><td>4.57</td></tr>
+<tr><td>60x60x6</td><td>60</td><td>6</td><td>8</td><td>6.91</td><td>5.42</td></tr>
+<tr><td>60x60x8</td><td>60</td><td>8</td><td>8</td><td>9.03</td><td>7.09</td></tr>
+<tr><td>65x65x7</td><td>65</td><td>7</td><td>9</td><td>8.7</td><td>6.83</td></tr>
+<tr><td>70x70x6</td><td>70</td><td>6</td><td>9</td><td>8.13</td><td>6.38</td></tr>
+<tr><td>70x70x7</td><td>70</td><td>7</td><td>9</td><td>9.4</td><td>7.38</td></tr>
+<tr><td>75x75x6</td><td>75</td><td>6</td><td>9</td><td>8.73</td><td>6.85</td></tr>
+<tr><td>75x75x8</td><td>75</td><td>8</td><td>9</td><td>11.5</td><td>9.03</td></tr>
+<tr><td>75x75x10</td><td>75</td><td>10</td><td>9</td><td>14.1</td><td>11.1</td></tr>
+<tr><td>75x75x12</td><td>75</td><td>12</td><td>9</td><td>16.6</td><td>13.1</td></tr>
+<tr><td>80x80x8</td><td>80</td><td>8</td><td>10</td><td>12.3</td><td>9.66</td></tr>
+<tr><td>80x80x10</td><td>80</td><td>10</td><td>10</td><td>15.1</td><td>11.9</td></tr>
+<tr><td>90x90x7</td><td>90</td><td>7</td><td>11</td><td>12.2</td><td>9.58</td></tr>
+<tr><td>90x90x8</td><td>90</td><td>8</td><td>11</td><td>13.9</td><td>10.9</td></tr>
+<tr><td>90x90x9</td><td>90</td><td>9</td><td>11</td><td>15.5</td><td>12.2</td></tr>
+<tr><td>90x90x10</td><td>90</td><td>10</td><td>11</td><td>17.1</td><td>13.5</td></tr>
+<tr><td>100x100x6</td><td>100</td><td>6</td><td>12</td><td>11.8</td><td>9.26</td></tr>
+<tr><td>100x100x7</td><td>100</td><td>7</td><td>12</td><td>13.7</td><td>10.7</td></tr>
+<tr><td>100x100x8</td><td>100</td><td>8</td><td>12</td><td>15.5</td><td>12.2</td></tr>
+<tr><td>100x100x10</td><td>100</td><td>10</td><td>12</td><td>19.2</td><td>15.1</td></tr>
+<tr><td>100x100x12</td><td>100</td><td>12</td><td>12</td><td>22.7</td><td>17.8</td></tr>
+<tr><td>120x120x10</td><td>120</td><td>10</td><td>13</td><td>23.2</td><td>18.2</td></tr>
+<tr><td>120x120x12</td><td>120</td><td>12</td><td>13</td><td>27.5</td><td>21.6</td></tr>
+<tr><td>130x130x12</td><td>130</td><td>12</td><td>13</td><td>29.9</td><td>23.5</td></tr>
+<tr><td>150x150x10</td><td>150</td><td>10</td><td>16</td><td>29.3</td><td>23</td></tr>
+<tr><td>150x150x12</td><td>150</td><td>12</td><td>15</td><td>34.8</td><td>27.3</td></tr>
+<tr><td>150x150x15</td><td>150</td><td>15</td><td>15</td><td>43</td><td>33.8</td></tr>
+<tr><td>160x160x15</td><td>160</td><td>15</td><td>17</td><td>36.2</td><td>46.1</td></tr>
+<tr><td>180x180x16</td><td>180</td><td>16</td><td>18</td><td>55.4</td><td>43.5</td></tr>
+<tr><td>180x180x18</td><td>180</td><td>18</td><td>18</td><td>61.9</td><td>48.6</td></tr>
+<tr><td>200x200x16</td><td>200</td><td>16</td><td>18</td><td>61.8</td><td>48.5</td></tr>
+<tr><td>200x200x18</td><td>200</td><td>18</td><td>18</td><td>69.1</td><td>54.3</td></tr>
+<tr><td>200x200x20</td><td>200</td><td>20</td><td>18</td><td>76.4</td><td>59.9</td></tr>
+<tr><td>200x200x24</td><td>200</td><td>24</td><td>18</td><td>90.6</td><td>71.1</td></tr>
+<tr><td>250x250x28</td><td>250</td><td>28</td><td>18</td><td>133</td><td>104</td></tr>
+<tr><td>250x250x35</td><td>250</td><td>35</td><td>18</td><td>163</td><td>128</td></tr>
+                        </tbody></table></div>
+                    </div>
+
+                    <!-- Nierównoramienne -->
+                    <div id="ksz-katow-nierowno" class="ksz-subcontent">
+                        <div class="ksz-table-wrap"><table class="ksz-table"><thead><tr><th>Profil</th><th>a mm</th><th>b mm</th><th>t mm</th><th>R</th><th>cm²</th><th>kg/m</th></tr></thead><tbody>
+<tr><td>30x20x3</td><td>30</td><td>20</td><td>3</td><td>4</td><td>1.43</td><td>1.12</td></tr>
+<tr><td>30x20x4</td><td>30</td><td>20</td><td>4</td><td>4</td><td>1.86</td><td>1.46</td></tr>
+<tr><td>40x20x4</td><td>40</td><td>20</td><td>4</td><td>4</td><td>2.26</td><td>1.77</td></tr>
+<tr><td>40x25x4</td><td>40</td><td>25</td><td>4</td><td>4</td><td>2.46</td><td>1.93</td></tr>
+<tr><td>45x30x4</td><td>45</td><td>30</td><td>4</td><td>4.5</td><td>2.87</td><td>2.25</td></tr>
+<tr><td>50x30x5</td><td>50</td><td>30</td><td>5</td><td>5</td><td>3.78</td><td>2.97</td></tr>
+<tr><td>60x30x5</td><td>60</td><td>30</td><td>5</td><td>5</td><td>4.28</td><td>3.36</td></tr>
+<tr><td>60x40x5</td><td>60</td><td>40</td><td>5</td><td>6</td><td>4.79</td><td>3.76</td></tr>
+<tr><td>60x40x6</td><td>60</td><td>40</td><td>6</td><td>6</td><td>5.68</td><td>4.46</td></tr>
+<tr><td>65x50x5</td><td>65</td><td>50</td><td>5</td><td>6</td><td>5.54</td><td>4.35</td></tr>
+<tr><td>70x50x6</td><td>70</td><td>50</td><td>6</td><td>7</td><td>6.89</td><td>5.41</td></tr>
+<tr><td>75x50x6</td><td>75</td><td>50</td><td>6</td><td>7</td><td>7.19</td><td>5.65</td></tr>
+<tr><td>75x50x8</td><td>75</td><td>50</td><td>8</td><td>7</td><td>9.41</td><td>7.39</td></tr>
+<tr><td>80x40x6</td><td>80</td><td>40</td><td>6</td><td>7</td><td>6.89</td><td>5.41</td></tr>
+<tr><td>80x40x8</td><td>80</td><td>40</td><td>8</td><td>7</td><td>9.01</td><td>7.07</td></tr>
+<tr><td>80x60x7</td><td>80</td><td>60</td><td>7</td><td>8</td><td>9.38</td><td>7.36</td></tr>
+<tr><td>100x50x6</td><td>100</td><td>50</td><td>6</td><td>8</td><td>8.71</td><td>6.84</td></tr>
+<tr><td>100x50x8</td><td>100</td><td>50</td><td>8</td><td>8</td><td>11.4</td><td>8.95</td></tr>
+<tr><td>100x65x7</td><td>100</td><td>65</td><td>7</td><td>10</td><td>11.2</td><td>8.77</td></tr>
+<tr><td>100x65x8</td><td>100</td><td>65</td><td>8</td><td>10</td><td>12.7</td><td>9.94</td></tr>
+<tr><td>100x65x10</td><td>100</td><td>65</td><td>10</td><td>10</td><td>15.6</td><td>12.3</td></tr>
+<tr><td>100x75x8</td><td>100</td><td>75</td><td>8</td><td>10</td><td>13.5</td><td>10.6</td></tr>
+<tr><td>100x75x10</td><td>100</td><td>75</td><td>10</td><td>10</td><td>16.6</td><td>13</td></tr>
+<tr><td>100x75x12</td><td>100</td><td>75</td><td>12</td><td>10</td><td>19.7</td><td>15.5</td></tr>
+<tr><td>120x80x8</td><td>120</td><td>80</td><td>8</td><td>11</td><td>15.5</td><td>12.2</td></tr>
+<tr><td>120x80x10</td><td>120</td><td>80</td><td>10</td><td>11</td><td>19.1</td><td>15</td></tr>
+<tr><td>120x80x12</td><td>120</td><td>80</td><td>12</td><td>11</td><td>22.7</td><td>17.8</td></tr>
+<tr><td>125x75x8</td><td>125</td><td>75</td><td>8</td><td>11</td><td>15.5</td><td>12.2</td></tr>
+<tr><td>125x75x10</td><td>125</td><td>75</td><td>10</td><td>11</td><td>19.1</td><td>15</td></tr>
+<tr><td>125x75x12</td><td>125</td><td>75</td><td>12</td><td>11</td><td>22.7</td><td>17.8</td></tr>
+<tr><td>135x65x8</td><td>135</td><td>65</td><td>8</td><td>11</td><td>15.5</td><td>12.2</td></tr>
+<tr><td>135x65x10</td><td>135</td><td>65</td><td>10</td><td>11</td><td>19.1</td><td>15</td></tr>
+<tr><td>150x75x9</td><td>150</td><td>75</td><td>9</td><td>12</td><td>19.6</td><td>15.4</td></tr>
+<tr><td>150x75x10</td><td>150</td><td>75</td><td>10</td><td>12</td><td>21.7</td><td>17</td></tr>
+<tr><td>150x75x12</td><td>150</td><td>75</td><td>12</td><td>12</td><td>25.7</td><td>20.2</td></tr>
+<tr><td>150x75x15</td><td>150</td><td>75</td><td>15</td><td>12</td><td>31.7</td><td>24.9</td></tr>
+<tr><td>150x90x10</td><td>150</td><td>90</td><td>10</td><td>12</td><td>23.2</td><td>18.2</td></tr>
+<tr><td>150x90x12</td><td>150</td><td>90</td><td>12</td><td>12</td><td>27.5</td><td>21.6</td></tr>
+<tr><td>150x90x15</td><td>150</td><td>90</td><td>15</td><td>12</td><td>33.9</td><td>26.6</td></tr>
+<tr><td>150x100x10</td><td>150</td><td>100</td><td>10</td><td>12</td><td>24.2</td><td>19</td></tr>
+<tr><td>150x100x12</td><td>150</td><td>100</td><td>12</td><td>12</td><td>28.7</td><td>22.5</td></tr>
+<tr><td>200x100x10</td><td>200</td><td>100</td><td>10</td><td>15</td><td>29.2</td><td>22.9</td></tr>
+<tr><td>200x100x12</td><td>200</td><td>100</td><td>12</td><td>15</td><td>34.8</td><td>27.3</td></tr>
+<tr><td>200x100x15</td><td>200</td><td>100</td><td>15</td><td>15</td><td>43</td><td>33.8</td></tr>
+<tr><td>200x150x12</td><td>200</td><td>150</td><td>12</td><td>15</td><td>40.8</td><td>32</td></tr>
+<tr><td>200x150x15</td><td>200</td><td>150</td><td>15</td><td>15</td><td>50.5</td><td>39.6</td></tr>
+                        </tbody></table></div>
+                    </div>
+                </div>
+
+                <!-- CEOWNIKI -->
+                <div id="ksz-ceow" class="ksz-content">
+                    <div class="ksz-header">
+                        <div class="ksz-header-left">
+                            <div class="ksz-subtabs">
+                                <button class="ksz-subtab active" onclick="switchKszSub('ceow','zwykle',this)">Zwykłe</button>
+                                <button class="ksz-subtab" onclick="switchKszSub('ceow','upe',this)">UPE</button>
+                                <button class="ksz-subtab" onclick="switchKszSub('ceow','ekonom',this)">Ekonomiczne</button>
+                            </div>
+                            <input type="text" class="ksz-search" placeholder="Szukaj profilu..." oninput="filterKszTable(this, 'ceow')">
+                        </div>
+                        <div class="ksz-drawing ksz-channel" id="ceow-drawing"></div>
+                    </div>
+
+                    <!-- Zwykłe -->
+                    <div id="ksz-ceow-zwykle" class="ksz-subcontent active">
+                        <div class="ksz-table-wrap"><table class="ksz-table"><thead><tr><th>Profil</th><th>h mm</th><th>s mm</th><th>g mm</th><th>t mm</th><th>r</th><th>r₁</th><th>cm²</th><th>kg/m</th></tr></thead><tbody>
+<tr><td>C 35</td><td>35</td><td>35</td><td>5</td><td>6</td><td>6</td><td>3</td><td>5.27</td><td>4.14</td></tr>
+<tr><td>C 40</td><td>40</td><td>20</td><td>5</td><td>5</td><td>5</td><td>2.5</td><td>3.51</td><td>2.75</td></tr>
+<tr><td>C 45</td><td>45</td><td>38</td><td>5</td><td>6</td><td>6</td><td>3</td><td>6.41</td><td>5.03</td></tr>
+<tr><td>C 50</td><td>50</td><td>38</td><td>5.5</td><td>7</td><td>7</td><td>3.5</td><td>7.12</td><td>5.59</td></tr>
+<tr><td>C 65</td><td>65</td><td>42</td><td>6</td><td>7.5</td><td>7.5</td><td>4</td><td>9.03</td><td>7.09</td></tr>
+<tr><td>C 80</td><td>80</td><td>45</td><td>6</td><td>8</td><td>8</td><td>4</td><td>11</td><td>8.64</td></tr>
+<tr><td>C 100</td><td>100</td><td>50</td><td>6</td><td>8.5</td><td>8.5</td><td>4.5</td><td>13.5</td><td>10.6</td></tr>
+<tr><td>C 120</td><td>120</td><td>55</td><td>7</td><td>9</td><td>9</td><td>4.5</td><td>17</td><td>13.4</td></tr>
+<tr><td>C 140</td><td>140</td><td>60</td><td>7</td><td>10</td><td>10</td><td>5</td><td>20.4</td><td>16</td></tr>
+<tr><td>C 160</td><td>160</td><td>65</td><td>7.5</td><td>10.5</td><td>10.5</td><td>5.5</td><td>24</td><td>18.8</td></tr>
+<tr><td>C 180</td><td>180</td><td>70</td><td>8</td><td>11</td><td>11</td><td>5.5</td><td>28</td><td>22</td></tr>
+<tr><td>C 200</td><td>200</td><td>75</td><td>8.8</td><td>11.5</td><td>11.5</td><td>6</td><td>32.2</td><td>25.3</td></tr>
+<tr><td>C 220</td><td>220</td><td>80</td><td>9</td><td>12.5</td><td>12.5</td><td>6.5</td><td>37.4</td><td>29.4</td></tr>
+<tr><td>C 240</td><td>240</td><td>85</td><td>9.5</td><td>13</td><td>13</td><td>6.5</td><td>42.3</td><td>33.2</td></tr>
+<tr><td>C 260</td><td>260</td><td>90</td><td>10</td><td>14</td><td>14</td><td>7</td><td>48.3</td><td>37.9</td></tr>
+<tr><td>C 280</td><td>280</td><td>95</td><td>10</td><td>15</td><td>15</td><td>7.5</td><td>53.3</td><td>41.8</td></tr>
+<tr><td>C 300</td><td>300</td><td>100</td><td>10</td><td>16</td><td>16</td><td>8</td><td>58.8</td><td>46.2</td></tr>
+                        </tbody></table></div>
+                    </div>
+
+                    <!-- UPE -->
+                    <div id="ksz-ceow-upe" class="ksz-subcontent">
+                        <div class="ksz-table-wrap"><table class="ksz-table"><thead><tr><th>Profil</th><th>h mm</th><th>b mm</th><th>tw mm</th><th>tf mm</th><th>r</th><th>cm²</th><th>kg/m</th></tr></thead><tbody>
+<tr><td>UPE 80</td><td>80</td><td>50</td><td>4</td><td>7</td><td>10</td><td>10.1</td><td>7.9</td></tr>
+<tr><td>UPE 100</td><td>100</td><td>55</td><td>4.5</td><td>7.5</td><td>10</td><td>12.5</td><td>9.82</td></tr>
+<tr><td>UPE 120</td><td>120</td><td>60</td><td>5</td><td>8</td><td>12</td><td>15.4</td><td>12.1</td></tr>
+<tr><td>UPE 140</td><td>140</td><td>65</td><td>5</td><td>9</td><td>12</td><td>18.4</td><td>14.5</td></tr>
+<tr><td>UPE 160</td><td>160</td><td>70</td><td>5.5</td><td>9.5</td><td>12</td><td>21.7</td><td>17</td></tr>
+<tr><td>UPE 180</td><td>180</td><td>75</td><td>5.5</td><td>10.5</td><td>12</td><td>25.1</td><td>19.7</td></tr>
+<tr><td>UPE 200</td><td>200</td><td>80</td><td>6</td><td>11</td><td>13</td><td>29</td><td>22.8</td></tr>
+<tr><td>UPE 220</td><td>220</td><td>85</td><td>6.5</td><td>12</td><td>13</td><td>33.9</td><td>26.6</td></tr>
+<tr><td>UPE 240</td><td>240</td><td>90</td><td>7</td><td>12.5</td><td>15</td><td>38.5</td><td>30.2</td></tr>
+<tr><td>UPE 270</td><td>270</td><td>95</td><td>7.5</td><td>13.5</td><td>15</td><td>44.8</td><td>35.2</td></tr>
+<tr><td>UPE 300</td><td>300</td><td>100</td><td>9.5</td><td>15</td><td>15</td><td>56.6</td><td>44.4</td></tr>
+<tr><td>UPE 330</td><td>330</td><td>105</td><td>11</td><td>16</td><td>18</td><td>67.8</td><td>53.2</td></tr>
+<tr><td>UPE 360</td><td>360</td><td>110</td><td>12</td><td>17</td><td>18</td><td>77.9</td><td>61.2</td></tr>
+<tr><td>UPE 400</td><td>400</td><td>115</td><td>13.5</td><td>18</td><td>18</td><td>91.9</td><td>72.2</td></tr>
+                        </tbody></table></div>
+                    </div>
+
+                    <!-- Ekonomiczne -->
+                    <div id="ksz-ceow-ekonom" class="ksz-subcontent">
+                        <div class="ksz-table-wrap"><table class="ksz-table"><thead><tr><th>Profil</th><th>h mm</th><th>s mm</th><th>g mm</th><th>t mm</th><th>r</th><th>r₁</th><th>kg/m</th></tr></thead><tbody>
+<tr><td>80 E</td><td>80</td><td>40</td><td>4.5</td><td>7.4</td><td>6.5</td><td>2.5</td><td>7.1</td></tr>
+<tr><td>100 E</td><td>100</td><td>46</td><td>4.5</td><td>7.6</td><td>7</td><td>3</td><td>8.6</td></tr>
+<tr><td>120 E</td><td>120</td><td>52</td><td>4.8</td><td>7.8</td><td>7.5</td><td>3</td><td>10.4</td></tr>
+<tr><td>140 E</td><td>140</td><td>58</td><td>4.9</td><td>8.1</td><td>8</td><td>3</td><td>12.3</td></tr>
+<tr><td>160 E</td><td>160</td><td>64</td><td>5</td><td>8.4</td><td>8.5</td><td>3.5</td><td>14.2</td></tr>
+<tr><td>180 E</td><td>180</td><td>70</td><td>5.1</td><td>8.7</td><td>9</td><td>3.5</td><td>16.3</td></tr>
+<tr><td>200 E</td><td>200</td><td>76</td><td>5.2</td><td>9</td><td>9.5</td><td>4</td><td>18.4</td></tr>
+<tr><td>240 E</td><td>240</td><td>90</td><td>5.6</td><td>10</td><td>10.5</td><td>4</td><td>24</td></tr>
+<tr><td>270 E</td><td>270</td><td>95</td><td>6</td><td>10.5</td><td>11</td><td>4.5</td><td>27.7</td></tr>
+<tr><td>300 E</td><td>300</td><td>100</td><td>6.5</td><td>11</td><td>12</td><td>5</td><td>31.8</td></tr>
+<tr><td>400 E</td><td>400</td><td>115</td><td>8</td><td>13.5</td><td>15</td><td>6</td><td>48.3</td></tr>
+                        </tbody></table></div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1571,6 +2097,125 @@
                 console.error(error);
             }
         }
+        // === KSZTAŁTOWNIKI ===
+        function switchKszTab(id, btn) {
+            document.querySelectorAll('#tab-ksztaltowniki .ksz-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('#tab-ksztaltowniki .ksz-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('ksz-' + id).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        function switchKszSub(parentId, subId, btn) {
+            const parent = document.getElementById('ksz-' + parentId);
+            parent.querySelectorAll('.ksz-subcontent').forEach(c => c.classList.remove('active'));
+            parent.querySelectorAll('.ksz-subtab').forEach(t => t.classList.remove('active'));
+            document.getElementById('ksz-' + parentId + '-' + subId).classList.add('active');
+            btn.classList.add('active');
+            const search = parent.querySelector('.ksz-search');
+            if (search) search.value = '';
+            // Zmiana rysunku dynamicznie
+            if (parentId === 'katow') {
+                const d = document.getElementById('katow-drawing');
+                d.className = 'ksz-drawing ' + (subId === 'nierowno' ? 'ksz-angle-neq' : 'ksz-angle-eq');
+                d.innerHTML = subId === 'nierowno' ? _kszSvg.angleNeq : _kszSvg.angleEq;
+            }
+            if (parentId === 'ceow') {
+                const d = document.getElementById('ceow-drawing');
+                d.className = 'ksz-drawing ' + (subId === 'upe' ? 'ksz-channel-upe' : 'ksz-channel');
+                d.innerHTML = subId === 'upe' ? _kszSvg.channelUpe : _kszSvg.channel;
+            }
+        }
+
+        function filterKszTable(input, parentId) {
+            const val = input.value.toLowerCase();
+            const parent = document.getElementById('ksz-' + parentId);
+            const activeSub = parent.querySelector('.ksz-subcontent.active');
+            if (!activeSub) return;
+            const rows = activeSub.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const text = row.cells[0].textContent.toLowerCase();
+                row.style.display = text.includes(val) ? '' : 'none';
+            });
+        }
+
+        // === RYSUNKI TECHNICZNE SVG ===
+        const _kszSvg = {};
+        function initKszDrawings() {
+            const mk = (id,w,h) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}"><defs><marker id="a${id}" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0,0 6,2.5 0,5" fill="#c75050"/></marker><marker id="b${id}" markerWidth="6" markerHeight="5" refX="0" refY="2.5" orient="auto"><polygon points="6,0 0,2.5 6,5" fill="#c75050"/></marker></defs>`;
+            const F = '-apple-system,sans-serif';
+            const dim = (id,x1,y1,x2,y2,lbl,tx,ty,ta) => {
+                const vert = x1===x2, hz = y1===y2;
+                let s = `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#c75050" stroke-width="0.8" marker-start="url(#b${id})" marker-end="url(#a${id})"/>`;
+                if(vert){s+=`<line x1="${x1-3}" y1="${y1}" x2="${x1+3}" y2="${y1}" stroke="#c75050" stroke-width="0.7"/><line x1="${x1-3}" y1="${y2}" x2="${x1+3}" y2="${y2}" stroke="#c75050" stroke-width="0.7"/>`;}
+                if(hz){s+=`<line x1="${x1}" y1="${y1-3}" x2="${x1}" y2="${y1+3}" stroke="#c75050" stroke-width="0.7"/><line x1="${x2}" y1="${y2-3}" x2="${x2}" y2="${y2+3}" stroke="#c75050" stroke-width="0.7"/>`;}
+                s+=`<text x="${tx}" y="${ty}" fill="#1c1c1e" font-size="10" font-weight="700" text-anchor="${ta||'middle'}" font-family="${F}">${lbl}</text>`;
+                return s;
+            };
+
+            // ─── DWUTEOWNIK (I-beam): h, b, s, t, r ───
+            _kszSvg.ibeam = mk('i',190,155) +
+                '<rect x="52" y="8" width="76" height="13" rx="1" fill="#d1d1d6" stroke="#3c3c43" stroke-width="1"/>' +
+                '<rect x="52" y="119" width="76" height="13" rx="1" fill="#d1d1d6" stroke="#3c3c43" stroke-width="1"/>' +
+                '<rect x="75" y="21" width="30" height="98" rx="1" fill="#d1d1d6" stroke="#3c3c43" stroke-width="1"/>' +
+                dim('i',18,8,18,140,'h',10,78,'end') +
+                dim('i',52,148,128,148,'b',90,147,'middle') +
+                dim('i',75,72,105,72,'s',90,66,'middle') +
+                dim('i',138,8,138,21,'t',148,18,'start') +
+                '<path d="M 75 27 Q 71 21 75 21" fill="none" stroke="#c75050" stroke-width="0.8"/>' +
+                `<text x="62" y="30" fill="#1c1c1e" font-size="9" font-weight="700" font-family="${F}">r</text>` +
+                '</svg>';
+
+            // ─── KĄTOWNIK RÓWNORAMIENNY (L equal): a, t, R ───
+            _kszSvg.angleEq = mk('e',180,155) +
+                '<path d="M 42,12 L 122,12 L 122,30 L 60,30 L 60,132 L 42,132 Z" fill="#d1d1d6" stroke="#3c3c43" stroke-width="1"/>' +
+                dim('e',25,12,25,132,'a',17,75,'end') +
+                dim('e',42,142,122,142,'a',82,141,'middle') +
+                dim('e',132,12,132,30,'t',142,24,'start') +
+                '<path d="M 60 38 Q 60 30 68 30" fill="none" stroke="#c75050" stroke-width="0.8"/>' +
+                `<text x="70" y="42" fill="#1c1c1e" font-size="9" font-weight="700" font-family="${F}">R</text>` +
+                '</svg>';
+
+            // ─── KĄTOWNIK NIERÓWNORAMIENNY (L unequal): a, b, t, R ───
+            _kszSvg.angleNeq = mk('n',190,145) +
+                '<path d="M 38,10 L 145,10 L 145,28 L 56,28 L 56,105 L 38,105 Z" fill="#d1d1d6" stroke="#3c3c43" stroke-width="1"/>' +
+                dim('n',22,10,22,105,'b',14,60,'end') +
+                dim('n',38,115,145,115,'a',92,114,'middle') +
+                dim('n',155,10,155,28,'t',165,22,'start') +
+                '<path d="M 56 36 Q 56 28 64 28" fill="none" stroke="#c75050" stroke-width="0.8"/>' +
+                `<text x="66" y="40" fill="#1c1c1e" font-size="9" font-weight="700" font-family="${F}">R</text>` +
+                '</svg>';
+
+            // ─── CEOWNIK ZWYKŁY: h, g, s, t, r, r₁ ───
+            _kszSvg.channel = mk('c',195,155) +
+                '<path d="M 48,8 L 118,8 L 118,22 L 66,22 L 66,118 L 118,118 L 118,132 L 48,132 Z" fill="#d1d1d6" stroke="#3c3c43" stroke-width="1"/>' +
+                dim('c',28,8,28,132,'h',20,73,'end') +
+                dim('c',48,143,118,143,'g',83,142,'middle') +
+                dim('c',48,73,66,73,'s',57,66,'middle') +
+                dim('c',128,8,128,22,'t',138,18,'start') +
+                '<path d="M 66 30 Q 66 22 74 22" fill="none" stroke="#c75050" stroke-width="0.8"/>' +
+                `<text x="76" y="33" fill="#1c1c1e" font-size="8" font-weight="700" font-family="${F}">r</text>` +
+                '<path d="M 118 25 Q 118 22 115 22" fill="none" stroke="#c75050" stroke-width="0.8"/>' +
+                `<text x="108" y="28" fill="#1c1c1e" font-size="8" font-weight="700" text-anchor="end" font-family="${F}">r₁</text>` +
+                '</svg>';
+
+            // ─── CEOWNIK UPE: h, b, tw, tf, r ───
+            _kszSvg.channelUpe = mk('u',195,155) +
+                '<path d="M 48,8 L 118,8 L 118,22 L 66,22 L 66,118 L 118,118 L 118,132 L 48,132 Z" fill="#d1d1d6" stroke="#3c3c43" stroke-width="1"/>' +
+                dim('u',28,8,28,132,'h',20,73,'end') +
+                dim('u',48,143,118,143,'b',83,142,'middle') +
+                dim('u',48,73,66,73,'tw',57,66,'middle') +
+                dim('u',128,8,128,22,'tf',140,18,'start') +
+                '<path d="M 66 30 Q 66 22 74 22" fill="none" stroke="#c75050" stroke-width="0.8"/>' +
+                `<text x="76" y="33" fill="#1c1c1e" font-size="8" font-weight="700" font-family="${F}">r</text>` +
+                '</svg>';
+
+            document.querySelectorAll('.ksz-ibeam').forEach(el => el.innerHTML = _kszSvg.ibeam);
+            document.querySelectorAll('.ksz-angle-eq').forEach(el => el.innerHTML = _kszSvg.angleEq);
+            document.querySelectorAll('.ksz-channel').forEach(el => el.innerHTML = _kszSvg.channel);
+        }
+
+        document.addEventListener('DOMContentLoaded', initKszDrawings);
+
         // === KALKULATOR MAS ===
         function switchCalcTab(id, btn) {
             document.querySelectorAll('.calc-content').forEach(c => c.classList.remove('active'));
