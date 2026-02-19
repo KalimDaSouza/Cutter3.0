@@ -1188,6 +1188,27 @@
             border-color: var(--accent);
         }
 
+        .lang-toggle {
+            position: absolute;
+            top: 10px;
+            left: 52px;
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-tertiary);
+            cursor: pointer;
+            padding: 4px 8px;
+            font-size: 16px;
+            line-height: 1;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lang-toggle:hover {
+            border-color: var(--accent);
+        }
+
         /* === AUTOCOMPLETE === */
         .autocomplete-wrap {
             position: relative;
@@ -1305,36 +1326,37 @@
 <body>
     <div class="container">
         <div class="tabs">
-            <button class="tab active" onclick="switchTab('wycinacz', this)">Wycinacz Pro</button>
-            <button class="tab" onclick="switchTab('ksztaltowniki', this)">Kształtowniki</button>
-            <button class="tab" onclick="switchTab('kalkulator', this)">Kalkulator Mas</button>
+            <button class="tab active" onclick="switchTab('wycinacz', this)" data-i18n="tabCutter">Wycinacz Pro</button>
+            <button class="tab" onclick="switchTab('ksztaltowniki', this)" data-i18n="tabProfiles">Kształtowniki</button>
+            <button class="tab" onclick="switchTab('kalkulator', this)" data-i18n="tabCalc">Kalkulator Mas</button>
         </div>
 
         <div id="tab-wycinacz" class="tab-content active">
         <div class="header">
-            <button class="theme-toggle" onclick="toggleTheme()" title="Przełącz tryb ciemny/jasny" id="themeToggle">&#9790;</button>
-            <button class="header-feedback" onclick="openFeedback()"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2zm0 15.2L18.8 16H4V4h16v13.2z"/></svg>Feedback</button>
-            <h1>Wycinacz <span class="accent">Pro</span></h1>
+            <button class="theme-toggle" onclick="toggleTheme()" data-i18n-title="themeToggleTitle" title="Przełącz tryb ciemny/jasny" id="themeToggle">&#9790;</button>
+            <button class="lang-toggle" onclick="toggleLang()" id="langToggle" data-i18n-title="langToggleTitle" title="Zmień język">&#127468;&#127463;</button>
+            <button class="header-feedback" onclick="openFeedback()"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2zm0 15.2L18.8 16H4V4h16v13.2z"/></svg><span data-i18n="feedbackBtn">Feedback</span></button>
+            <h1 id="appTitle"><span data-i18n="appName">Wycinacz</span> <span class="accent">Pro</span></h1>
             <div class="header-inputs">
                 <div class="header-field">
-                    <label>Kontrakt</label>
+                    <label data-i18n="contract">Kontrakt</label>
                     <input type="text" id="contractNumber" placeholder="K-2024-001" />
                 </div>
                 <div class="header-field">
-                    <label>Kształtownik</label>
+                    <label data-i18n="profile">Kształtownik</label>
                     <div class="autocomplete-wrap">
                         <input type="text" id="profileType" placeholder="HEB 300" autocomplete="off" oninput="onProfileInput()" onkeydown="onProfileKeydown(event)" onfocus="onProfileInput()" />
                         <div class="autocomplete-list" id="profileAutocomplete"></div>
                     </div>
                 </div>
                 <div class="header-field">
-                    <label>Gatunek</label>
+                    <label data-i18n="grade">Gatunek</label>
                     <select id="steelGrade" onchange="handleGradeChange(this)">
                         <option value="S235">S235</option>
                         <option value="S355">S355</option>
-                        <option value="custom">Inny...</option>
+                        <option value="custom" data-i18n="gradeOther">Inny...</option>
                     </select>
-                    <input type="text" id="steelGradeCustom" placeholder="Wpisz gatunek" style="display:none; margin-top:4px;" />
+                    <input type="text" id="steelGradeCustom" data-i18n-ph="gradeCustomPh" placeholder="Wpisz gatunek" style="display:none; margin-top:4px;" />
                 </div>
             </div>
         </div>
@@ -1342,7 +1364,7 @@
         <div class="main-content">
             <div class="input-area">
                 <div class="input-column">
-                    <label class="column-label">Ilość</label>
+                    <label class="column-label" data-i18n="qty">Ilość</label>
                     <textarea id="quantities" placeholder="3
 5
 2
@@ -1351,7 +1373,7 @@
                 </div>
 
                 <div class="input-column">
-                    <label class="column-label">Długość mm</label>
+                    <label class="column-label" data-i18n="lengthMm">Długość mm</label>
                     <textarea id="lengths" placeholder="4500
 3000
 7500
@@ -1361,27 +1383,27 @@
 
                 <div class="side-panel">
                     <div class="param-group">
-                        <label class="param-label">Sztangi mm</label>
+                        <label class="param-label" data-i18n="stocks">Sztangi mm</label>
                         <input type="text" id="stocks" value="12100, 6000, 15100" />
-                        <p class="hint">Oddzielone przecinkami</p>
+                        <p class="hint" data-i18n="stocksHint">Oddzielone przecinkami</p>
                     </div>
                     <div class="param-group">
                         <label class="param-label">Kerf mm</label>
                         <input type="number" id="kerf" value="0" min="0" step="0.5" />
-                        <p class="hint">Naddatek cięcia</p>
+                        <p class="hint" data-i18n="kerfHint">Naddatek cięcia</p>
                     </div>
                 </div>
             </div>
 
             <div class="button-group">
-                <button class="btn-primary" onclick="calculateCuts()">Oblicz</button>
+                <button class="btn-primary" onclick="calculateCuts()" data-i18n="calculate">Oblicz</button>
                 <div class="export-wrapper">
-                    <button class="btn-primary" id="exportBtn" onclick="toggleExportMenu()" disabled>Eksportuj listę cięć</button>
+                    <button class="btn-primary" id="exportBtn" onclick="toggleExportMenu()" disabled data-i18n="exportList">Eksportuj listę cięć</button>
                     <div class="export-menu" id="exportMenu">
-                        <button onclick="copyToClipboard()">Kopiuj</button>
-                        <button onclick="exportPDF()">Eksport PDF</button>
-                        <button onclick="exportTXT()">Eksport TXT</button>
-                        <button onclick="exportXLSX()">Eksport XLSX</button>
+                        <button onclick="copyToClipboard()" data-i18n="copy">Kopiuj</button>
+                        <button onclick="exportPDF()" data-i18n="exportPdf">Eksport PDF</button>
+                        <button onclick="exportTXT()" data-i18n="exportTxt">Eksport TXT</button>
+                        <button onclick="exportXLSX()" data-i18n="exportXlsx">Eksport XLSX</button>
                     </div>
                 </div>
             </div>
@@ -1390,7 +1412,7 @@
 
             <div class="loading" id="loading">
                 <div class="spinner"></div>
-                <p>Obliczam optymalny plan cięcia...</p>
+                <p data-i18n="calculating">Obliczam optymalny plan cięcia...</p>
             </div>
 
             <div id="results" class="results-section" style="display: none;"></div>
@@ -1398,23 +1420,23 @@
             <div class="cart-section" id="cartSection">
                 <div class="cart-header">
                     <div>
-                        <span class="cart-title">Koszyk zamówienia</span>
+                        <span class="cart-title" data-i18n="cartTitle">Koszyk zamówienia</span>
                         <span class="cart-count" id="cartCount">0</span>
                     </div>
                     <div class="cart-buttons">
                         <div class="cart-export-wrapper">
-                            <button class="btn-primary" id="cartExportBtn" onclick="toggleCartExportMenu()">Generuj zapytanie</button>
+                            <button class="btn-primary" id="cartExportBtn" onclick="toggleCartExportMenu()" data-i18n="genInquiry">Generuj zapytanie</button>
                             <div class="cart-export-menu" id="cartExportMenu">
-                                <button onclick="exportCartCopy()">Kopiuj</button>
-                                <button onclick="exportCartEmail()">Wyślij e-mail</button>
-                                <button onclick="exportCartXLSX()">Eksport XLSX</button>
+                                <button onclick="exportCartCopy()" data-i18n="copy">Kopiuj</button>
+                                <button onclick="exportCartEmail()" data-i18n="sendEmail">Wyślij e-mail</button>
+                                <button onclick="exportCartXLSX()" data-i18n="exportXlsx">Eksport XLSX</button>
                             </div>
                         </div>
-                        <button class="btn-primary" onclick="clearCart()">Wyczyść koszyk</button>
+                        <button class="btn-primary" onclick="clearCart()" data-i18n="clearCart">Wyczyść koszyk</button>
                     </div>
                 </div>
                 <div id="cartItems">
-                    <div class="cart-empty">Koszyk jest pusty. Oblicz cięcie i dodaj sztangi do koszyka.</div>
+                    <div class="cart-empty" data-i18n="cartEmptyMsg">Koszyk jest pusty. Oblicz cięcie i dodaj sztangi do koszyka.</div>
                 </div>
             </div>
         </div>
@@ -1423,12 +1445,12 @@
         <div id="tab-ksztaltowniki" class="tab-content">
             <div class="main-content">
                 <div class="ksz-tabs">
-                    <button class="ksz-tab active" onclick="switchKszTab('dwut', this)">Dwuteowniki</button>
-                    <button class="ksz-tab" onclick="switchKszTab('katow', this)">Kątowniki</button>
-                    <button class="ksz-tab" onclick="switchKszTab('ceow', this)">Ceowniki</button>
-                    <button class="ksz-tab" onclick="switchKszTab('teow', this)">Teowniki</button>
-                    <button class="ksz-tab" onclick="switchKszTab('rury', this)">Rury</button>
-                    <button class="ksz-tab" onclick="switchKszTab('pzam', this)">Profile zamknięte</button>
+                    <button class="ksz-tab active" onclick="switchKszTab('dwut', this)" data-i18n="kszDwut">Dwuteowniki</button>
+                    <button class="ksz-tab" onclick="switchKszTab('katow', this)" data-i18n="kszKatow">Kątowniki</button>
+                    <button class="ksz-tab" onclick="switchKszTab('ceow', this)" data-i18n="kszCeow">Ceowniki</button>
+                    <button class="ksz-tab" onclick="switchKszTab('teow', this)" data-i18n="kszTeow">Teowniki</button>
+                    <button class="ksz-tab" onclick="switchKszTab('rury', this)" data-i18n="kszRury">Rury</button>
+                    <button class="ksz-tab" onclick="switchKszTab('pzam', this)" data-i18n="kszPzam">Profile zamknięte</button>
                 </div>
 
                 <!-- DWUTEOWNIKI -->
@@ -1443,7 +1465,7 @@
                                 <button class="ksz-subtab" onclick="switchKszSub('dwut','ipe',this)">IPE</button>
                                 <button class="ksz-subtab" onclick="switchKszSub('dwut','ipeaa',this)">IPE AA</button>
                             </div>
-                            <input type="text" class="ksz-search" placeholder="Szukaj profilu..." oninput="filterKszTable(this, 'dwut')">
+                            <input type="text" class="ksz-search" placeholder="Szukaj profilu..." data-i18n-ph="searchProfile" oninput="filterKszTable(this, 'dwut')">
                         </div>
                         <div class="ksz-drawing ksz-ibeam"></div>
                     </div>
@@ -1587,10 +1609,10 @@
                     <div class="ksz-header">
                         <div class="ksz-header-left">
                             <div class="ksz-subtabs">
-                                <button class="ksz-subtab active" onclick="switchKszSub('katow','rowno',this)">Równoramienne</button>
-                                <button class="ksz-subtab" onclick="switchKszSub('katow','nierowno',this)">Nierównoramienne</button>
+                                <button class="ksz-subtab active" onclick="switchKszSub('katow','rowno',this)" data-i18n="kszRowno">Równoramienne</button>
+                                <button class="ksz-subtab" onclick="switchKszSub('katow','nierowno',this)" data-i18n="kszNierowno">Nierównoramienne</button>
                             </div>
-                            <input type="text" class="ksz-search" placeholder="Szukaj profilu..." oninput="filterKszTable(this, 'katow')">
+                            <input type="text" class="ksz-search" placeholder="Szukaj profilu..." data-i18n-ph="searchProfile" oninput="filterKszTable(this, 'katow')">
                         </div>
                         <div class="ksz-drawing ksz-angle-eq" id="katow-drawing"></div>
                     </div>
@@ -1714,11 +1736,11 @@
                     <div class="ksz-header">
                         <div class="ksz-header-left">
                             <div class="ksz-subtabs">
-                                <button class="ksz-subtab active" onclick="switchKszSub('ceow','zwykle',this)">Zwykłe</button>
+                                <button class="ksz-subtab active" onclick="switchKszSub('ceow','zwykle',this)" data-i18n="kszZwykle">Zwykłe</button>
                                 <button class="ksz-subtab" onclick="switchKszSub('ceow','upe',this)">UPE</button>
-                                <button class="ksz-subtab" onclick="switchKszSub('ceow','ekonom',this)">Ekonomiczne</button>
+                                <button class="ksz-subtab" onclick="switchKszSub('ceow','ekonom',this)" data-i18n="kszEkonom">Ekonomiczne</button>
                             </div>
-                            <input type="text" class="ksz-search" placeholder="Szukaj profilu..." oninput="filterKszTable(this, 'ceow')">
+                            <input type="text" class="ksz-search" placeholder="Szukaj profilu..." data-i18n-ph="searchProfile" oninput="filterKszTable(this, 'ceow')">
                         </div>
                         <div class="ksz-drawing ksz-channel" id="ceow-drawing"></div>
                     </div>
@@ -1789,9 +1811,9 @@
                     <div class="ksz-header">
                         <div class="ksz-header-left">
                             <div class="ksz-subtabs">
-                                <button class="ksz-subtab active" onclick="switchKszSub('teow','t',this)">Teowniki T</button>
+                                <button class="ksz-subtab active" onclick="switchKszSub('teow','t',this)" data-i18n="kszTeowT">Teowniki T</button>
                             </div>
-                            <input type="text" class="ksz-search" placeholder="Szukaj profilu..." oninput="filterKszTable(this, 'teow')">
+                            <input type="text" class="ksz-search" placeholder="Szukaj profilu..." data-i18n-ph="searchProfile" oninput="filterKszTable(this, 'teow')">
                         </div>
                         <div class="ksz-drawing ksz-tbeam" id="teow-drawing"></div>
                     </div>
@@ -1817,10 +1839,10 @@
                     <div class="ksz-header">
                         <div class="ksz-header-left">
                             <div class="ksz-subtabs">
-                                <button class="ksz-subtab active" onclick="switchKszSub('rury','okragle',this)">Okrągłe</button>
-                                <button class="ksz-subtab" onclick="switchKszSub('rury','kwadrat',this)">Kwadratowe</button>
+                                <button class="ksz-subtab active" onclick="switchKszSub('rury','okragle',this)" data-i18n="kszOkragle">Okrągłe</button>
+                                <button class="ksz-subtab" onclick="switchKszSub('rury','kwadrat',this)" data-i18n="kszKwadrat">Kwadratowe</button>
                             </div>
-                            <input type="text" class="ksz-search" placeholder="Szukaj profilu..." oninput="filterKszTable(this, 'rury')">
+                            <input type="text" class="ksz-search" placeholder="Szukaj profilu..." data-i18n-ph="searchProfile" oninput="filterKszTable(this, 'rury')">
                         </div>
                         <div class="ksz-drawing ksz-pipe-round" id="rury-drawing"></div>
                     </div>
@@ -1906,9 +1928,9 @@
                     <div class="ksz-header">
                         <div class="ksz-header-left">
                             <div class="ksz-subtabs">
-                                <button class="ksz-subtab active" onclick="switchKszSub('pzam','prostokatne',this)">Prostokątne</button>
+                                <button class="ksz-subtab active" onclick="switchKszSub('pzam','prostokatne',this)" data-i18n="kszProstokatne">Prostokątne</button>
                             </div>
-                            <input type="text" class="ksz-search" placeholder="Szukaj profilu..." oninput="filterKszTable(this, 'pzam')">
+                            <input type="text" class="ksz-search" placeholder="Szukaj profilu..." data-i18n-ph="searchProfile" oninput="filterKszTable(this, 'pzam')">
                         </div>
                         <div class="ksz-drawing ksz-rect-tube" id="pzam-drawing"></div>
                     </div>
@@ -1969,41 +1991,41 @@
         <div id="tab-kalkulator" class="tab-content">
             <div class="main-content">
                 <div class="calc-tabs">
-                    <button class="calc-tab active" onclick="switchCalcTab('blachy', this)">Blachy i płaskowniki</button>
-                    <button class="calc-tab" onclick="switchCalcTab('rury', this)">Rury</button>
-                    <button class="calc-tab" onclick="switchCalcTab('ruryprost', this)">Rury prostokątne</button>
-                    <button class="calc-tab" onclick="switchCalcTab('prety', this)">Pręty</button>
+                    <button class="calc-tab active" onclick="switchCalcTab('blachy', this)" data-i18n="calcBlachy">Blachy i płaskowniki</button>
+                    <button class="calc-tab" onclick="switchCalcTab('rury', this)" data-i18n="calcRury">Rury</button>
+                    <button class="calc-tab" onclick="switchCalcTab('ruryprost', this)" data-i18n="calcRuryProst">Rury prostokątne</button>
+                    <button class="calc-tab" onclick="switchCalcTab('prety', this)" data-i18n="calcPrety">Pręty</button>
                 </div>
 
                 <!-- BLACHY I PŁASKOWNIKI -->
                 <div id="calc-blachy" class="calc-content active">
                     <div class="calc-grid">
                         <div class="calc-field">
-                            <label class="column-label">Materiał</label>
+                            <label class="column-label" data-i18n="calcMaterial">Materiał</label>
                             <select id="blacha-mat" onchange="calcMatChange('blacha')">
-                                <option value="7.85">Stal</option>
-                                <option value="2.7">Aluminium</option>
+                                <option value="7.85" data-i18n="calcSteel">Stal</option>
+                                <option value="2.7" data-i18n="calcAluminium">Aluminium</option>
                             </select>
                         </div>
                         <div class="calc-field">
-                            <label class="column-label">Grubość (mm)</label>
+                            <label class="column-label" data-i18n="calcThickness">Grubość (mm)</label>
                             <input type="number" id="blacha-grub" value="10" min="0" step="5">
                         </div>
                         <div class="calc-field">
-                            <label class="column-label">Szerokość (mm)</label>
+                            <label class="column-label" data-i18n="calcWidth">Szerokość (mm)</label>
                             <input type="number" id="blacha-szer" value="100" min="0" step="500">
                         </div>
                         <div class="calc-field">
-                            <label class="column-label">Długość (mm)</label>
+                            <label class="column-label" data-i18n="calcLength">Długość (mm)</label>
                             <input type="number" id="blacha-dlug" value="1000" min="0" step="500">
                         </div>
                         <div class="calc-field">
-                            <label class="column-label">Gęstość (kg/dm³)</label>
+                            <label class="column-label" data-i18n="calcDensity">Gęstość (kg/dm³)</label>
                             <input type="number" id="blacha-gest" value="7.85" min="0" step="0.01">
                         </div>
                     </div>
                     <div class="calc-actions">
-                        <button class="btn-primary" onclick="calcBlacha()">Oblicz</button>
+                        <button class="btn-primary" onclick="calcBlacha()" data-i18n="calculate">Oblicz</button>
                     </div>
                     <div id="blacha-wynik" class="calc-result" style="display:none;"></div>
                 </div>
@@ -2012,33 +2034,33 @@
                 <div id="calc-rury" class="calc-content">
                     <div class="calc-grid cols-2">
                         <div class="calc-field">
-                            <label class="column-label">Średnica zewn. (mm)</label>
+                            <label class="column-label" data-i18n="calcOuterDia">Średnica zewn. (mm)</label>
                             <input type="number" id="rura-srednica" value="50" min="0" step="10">
                         </div>
                         <div class="calc-field">
-                            <label class="column-label">Grubość ścianki (mm)</label>
+                            <label class="column-label" data-i18n="calcWallThick">Grubość ścianki (mm)</label>
                             <input type="number" id="rura-grub" value="5" min="0" step="5">
                         </div>
                     </div>
                     <div class="calc-grid cols-3">
                         <div class="calc-field">
-                            <label class="column-label">Materiał</label>
+                            <label class="column-label" data-i18n="calcMaterial">Materiał</label>
                             <select id="rura-mat" onchange="calcMatChange('rura')">
-                                <option value="7.85">Stal</option>
-                                <option value="2.7">Aluminium</option>
+                                <option value="7.85" data-i18n="calcSteel">Stal</option>
+                                <option value="2.7" data-i18n="calcAluminium">Aluminium</option>
                             </select>
                         </div>
                         <div class="calc-field">
-                            <label class="column-label">Długość (mm)</label>
+                            <label class="column-label" data-i18n="calcLength">Długość (mm)</label>
                             <input type="number" id="rura-dlug" value="6000" min="0" step="1000">
                         </div>
                         <div class="calc-field">
-                            <label class="column-label">Gęstość (kg/dm³)</label>
+                            <label class="column-label" data-i18n="calcDensity">Gęstość (kg/dm³)</label>
                             <input type="number" id="rura-gest" value="7.85" min="0" step="0.01">
                         </div>
                     </div>
                     <div class="calc-actions">
-                        <button class="btn-primary" onclick="calcRura()">Oblicz</button>
+                        <button class="btn-primary" onclick="calcRura()" data-i18n="calculate">Oblicz</button>
                     </div>
                     <div id="rura-wynik" class="calc-result" style="display:none;"></div>
                 </div>
@@ -2047,37 +2069,37 @@
                 <div id="calc-ruryprost" class="calc-content">
                     <div class="calc-grid cols-1">
                         <div class="calc-field">
-                            <label class="column-label">Grubość ścianki (mm)</label>
+                            <label class="column-label" data-i18n="calcWallThick">Grubość ścianki (mm)</label>
                             <input type="number" id="rprost-grub" value="4" min="0" step="1">
                         </div>
                     </div>
                     <div class="calc-grid">
                         <div class="calc-field">
-                            <label class="column-label">Materiał</label>
+                            <label class="column-label" data-i18n="calcMaterial">Materiał</label>
                             <select id="rprost-mat" onchange="calcMatChange('rprost')">
-                                <option value="7.85">Stal</option>
-                                <option value="2.7">Aluminium</option>
+                                <option value="7.85" data-i18n="calcSteel">Stal</option>
+                                <option value="2.7" data-i18n="calcAluminium">Aluminium</option>
                             </select>
                         </div>
                         <div class="calc-field">
-                            <label class="column-label">Szerokość (mm)</label>
+                            <label class="column-label" data-i18n="calcWidth">Szerokość (mm)</label>
                             <input type="number" id="rprost-szer" value="60" min="0" step="5">
                         </div>
                         <div class="calc-field">
-                            <label class="column-label">Wysokość (mm)</label>
+                            <label class="column-label" data-i18n="calcHeight">Wysokość (mm)</label>
                             <input type="number" id="rprost-wys" value="40" min="0" step="5">
                         </div>
                         <div class="calc-field">
-                            <label class="column-label">Długość (mm)</label>
+                            <label class="column-label" data-i18n="calcLength">Długość (mm)</label>
                             <input type="number" id="rprost-dlug" value="6000" min="0" step="1000">
                         </div>
                         <div class="calc-field">
-                            <label class="column-label">Gęstość (kg/dm³)</label>
+                            <label class="column-label" data-i18n="calcDensity">Gęstość (kg/dm³)</label>
                             <input type="number" id="rprost-gest" value="7.85" min="0" step="0.01">
                         </div>
                     </div>
                     <div class="calc-actions">
-                        <button class="btn-primary" onclick="calcRuraProst()">Oblicz</button>
+                        <button class="btn-primary" onclick="calcRuraProst()" data-i18n="calculate">Oblicz</button>
                     </div>
                     <div id="rprost-wynik" class="calc-result" style="display:none;"></div>
                 </div>
@@ -2086,63 +2108,63 @@
                 <div id="calc-prety" class="calc-content">
                     <div class="calc-grid">
                         <div class="calc-field">
-                            <label class="column-label">Materiał</label>
+                            <label class="column-label" data-i18n="calcMaterial">Materiał</label>
                             <select id="pret-mat" onchange="calcMatChange('pret')">
-                                <option value="7.85">Stal</option>
-                                <option value="2.7">Aluminium</option>
+                                <option value="7.85" data-i18n="calcSteel">Stal</option>
+                                <option value="2.7" data-i18n="calcAluminium">Aluminium</option>
                             </select>
                         </div>
                         <div class="calc-field">
-                            <label class="column-label">Wymiar (mm)</label>
+                            <label class="column-label" data-i18n="calcDimension">Wymiar (mm)</label>
                             <input type="number" id="pret-wymiar" value="20" min="0" step="1">
-                            <p class="hint">Średnica / bok</p>
+                            <p class="hint" data-i18n="calcDimHint">Średnica / bok</p>
                         </div>
                         <div class="calc-field">
-                            <label class="column-label">Przekrój</label>
+                            <label class="column-label" data-i18n="calcCrossSection">Przekrój</label>
                             <select id="pret-ksztalt">
-                                <option value="kolo">Okrągły</option>
-                                <option value="kwadrat">Kwadratowy</option>
-                                <option value="szesciokat">Sześciokątny</option>
+                                <option value="kolo" data-i18n="calcRound">Okrągły</option>
+                                <option value="kwadrat" data-i18n="calcSquare">Kwadratowy</option>
+                                <option value="szesciokat" data-i18n="calcHex">Sześciokątny</option>
                             </select>
                         </div>
                         <div class="calc-field">
-                            <label class="column-label">Długość (mm)</label>
+                            <label class="column-label" data-i18n="calcLength">Długość (mm)</label>
                             <input type="number" id="pret-dlug" value="6000" min="0" step="1000">
                         </div>
                         <div class="calc-field">
-                            <label class="column-label">Gęstość (kg/dm³)</label>
+                            <label class="column-label" data-i18n="calcDensity">Gęstość (kg/dm³)</label>
                             <input type="number" id="pret-gest" value="7.85" min="0" step="0.01">
                         </div>
                     </div>
                     <div class="calc-actions">
-                        <button class="btn-primary" onclick="calcPret()">Oblicz</button>
+                        <button class="btn-primary" onclick="calcPret()" data-i18n="calculate">Oblicz</button>
                     </div>
                     <div id="pret-wynik" class="calc-result" style="display:none;"></div>
                 </div>
             </div>
         </div>
-        <div class="app-footer">&copy; 2025 Wycinacz Pro &mdash; Wszelkie prawa zastrzeżone</div>
+        <div class="app-footer">&copy; 2026 Wycinacz Pro &mdash; <span data-i18n="footer">Wszelkie prawa zastrzeżone</span></div>
     </div>
 
     <!-- FEEDBACK MODAL -->
     <div class="modal-overlay" id="feedbackModal" onclick="closeFeedbackOverlay(event)">
         <div class="modal">
             <div class="modal-header">
-                <span class="modal-title">Feedback</span>
+                <span class="modal-title" data-i18n="feedbackTitle">Feedback</span>
                 <button class="modal-close" onclick="closeFeedback()">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="modal-field">
-                    <label>Temat</label>
-                    <input type="text" id="feedbackSubject" placeholder="Np. Sugestia, Błąd, Pytanie..." />
+                    <label data-i18n="feedbackSubject">Temat</label>
+                    <input type="text" id="feedbackSubject" data-i18n-ph="feedbackSubjectPh" placeholder="Np. Sugestia, Błąd, Pytanie..." />
                 </div>
                 <div class="modal-field">
-                    <label>Treść wiadomości</label>
-                    <textarea id="feedbackBody" placeholder="Opisz swoje uwagi, pomysły lub zgłoś problem..."></textarea>
+                    <label data-i18n="feedbackBody">Treść wiadomości</label>
+                    <textarea id="feedbackBody" data-i18n-ph="feedbackBodyPh" placeholder="Opisz swoje uwagi, pomysły lub zgłoś problem..."></textarea>
                 </div>
                 <div class="modal-actions">
-                    <button class="btn-secondary" onclick="closeFeedback()">Anuluj</button>
-                    <button class="btn-primary" onclick="sendFeedback()">Wyślij</button>
+                    <button class="btn-secondary" onclick="closeFeedback()" data-i18n="feedbackCancel">Anuluj</button>
+                    <button class="btn-primary" onclick="sendFeedback()" data-i18n="feedbackSend">Wyślij</button>
                 </div>
             </div>
         </div>
@@ -2203,6 +2225,366 @@
             updateThemeIcon(theme);
         })();
 
+        // === i18n ===
+        let _currentLang = 'pl';
+
+        const _i18n = {
+            pl: {
+                // App name
+                appName: 'Wycinacz',
+                // Tabs
+                tabCutter: 'Wycinacz Pro',
+                tabProfiles: 'Kształtowniki',
+                tabCalc: 'Kalkulator Mas',
+                // Header
+                contract: 'Kontrakt',
+                profile: 'Kształtownik',
+                grade: 'Gatunek',
+                gradeOther: 'Inny...',
+                gradeCustomPh: 'Wpisz gatunek',
+                // Inputs
+                qty: 'Ilość',
+                lengthMm: 'Długość mm',
+                stocks: 'Sztangi mm',
+                stocksHint: 'Oddzielone przecinkami',
+                kerfHint: 'Naddatek cięcia',
+                // Buttons
+                calculate: 'Oblicz',
+                exportList: 'Eksportuj listę cięć',
+                copy: 'Kopiuj',
+                exportPdf: 'Eksport PDF',
+                exportTxt: 'Eksport TXT',
+                exportXlsx: 'Eksport XLSX',
+                // Loading
+                calculating: 'Obliczam optymalny plan cięcia...',
+                // Cart
+                cartTitle: 'Koszyk zamówienia',
+                genInquiry: 'Generuj zapytanie',
+                sendEmail: 'Wyślij e-mail',
+                clearCart: 'Wyczyść koszyk',
+                // Footer
+                footer: 'Wszelkie prawa zastrzeżone',
+                // Feedback
+                feedbackBtn: 'Feedback',
+                feedbackTitle: 'Feedback',
+                feedbackSubject: 'Temat',
+                feedbackSubjectPh: 'Np. Sugestia, Błąd, Pytanie...',
+                feedbackBody: 'Treść wiadomości',
+                feedbackBodyPh: 'Opisz swoje uwagi, pomysły lub zgłoś problem...',
+                feedbackCancel: 'Anuluj',
+                feedbackSend: 'Wyślij',
+                // Tooltips
+                themeToggleTitle: 'Przełącz tryb ciemny/jasny',
+                langToggleTitle: 'Zmień język',
+                // Kształtowniki tabs
+                kszDwut: 'Dwuteowniki',
+                kszKatow: 'Kątowniki',
+                kszCeow: 'Ceowniki',
+                kszTeow: 'Teowniki',
+                kszRury: 'Rury',
+                kszPzam: 'Profile zamknięte',
+                // Kształtowniki subtabs
+                kszRowno: 'Równoramienne',
+                kszNierowno: 'Nierównoramienne',
+                kszZwykle: 'Zwykłe',
+                kszEkonom: 'Ekonomiczne',
+                kszTeowT: 'Teowniki T',
+                kszOkragle: 'Okrągłe',
+                kszKwadrat: 'Kwadratowe',
+                kszProstokatne: 'Prostokątne',
+                searchProfile: 'Szukaj profilu...',
+                // Kalkulator tabs
+                calcBlachy: 'Blachy i płaskowniki',
+                calcRury: 'Rury',
+                calcRuryProst: 'Rury prostokątne',
+                calcPrety: 'Pręty',
+                // Kalkulator labels
+                calcMaterial: 'Materiał',
+                calcSteel: 'Stal',
+                calcAluminium: 'Aluminium',
+                calcThickness: 'Grubość (mm)',
+                calcWidth: 'Szerokość (mm)',
+                calcLength: 'Długość (mm)',
+                calcDensity: 'Gęstość (kg/dm³)',
+                calcOuterDia: 'Średnica zewn. (mm)',
+                calcWallThick: 'Grubość ścianki (mm)',
+                calcHeight: 'Wysokość (mm)',
+                calcDimension: 'Wymiar (mm)',
+                calcDimHint: 'Średnica / bok',
+                calcCrossSection: 'Przekrój',
+                calcRound: 'Okrągły',
+                calcSquare: 'Kwadratowy',
+                calcHex: 'Sześciokątny',
+                // Dynamic JS strings
+                errNoCuts: 'Podaj długości elementów do cięcia',
+                errNoStocks: 'Brak poprawnych długości sztang',
+                errOptimize: 'Błąd optymalizacji',
+                errProcess: 'Błąd podczas przetwarzania danych',
+                errExportPdf: 'Błąd podczas eksportu PDF',
+                errExportTxt: 'Błąd podczas eksportu TXT',
+                errExportXlsx: 'Błąd podczas eksportu XLSX: ',
+                errXlsxLib: 'Biblioteka XLSX nie załadowana. Sprawdź połączenie z internetem.',
+                errCartEmpty: 'Koszyk jest pusty!',
+                cartEmptyMsg: 'Koszyk jest pusty. Oblicz cięcie i dodaj sztangi do koszyka.',
+                addToCartBtn: '+ KOSZYK',
+                addedToCart: 'DODANO',
+                addAllToCart: 'Dodaj do koszyka',
+                addedAll: 'Dodano!',
+                copied: 'Skopiowano!',
+                waste: 'Strata',
+                efficiency: 'Efektywność',
+                stockUsageTitle: 'Użycie sztang:',
+                suggestionTitle: '💡 Sugestia optymalizacji',
+                suggestionBody: 'Dodanie sztangi <strong>{length} mm</strong> do dostępnych długości podniesie efektywność z <strong>{from}%</strong> do <strong>{to}%</strong> (+{diff}pp)',
+                mailSubject: 'Zapytanie ofertowe',
+                calcMass1m: 'Masa 1 metra',
+                calcLen1kg: 'Długość 1 kg',
+                calcMassFor: 'Masa dla {len} mm',
+                calcSection: 'Przekrój',
+                calcRoundName: 'okrągły',
+                calcSquareName: 'kwadratowy',
+                calcHexName: 'sześciokątny',
+                // Autocomplete categories
+                acDwut: 'Dwuteownik',
+                acKatow: 'Kątownik',
+                acCeow: 'Ceownik',
+                acTeow: 'Teownik',
+                acRura: 'Rura',
+                acPzam: 'Profil zamknięty',
+                // XLSX
+                xlsxTitle: 'Lista ciec',
+                xlsxContract: 'Kontrakt:',
+                xlsxProfile: 'Profil:',
+                xlsxKerf: 'Kerf:',
+                xlsxEff: 'Efektywnosc:',
+                xlsxColStock: 'Sztanga mm',
+                xlsxColCuts: 'Ciecia',
+                xlsxColWaste: 'Strata mm',
+                xlsxColEffPct: 'Efektywnosc %',
+                xlsxTotalStocks: 'Razem sztang:',
+                xlsxWaste: 'Odpad:',
+                xlsxOrderSheet: 'Zamowienie',
+                xlsxLP: 'LP',
+                xlsxType: 'Typ',
+                xlsxGrade: 'Gatunek',
+                xlsxLenMm: 'Długość mm',
+                xlsxQty: 'Ilość',
+                xlsxKgm: 'kg/m',
+                xlsxSumKg: 'Suma kg',
+                xlsxTotal: 'RAZEM',
+                totalLabel: 'Razem',
+                summaryStocks: 'Użyto sztang',
+                summaryTotalLen: 'Łączna długość',
+                summaryTotalWaste: 'Całkowita strata'
+            },
+            en: {
+                // App name
+                appName: 'Cutter',
+                // Tabs
+                tabCutter: 'Cutter Pro',
+                tabProfiles: 'Profiles',
+                tabCalc: 'Mass Calculator',
+                // Header
+                contract: 'Contract',
+                profile: 'Profile',
+                grade: 'Grade',
+                gradeOther: 'Other...',
+                gradeCustomPh: 'Enter grade',
+                // Inputs
+                qty: 'Quantity',
+                lengthMm: 'Length mm',
+                stocks: 'Stock lengths mm',
+                stocksHint: 'Comma separated',
+                kerfHint: 'Cutting allowance',
+                // Buttons
+                calculate: 'Calculate',
+                exportList: 'Export cut list',
+                copy: 'Copy',
+                exportPdf: 'Export PDF',
+                exportTxt: 'Export TXT',
+                exportXlsx: 'Export XLSX',
+                // Loading
+                calculating: 'Calculating optimal cutting plan...',
+                // Cart
+                cartTitle: 'Order cart',
+                genInquiry: 'Generate inquiry',
+                sendEmail: 'Send e-mail',
+                clearCart: 'Clear cart',
+                // Footer
+                footer: 'All rights reserved',
+                // Feedback
+                feedbackBtn: 'Feedback',
+                feedbackTitle: 'Feedback',
+                feedbackSubject: 'Subject',
+                feedbackSubjectPh: 'e.g. Suggestion, Bug, Question...',
+                feedbackBody: 'Message',
+                feedbackBodyPh: 'Describe your comments, ideas or report an issue...',
+                feedbackCancel: 'Cancel',
+                feedbackSend: 'Send',
+                // Tooltips
+                themeToggleTitle: 'Toggle dark/light mode',
+                langToggleTitle: 'Change language',
+                // Kształtowniki tabs
+                kszDwut: 'I-Beams',
+                kszKatow: 'Angles',
+                kszCeow: 'Channels',
+                kszTeow: 'T-Beams',
+                kszRury: 'Tubes',
+                kszPzam: 'Hollow sections',
+                // Kształtowniki subtabs
+                kszRowno: 'Equal leg',
+                kszNierowno: 'Unequal leg',
+                kszZwykle: 'Standard',
+                kszEkonom: 'Economy',
+                kszTeowT: 'T-Beams T',
+                kszOkragle: 'Round',
+                kszKwadrat: 'Square',
+                kszProstokatne: 'Rectangular',
+                searchProfile: 'Search profile...',
+                // Kalkulator tabs
+                calcBlachy: 'Plates & flats',
+                calcRury: 'Tubes',
+                calcRuryProst: 'Rectangular tubes',
+                calcPrety: 'Bars',
+                // Kalkulator labels
+                calcMaterial: 'Material',
+                calcSteel: 'Steel',
+                calcAluminium: 'Aluminium',
+                calcThickness: 'Thickness (mm)',
+                calcWidth: 'Width (mm)',
+                calcLength: 'Length (mm)',
+                calcDensity: 'Density (kg/dm\u00B3)',
+                calcOuterDia: 'Outer dia. (mm)',
+                calcWallThick: 'Wall thickness (mm)',
+                calcHeight: 'Height (mm)',
+                calcDimension: 'Dimension (mm)',
+                calcDimHint: 'Diameter / side',
+                calcCrossSection: 'Cross-section',
+                calcRound: 'Round',
+                calcSquare: 'Square',
+                calcHex: 'Hexagonal',
+                // Dynamic JS strings
+                errNoCuts: 'Enter cut lengths',
+                errNoStocks: 'No valid stock lengths',
+                errOptimize: 'Optimization error',
+                errProcess: 'Error processing data',
+                errExportPdf: 'Error exporting PDF',
+                errExportTxt: 'Error exporting TXT',
+                errExportXlsx: 'Error exporting XLSX: ',
+                errXlsxLib: 'XLSX library not loaded. Check your internet connection.',
+                errCartEmpty: 'Cart is empty!',
+                cartEmptyMsg: 'Cart is empty. Calculate cuts and add stocks to the cart.',
+                addToCartBtn: '+ CART',
+                addedToCart: 'ADDED',
+                addedAll: 'Added!',
+                addAllToCart: 'Add all to cart',
+                copied: 'Copied!',
+                waste: 'Waste',
+                efficiency: 'Efficiency',
+                stockUsageTitle: 'Stock usage:',
+                suggestionTitle: '💡 Optimization suggestion',
+                suggestionBody: 'Adding stock <strong>{length} mm</strong> to available lengths will increase efficiency from <strong>{from}%</strong> to <strong>{to}%</strong> (+{diff}pp)',
+                mailSubject: 'Request for quotation',
+                calcMass1m: 'Mass per metre',
+                calcLen1kg: 'Length per kg',
+                calcMassFor: 'Mass for {len} mm',
+                calcSection: 'Cross-section',
+                calcRoundName: 'round',
+                calcSquareName: 'square',
+                calcHexName: 'hexagonal',
+                // Autocomplete categories
+                acDwut: 'I-Beam',
+                acKatow: 'Angle',
+                acCeow: 'Channel',
+                acTeow: 'T-Beam',
+                acRura: 'Tube',
+                acPzam: 'Hollow section',
+                // XLSX
+                xlsxTitle: 'Cutting list',
+                xlsxContract: 'Contract:',
+                xlsxProfile: 'Profile:',
+                xlsxKerf: 'Kerf:',
+                xlsxEff: 'Efficiency:',
+                xlsxColStock: 'Stock mm',
+                xlsxColCuts: 'Cuts',
+                xlsxColWaste: 'Waste mm',
+                xlsxColEffPct: 'Efficiency %',
+                xlsxTotalStocks: 'Total stocks:',
+                xlsxWaste: 'Waste:',
+                xlsxOrderSheet: 'Order',
+                xlsxLP: '#',
+                xlsxType: 'Type',
+                xlsxGrade: 'Grade',
+                xlsxLenMm: 'Length mm',
+                xlsxQty: 'Qty',
+                xlsxKgm: 'kg/m',
+                xlsxSumKg: 'Total kg',
+                xlsxTotal: 'TOTAL',
+                totalLabel: 'Total',
+                summaryStocks: 'Stocks used',
+                summaryTotalLen: 'Total length',
+                summaryTotalWaste: 'Total waste'
+            }
+        };
+
+        function t(key) {
+            return (_i18n[_currentLang] && _i18n[_currentLang][key]) || (_i18n.pl[key]) || key;
+        }
+
+        function applyLang() {
+            // Static text
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                const txt = t(key);
+                if (el.tagName === 'OPTION') {
+                    el.textContent = txt;
+                } else {
+                    el.textContent = txt;
+                }
+            });
+            // Placeholders
+            document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+                const key = el.getAttribute('data-i18n-ph');
+                el.placeholder = t(key);
+            });
+            // Titles
+            document.querySelectorAll('[data-i18n-title]').forEach(el => {
+                const key = el.getAttribute('data-i18n-title');
+                el.title = t(key);
+            });
+            // Update html lang attribute
+            document.documentElement.lang = _currentLang;
+            // Update page title
+            document.title = _currentLang === 'en' ? 'Cutter Pro' : 'Wycinacz Pro';
+        }
+
+        function toggleLang() {
+            _currentLang = _currentLang === 'pl' ? 'en' : 'pl';
+            localStorage.setItem('wycinacz-lang', _currentLang);
+            applyLang();
+            updateLangIcon();
+            // Re-render dynamic content
+            renderCart();
+        }
+
+        function updateLangIcon() {
+            const btn = document.getElementById('langToggle');
+            if (!btn) return;
+            // Show flag of language to switch TO
+            // PL active → show GB flag (click to switch to EN)
+            // EN active → show PL flag (click to switch to PL)
+            btn.innerHTML = _currentLang === 'pl' ? '&#127468;&#127463;' : '&#127477;&#127473;';
+        }
+
+        (function initLang() {
+            const saved = localStorage.getItem('wycinacz-lang');
+            if (saved === 'en') {
+                _currentLang = 'en';
+            }
+            applyLang();
+            updateLangIcon();
+        })();
+
         // === FEEDBACK ===
         function openFeedback() {
             document.getElementById('feedbackModal').classList.add('open');
@@ -2226,7 +2608,7 @@
             const _r = [107,97,109,105,108,115,122,117,115,116,101,114,64,103,109,97,105,108,46,99,111,109];
             const _a = _r.map(c => String.fromCharCode(c)).join('');
             const mailto = 'mailto:' + _a +
-                '?subject=' + encodeURIComponent(subject || 'Feedback Wycinacz Pro') +
+                '?subject=' + encodeURIComponent(subject || 'Feedback ' + ((_currentLang === 'en') ? 'Cutter Pro' : 'Wycinacz Pro')) +
                 '&body=' + encodeURIComponent(body);
             window.location.href = mailto;
             setTimeout(closeFeedback, 500);
@@ -2319,7 +2701,7 @@
             const profileType = document.getElementById('profileType').value.trim();
 
             if (requiredCuts.length === 0) {
-                showError('Podaj długości elementów do cięcia');
+                showError(t('errNoCuts'));
                 return;
             }
 
@@ -2327,7 +2709,7 @@
                 const stockLengths = stocksInput.split(',').map(s => parseInt(s.trim())).filter(v => v > 0);
 
                 if (stockLengths.length === 0) {
-                    showError('Brak poprawnych długości sztang');
+                    showError(t('errNoStocks'));
                     return;
                 }
 
@@ -2354,7 +2736,7 @@
 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    showError(errorData.error || 'Błąd optymalizacji');
+                    showError(errorData.error || t('errOptimize'));
                     return;
                 }
 
@@ -2367,7 +2749,7 @@
 
             } catch (error) {
                 document.getElementById('loading').classList.remove('active');
-                showError('Błąd podczas przetwarzania danych');
+                showError(t('errProcess'));
                 console.error(error);
             }
         }
@@ -2412,9 +2794,14 @@
                 const box = document.createElement('div');
                 box.className = 'suggestion-box';
                 box.id = 'suggestion-box';
+                const suggBody = t('suggestionBody')
+                    .replace('{length}', best.length)
+                    .replace('{from}', currentEff.toFixed(1))
+                    .replace('{to}', best.efficiency.toFixed(1))
+                    .replace('{diff}', best.improvement.toFixed(1));
                 box.innerHTML = `
-                    <div class="suggestion-title">&#128161; Sugestia optymalizacji</div>
-                    <div>Dodanie sztangi <strong>${best.length} mm</strong> do dostępnych długości podniesie efektywność z <strong>${currentEff.toFixed(1)}%</strong> do <strong>${best.efficiency.toFixed(1)}%</strong> (+${best.improvement.toFixed(1)}pp)</div>
+                    <div class="suggestion-title">${t('suggestionTitle')}</div>
+                    <div>${suggBody}</div>
                 `;
                 const resultsDiv = document.getElementById('results');
                 if (resultsDiv) resultsDiv.appendChild(box);
@@ -2441,9 +2828,9 @@
                         <span class="result-cuts">${plan.cuts.join(', ')}</span>
                     </div>
                     <div class="result-meta">
-                        <span class="result-waste">Strata: ${plan.waste} mm (${wastePercent}%)</span>
-                        <span class="result-efficiency">Efektywność: ${effPercent}%</span>
-                        <button class="btn-cart-add" data-index="${index}" onclick="addToCart(${index}, this)">+ KOSZYK</button>
+                        <span class="result-waste">${t('waste')}: ${plan.waste} mm (${wastePercent}%)</span>
+                        <span class="result-efficiency">${t('efficiency')}: ${effPercent}%</span>
+                        <button class="btn-cart-add" data-index="${index}" onclick="addToCart(${index}, this)">${t('addToCartBtn')}</button>
                     </div>
                 `;
 
@@ -2453,14 +2840,14 @@
             // Przycisk dodaj wszystkie
             const addAllBtn = document.createElement('button');
             addAllBtn.className = 'btn-primary';
-            addAllBtn.textContent = 'Dodaj do koszyka';
+            addAllBtn.textContent = t('addAllToCart');
             addAllBtn.style.marginTop = '8px';
             addAllBtn.style.marginBottom = '8px';
             addAllBtn.onclick = function() {
                 addAllToCart();
-                addAllBtn.textContent = 'Dodano!';
+                addAllBtn.textContent = t('addedAll');
                 addAllBtn.disabled = true;
-                setTimeout(() => { addAllBtn.textContent = 'Dodaj do koszyka'; addAllBtn.disabled = false; }, 2000);
+                setTimeout(() => { addAllBtn.textContent = t('addAllToCart'); addAllBtn.disabled = false; }, 2000);
             };
             resultsDiv.appendChild(addAllBtn);
 
@@ -2470,7 +2857,7 @@
 
                 const stockUsageTitle = document.createElement('div');
                 stockUsageTitle.className = 'stock-usage-title';
-                stockUsageTitle.textContent = 'Użycie sztang:';
+                stockUsageTitle.textContent = t('stockUsageTitle');
 
                 const stockUsageItems = document.createElement('div');
                 stockUsageItems.className = 'stock-usage-items';
@@ -2489,7 +2876,8 @@
 
             const summary = document.createElement('div');
             summary.className = 'summary';
-            summary.textContent = result.summary;
+            const eff = parseFloat(result.efficiency) || 0;
+            summary.textContent = `${t('summaryStocks')}: ${result.totalStockUsed} | ${t('summaryTotalLen')}: ${result.totalLength} mm | ${t('summaryTotalWaste')}: ${result.totalWaste} mm | ${t('efficiency')}: ${eff.toFixed(2)}%`;
             resultsDiv.appendChild(summary);
         }
 
@@ -2497,20 +2885,20 @@
         let _allProfiles = null;
         let _acIndex = -1;
 
-        const _kszCategoryMap = {
-            'ksz-dwut': 'Dwuteownik',
-            'ksz-katow': 'Kątownik',
-            'ksz-ceow': 'Ceownik',
-            'ksz-teow': 'Teownik',
-            'ksz-rury': 'Rura',
-            'ksz-pzam': 'Profil zamknięty'
+        const _kszCategoryKeys = {
+            'ksz-dwut': 'acDwut',
+            'ksz-katow': 'acKatow',
+            'ksz-ceow': 'acCeow',
+            'ksz-teow': 'acTeow',
+            'ksz-rury': 'acRura',
+            'ksz-pzam': 'acPzam'
         };
 
         function getAllProfiles() {
             _allProfiles = [];
             const contents = document.querySelectorAll('.ksz-content');
             contents.forEach(content => {
-                const category = _kszCategoryMap[content.id] || '';
+                const category = _kszCategoryKeys[content.id] ? t(_kszCategoryKeys[content.id]) : '';
                 const tables = content.querySelectorAll('.ksz-table tbody');
                 tables.forEach(tbody => {
                     const kgCol = tbody.closest('table').querySelectorAll('thead th').length - 1;
@@ -2651,7 +3039,7 @@
             });
 
             if (btn) {
-                btn.textContent = 'DODANO';
+                btn.textContent = t('addedToCart');
                 btn.classList.add('added');
             }
 
@@ -2679,7 +3067,7 @@
 
             // Oznacz wszystkie przyciski
             document.querySelectorAll('.btn-cart-add').forEach(btn => {
-                btn.textContent = 'DODANO';
+                btn.textContent = t('addedToCart');
                 btn.classList.add('added');
             });
 
@@ -2702,7 +3090,7 @@
             countEl.textContent = cart.length;
 
             if (cart.length === 0) {
-                container.innerHTML = '<div class="cart-empty">Koszyk jest pusty. Oblicz cięcie i dodaj sztangi do koszyka.</div>';
+                container.innerHTML = '<div class="cart-empty">' + t('cartEmptyMsg') + '</div>';
                 return;
             }
 
@@ -2759,33 +3147,24 @@
             });
 
             const rows = Object.values(grouped);
-            const hasMass = rows.some(g => g.totalMass > 0);
-
             let text = '';
-            if (hasMass) {
-                text += 'LP | Typ | Gatunek | Dlugosc | Ilosc | Suma kg\n';
-                text += '---|-----|---------|---------|-------|--------\n';
-                let lp = 1;
-                let grandTotal = 0;
-                rows.forEach(g => {
-                    text += `${lp}  | ${g.profile} | ${g.grade} | ${g.stockLength} | ${g.count} szt. | ${g.totalMass.toFixed(1)} kg\n`;
-                    grandTotal += g.totalMass;
-                    lp++;
-                });
-                text += `\nRazem: ${grandTotal.toFixed(1)} kg\n`;
-            } else {
-                let lp = 1;
-                rows.forEach(g => {
-                    text += `${lp}. ${g.profile} - ${g.grade} - ${g.stockLength} - ${g.count} szt.\n`;
-                    lp++;
-                });
+            let lp = 1;
+            let grandTotal = 0;
+            rows.forEach(g => {
+                const massStr = g.totalMass > 0 ? ` - ${g.totalMass.toFixed(1)} kg` : '';
+                text += `${lp}. ${g.profile} - ${g.grade} - ${g.stockLength} - ${g.count} szt.${massStr}\n`;
+                grandTotal += g.totalMass;
+                lp++;
+            });
+            if (grandTotal > 0) {
+                text += `\n${t('totalLabel')}: ${grandTotal.toFixed(1)} kg\n`;
             }
             return text;
         }
 
         function toggleCartExportMenu() {
             if (cart.length === 0) {
-                showError('Koszyk jest pusty!');
+                showError(t('errCartEmpty'));
                 return;
             }
             const menu = document.getElementById('cartExportMenu');
@@ -2799,7 +3178,7 @@
         function exportCartCopy() {
             closeCartExportMenu();
             if (cart.length === 0) {
-                showError('Koszyk jest pusty!');
+                showError(t('errCartEmpty'));
                 return;
             }
 
@@ -2807,7 +3186,7 @@
             navigator.clipboard.writeText(text).then(() => {
                 const btn = document.getElementById('cartExportBtn');
                 const orig = btn.textContent;
-                btn.textContent = 'Skopiowano!';
+                btn.textContent = t('copied');
                 setTimeout(() => { btn.textContent = orig; }, 2000);
             });
         }
@@ -2815,13 +3194,13 @@
         function exportCartEmail() {
             closeCartExportMenu();
             if (cart.length === 0) {
-                showError('Koszyk jest pusty!');
+                showError(t('errCartEmpty'));
                 return;
             }
 
             const text = generateCartText();
 
-            const mailtoLink = `mailto:?subject=${encodeURIComponent('Zapytanie ofertowe')}&body=${encodeURIComponent(text)}`;
+            const mailtoLink = `mailto:?subject=${encodeURIComponent(t('mailSubject'))}&body=${encodeURIComponent(text)}`;
             window.location.href = mailtoLink;
         }
 
@@ -2834,8 +3213,8 @@
             closeExportMenu();
 
             let text = '';
-            if (currentResult.contractNumber) text += `Kontrakt: ${currentResult.contractNumber}\n`;
-            if (currentResult.profileType) text += `Profil: ${currentResult.profileType}\n`;
+            if (currentResult.contractNumber) text += `${t('xlsxContract')} ${currentResult.contractNumber}\n`;
+            if (currentResult.profileType) text += `${t('xlsxProfile')} ${currentResult.profileType}\n`;
             if (text) text += '\n';
 
             currentResult.plans.forEach((plan) => {
@@ -2845,7 +3224,7 @@
             navigator.clipboard.writeText(text).then(() => {
                 const btn = document.getElementById('exportBtn');
                 const originalText = btn.textContent;
-                btn.textContent = 'Skopiowano!';
+                btn.textContent = t('copied');
                 setTimeout(() => {
                     btn.textContent = originalText;
                 }, 2000);
@@ -2882,7 +3261,7 @@
                 window.URL.revokeObjectURL(url);
 
             } catch (error) {
-                showError('Błąd podczas eksportu PDF');
+                showError(t('errExportPdf'));
                 console.error(error);
             }
         }
@@ -2918,7 +3297,7 @@
                 window.URL.revokeObjectURL(url);
 
             } catch (error) {
-                showError('Błąd podczas eksportu TXT');
+                showError(t('errExportTxt'));
                 console.error(error);
             }
         }
@@ -2927,7 +3306,7 @@
             if (!currentResult) return;
             closeExportMenu();
             if (typeof XLSX === 'undefined') {
-                showError('Biblioteka XLSX nie załadowana. Sprawdź połączenie z internetem.');
+                showError(t('errXlsxLib'));
                 return;
             }
             try {
@@ -2936,12 +3315,12 @@
 
                 // Arkusz: Lista cięć
                 const planData = [
-                    ['Lista ciec'],
+                    [t('xlsxTitle')],
                     [],
-                    ['Kontrakt:', currentResult.contractNumber || '-', '', 'Profil:', currentResult.profileType || '-'],
-                    ['Kerf:', (currentResult.kerf || 0) + ' mm', '', 'Efektywnosc:', eff.toFixed(1) + '%'],
+                    [t('xlsxContract'), currentResult.contractNumber || '-', '', t('xlsxProfile'), currentResult.profileType || '-'],
+                    [t('xlsxKerf'), (currentResult.kerf || 0) + ' mm', '', t('xlsxEff'), eff.toFixed(1) + '%'],
                     [],
-                    ['Sztanga mm', 'Ciecia', 'Strata mm', 'Efektywnosc %']
+                    [t('xlsxColStock'), t('xlsxColCuts'), t('xlsxColWaste'), t('xlsxColEffPct')]
                 ];
                 currentResult.plans.forEach(plan => {
                     const w = plan.waste || 0;
@@ -2950,11 +3329,11 @@
                 });
 
                 planData.push([]);
-                planData.push(['Razem sztang:', currentResult.totalStockUsed || currentResult.plans.length, '', 'Odpad:', (currentResult.totalWaste || 0) + ' mm']);
+                planData.push([t('xlsxTotalStocks'), currentResult.totalStockUsed || currentResult.plans.length, '', t('xlsxWaste'), (currentResult.totalWaste || 0) + ' mm']);
 
                 const ws1 = XLSX.utils.aoa_to_sheet(planData);
                 ws1['!cols'] = [{ wch: 14 }, { wch: 40 }, { wch: 12 }, { wch: 14 }, { wch: 16 }];
-                XLSX.utils.book_append_sheet(wb, ws1, 'Lista ciec');
+                XLSX.utils.book_append_sheet(wb, ws1, t('xlsxTitle'));
 
                 let filename = 'wycinacz';
                 if (currentResult.contractNumber) filename += '_' + currentResult.contractNumber;
@@ -2963,7 +3342,7 @@
 
                 XLSX.writeFile(wb, filename);
             } catch (error) {
-                showError('Błąd podczas eksportu XLSX: ' + error.message);
+                showError(t('errExportXlsx') + error.message);
                 console.error(error);
             }
         }
@@ -2971,7 +3350,7 @@
         function exportCartXLSX() {
             closeCartExportMenu();
             if (cart.length === 0) {
-                showError('Koszyk jest pusty!');
+                showError(t('errCartEmpty'));
                 return;
             }
             try {
@@ -2990,8 +3369,8 @@
                 const hasMass = rows.some(g => g.totalMass > 0);
 
                 const header = hasMass
-                    ? ['LP', 'Typ', 'Gatunek', 'Długość mm', 'Ilość', 'kg/m', 'Suma kg']
-                    : ['LP', 'Typ', 'Gatunek', 'Długość mm', 'Ilość'];
+                    ? [t('xlsxLP'), t('xlsxType'), t('xlsxGrade'), t('xlsxLenMm'), t('xlsxQty'), t('xlsxKgm'), t('xlsxSumKg')]
+                    : [t('xlsxLP'), t('xlsxType'), t('xlsxGrade'), t('xlsxLenMm'), t('xlsxQty')];
 
                 const data = [header];
                 let lp = 1;
@@ -3008,18 +3387,18 @@
 
                 if (hasMass) {
                     data.push([]);
-                    data.push(['', '', '', '', 'RAZEM', '', parseFloat(grandTotal.toFixed(1))]);
+                    data.push(['', '', '', '', t('xlsxTotal'), '', parseFloat(grandTotal.toFixed(1))]);
                 }
 
                 const ws = XLSX.utils.aoa_to_sheet(data);
                 ws['!cols'] = hasMass
                     ? [{ wch: 4 }, { wch: 16 }, { wch: 10 }, { wch: 12 }, { wch: 8 }, { wch: 8 }, { wch: 10 }]
                     : [{ wch: 4 }, { wch: 16 }, { wch: 10 }, { wch: 12 }, { wch: 8 }];
-                XLSX.utils.book_append_sheet(wb, ws, 'Zamowienie');
+                XLSX.utils.book_append_sheet(wb, ws, t('xlsxOrderSheet'));
 
                 XLSX.writeFile(wb, 'zamowienie.xlsx');
             } catch (error) {
-                showError('Błąd podczas eksportu XLSX');
+                showError(t('errExportXlsx') + error.message);
                 console.error(error);
             }
         }
@@ -3219,9 +3598,9 @@
             const wynik = document.getElementById('blacha-wynik');
             wynik.style.display = 'block';
             wynik.innerHTML = `
-                <div>Masa 1 metra: <span class="calc-value">${masa1m.toFixed(3)} kg/m</span></div>
-                <div>Długość 1 kg: <span class="calc-value">${dlug1kg.toFixed(4)} m/kg</span></div>
-                <div>Masa dla ${dlug} mm: <span class="calc-value">${masaCalk.toFixed(3)} kg</span></div>
+                <div>${t('calcMass1m')}: <span class="calc-value">${masa1m.toFixed(3)} kg/m</span></div>
+                <div>${t('calcLen1kg')}: <span class="calc-value">${dlug1kg.toFixed(4)} m/kg</span></div>
+                <div>${t('calcMassFor').replace('{len}', dlug)}: <span class="calc-value">${masaCalk.toFixed(3)} kg</span></div>
             `;
         }
 
@@ -3238,9 +3617,9 @@
             const wynik = document.getElementById('rura-wynik');
             wynik.style.display = 'block';
             wynik.innerHTML = `
-                <div>Masa 1 metra: <span class="calc-value">${masa1m.toFixed(3)} kg/m</span></div>
-                <div>Długość 1 kg: <span class="calc-value">${dlug1kg.toFixed(4)} m/kg</span></div>
-                <div>Masa dla ${dlug} mm: <span class="calc-value">${masaCalk.toFixed(3)} kg</span></div>
+                <div>${t('calcMass1m')}: <span class="calc-value">${masa1m.toFixed(3)} kg/m</span></div>
+                <div>${t('calcLen1kg')}: <span class="calc-value">${dlug1kg.toFixed(4)} m/kg</span></div>
+                <div>${t('calcMassFor').replace('{len}', dlug)}: <span class="calc-value">${masaCalk.toFixed(3)} kg</span></div>
             `;
         }
 
@@ -3261,9 +3640,9 @@
             const wynik = document.getElementById('rprost-wynik');
             wynik.style.display = 'block';
             wynik.innerHTML = `
-                <div>Masa 1 metra: <span class="calc-value">${masa1m.toFixed(3)} kg/m</span></div>
-                <div>Długość 1 kg: <span class="calc-value">${dlug1kg.toFixed(4)} m/kg</span></div>
-                <div>Masa dla ${dlug} mm: <span class="calc-value">${masaCalk.toFixed(3)} kg</span></div>
+                <div>${t('calcMass1m')}: <span class="calc-value">${masa1m.toFixed(3)} kg/m</span></div>
+                <div>${t('calcLen1kg')}: <span class="calc-value">${dlug1kg.toFixed(4)} m/kg</span></div>
+                <div>${t('calcMassFor').replace('{len}', dlug)}: <span class="calc-value">${masaCalk.toFixed(3)} kg</span></div>
             `;
         }
 
@@ -3279,15 +3658,15 @@
             switch (ksztalt) {
                 case 'kolo':
                     area = (Math.PI * w * w) / 4;
-                    ksztaltNazwa = 'okrągły';
+                    ksztaltNazwa = t('calcRoundName');
                     break;
                 case 'kwadrat':
                     area = w * w;
-                    ksztaltNazwa = 'kwadratowy';
+                    ksztaltNazwa = t('calcSquareName');
                     break;
                 case 'szesciokat':
                     area = (w * w / 2) * Math.sqrt(3);
-                    ksztaltNazwa = 'sześciokątny';
+                    ksztaltNazwa = t('calcHexName');
                     break;
             }
 
@@ -3298,10 +3677,10 @@
             const wynik = document.getElementById('pret-wynik');
             wynik.style.display = 'block';
             wynik.innerHTML = `
-                <div>Przekrój: <strong>${ksztaltNazwa}</strong></div>
-                <div>Masa 1 metra: <span class="calc-value">${masa1m.toFixed(3)} kg/m</span></div>
-                <div>Długość 1 kg: <span class="calc-value">${dlug1kg.toFixed(4)} m/kg</span></div>
-                <div>Masa dla ${dlug} mm: <span class="calc-value">${masaCalk.toFixed(3)} kg</span></div>
+                <div>${t('calcSection')}: <strong>${ksztaltNazwa}</strong></div>
+                <div>${t('calcMass1m')}: <span class="calc-value">${masa1m.toFixed(3)} kg/m</span></div>
+                <div>${t('calcLen1kg')}: <span class="calc-value">${dlug1kg.toFixed(4)} m/kg</span></div>
+                <div>${t('calcMassFor').replace('{len}', dlug)}: <span class="calc-value">${masaCalk.toFixed(3)} kg</span></div>
             `;
         }
     </script>
