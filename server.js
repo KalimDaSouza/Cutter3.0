@@ -220,10 +220,17 @@ app.post('/api/optimize', (req, res) => {
     }
 });
 
+// Etykiety eksportu wg języka
+function exportLabels(lang) {
+    if (lang === 'en') return { title: 'Cutting List', contract: 'Contract', profile: 'Profile' };
+    return { title: 'Lista Ciec', contract: 'Kontrakt', profile: 'Profil' };
+}
+
 // POST /api/export/pdf - Eksport do PDF
 app.post('/api/export/pdf', (req, res) => {
     try {
-        const { plans, contractNumber, profileType } = req.body;
+        const { plans, contractNumber, profileType, lang } = req.body;
+        const lbl = exportLabels(lang);
 
         const doc = new PDFDocument();
 
@@ -243,9 +250,9 @@ app.post('/api/export/pdf', (req, res) => {
         doc.pipe(res);
 
         // Tytul
-        let title = 'Lista Ciec';
-        if (contractNumber) title += ` | Kontrakt: ${contractNumber}`;
-        if (profileType) title += ` | Profil: ${profileType}`;
+        let title = lbl.title;
+        if (contractNumber) title += ` | ${lbl.contract}: ${contractNumber}`;
+        if (profileType) title += ` | ${lbl.profile}: ${profileType}`;
         doc.fontSize(16).text(title, { underline: true });
         doc.moveDown();
 
@@ -268,7 +275,8 @@ app.post('/api/export/pdf', (req, res) => {
 // POST /api/export/txt - Eksport do TXT
 app.post('/api/export/txt', (req, res) => {
     try {
-        const { plans, contractNumber, profileType } = req.body;
+        const { plans, contractNumber, profileType, lang } = req.body;
+        const lbl = exportLabels(lang);
 
         // Buduj nazwę pliku z kontraktu i profilu
         let filename = 'wycinacz';
@@ -277,9 +285,9 @@ app.post('/api/export/txt', (req, res) => {
         filename += '.txt';
         filename = filename.replace(/[^a-zA-Z0-9._\-]/g, '_');
 
-        let title = 'Lista Ciec';
-        if (contractNumber) title += ` | Kontrakt: ${contractNumber}`;
-        if (profileType) title += ` | Profil: ${profileType}`;
+        let title = lbl.title;
+        if (contractNumber) title += ` | ${lbl.contract}: ${contractNumber}`;
+        if (profileType) title += ` | ${lbl.profile}: ${profileType}`;
 
         let text = title + '\n';
         text += '='.repeat(title.length) + '\n\n';
